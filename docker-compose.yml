@@ -1,0 +1,14 @@
+version: '3.8'
+services:
+  vue-ui:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    container_name: vue_ui
+    volumes:
+       - './:/usr/src/nlcntt'
+       - '/usr/src/nlcntt/node_modules'
+volumes:
+  vue_ui:
