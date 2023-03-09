@@ -12,6 +12,12 @@ services:
     volumes:
        - './:/usr/src/nlcntt'
        - '/usr/src/nlcntt/node_modules'
+    networks:
+      - nlcntt-network
+networks:
+  nlcntt-network:
+    name: nlcntt-network
+    external: true
 volumes:
   vue_ui:
     external: false
