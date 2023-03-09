@@ -15,7 +15,7 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <div class="d-flex">
           <div class="input-group navbar_search_inp">
-            <input type="text" class="form-control" placeholder="Search StudyBuddies..." />
+            <input type="text" class="form-control navbar_input_search" placeholder="Search StudyBuddies..." />
           </div>
         </div>
         <div class="navbar-nav me-auto mb-2 mb-lg-0"></div>
@@ -30,7 +30,7 @@
 <script>
 export default {}
 </script>
-<style>
+<style scoped>
 .navbar {
   border-radius: 0 0 0.5rem 0.5rem;
 }
@@ -44,12 +44,22 @@ export default {}
   margin-left: 20px;
   min-width: 300px;
 }
+.navbar_search_inp input[type='text'] {
+  background-color: rgb(255 255 255 / 0.1);
+  outline: none;
+  border: none;
+  border-radius: 1rem;
+  color: white;
+}
+.navbar_search_inp input[type='text']::placeholder {
+  color: white;
+  opacity: 50%;
+}
 .navbar_icons {
   color: white;
-  height: 45px;
   margin-inline-start: 10px;
-  padding: 10px;
-  font-size: 25px;
+  padding: 12px;
+  font-size: 20px;
   border-radius: 50%;
   background-color: rgb(255 255 255 / 0.1);
 }
