@@ -15,6 +15,7 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <div class="d-flex">
           <div class="input-group navbar_search_inp">
+            <span><i class="fas fa-search search_icon"></i></span>
             <input type="text" class="form-control navbar_input_search" placeholder="Search StudyBuddies..." />
           </div>
         </div>
@@ -31,8 +32,11 @@
 export default {}
 </script>
 <style scoped>
-.navbar {
-  border-radius: 0 0 0.5rem 0.5rem;
+.search_icon {
+  color: white;
+  font-size: 20px;
+  opacity: 0.5;
+  padding: 12px 0 12px 12px;
 }
 .navbar-brand {
   color: white !important;
@@ -42,14 +46,20 @@ export default {}
 }
 .navbar_search_inp {
   margin-left: 20px;
+  background-color: rgb(255 255 255 / 0.1);
+  border-radius: 1.5rem;
   min-width: 300px;
 }
 .navbar_search_inp input[type='text'] {
-  background-color: rgb(255 255 255 / 0.1);
+  background-color: transparent;
   outline: none;
   border: none;
-  border-radius: 1rem;
   color: white;
+  outline: none;
+}
+.navbar_input_search:focus {
+  outline: none;
+  box-shadow: none;
 }
 .navbar_search_inp input[type='text']::placeholder {
   color: white;
