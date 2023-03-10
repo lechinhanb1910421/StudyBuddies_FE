@@ -11,13 +11,13 @@ services:
     container_name: vue_ui
     volumes:
        - './:/usr/src/nlcntt'
-       - '/usr/src/nlcntt/node_modules'
+       - 'vue_ui:/usr/src/nlcntt/node_modules'
     networks:
       - nlcntt-network
 networks:
   nlcntt-network:
     name: nlcntt-network
-    external: true
+    driver: bridge
+    # external: true
 volumes:
   vue_ui:
-    external: false
