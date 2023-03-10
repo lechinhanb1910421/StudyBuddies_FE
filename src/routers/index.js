@@ -1,10 +1,10 @@
 import { createWebHistory, createRouter } from 'vue-router'
-import DashBoard from '@/views/DashBoard.vue'
+import MainPage from '@/views/MainPage.vue'
 const routes = [
   {
     path: '/',
     name: 'home',
-    component: DashBoard
+    component: MainPage
   }
 ]
 
@@ -15,9 +15,9 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   if (to.name != 'home') {
     const newTitle = to.name.charAt(0).toUpperCase() + to.name.slice(1)
-    document.title = 'Study - ' + newTitle
+    document.title = 'Study Buddies - ' + newTitle
   } else {
-    document.title = 'Study'
+    document.title = 'Study Buddies'
   }
   next()
 })
