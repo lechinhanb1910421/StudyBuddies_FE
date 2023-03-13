@@ -8,7 +8,7 @@ export default {}
         <div class="p_header_ava">
           <img src="../assets/Ganyu_2.jpeg" class="posts_ava" alt="..." />
         </div>
-        <div class="p_header_name">Nhan Le Nguyen Chi Nhan</div>
+        <div class="p_header_name">Nhan Le Nguyen <i class="fa fa-check-circle-o" aria-hidden="true"></i></div>
       </div>
       <div class="p_header_subinfo">
         <div class="p_header_creTime">
@@ -17,15 +17,12 @@ export default {}
         </div>
         <div class="p_header_major">
           <i class="fas fa-graduation-cap"></i>
-          <span>Information Technology</span>
+          <span> Information Technology</span>
         </div>
       </div>
     </section>
     <section class="p_content">
-      <div class="p_content_text">
-        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since
-        the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five Lorem
-      </div>
+      <div class="p_content_text">Hello this is a test post</div>
       <div class="p_content_img">
         <img src="../assets/Ganyu_2.jpeg" class="post_content" alt="..." />
       </div>
@@ -110,6 +107,7 @@ hr.hr-white {
 .post_ctn {
   background-color: rgb(255 255 255 /0.1);
   border-radius: 0.75rem;
+  margin-bottom: 3%;
 }
 .p_content {
   padding-bottom: 20px;
