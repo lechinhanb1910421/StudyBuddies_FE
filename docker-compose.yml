@@ -10,8 +10,9 @@ services:
       - '$VUE_HOST_PORT:$VUE_CONTAINER_PORT'
     container_name: vue_ui
     volumes:
-       - './:/usr/src/nlcntt'
-       - 'vue_ui:/usr/src/nlcntt/node_modules'
+      - './:/app/node_modules'
+      - 'vue_ui:/var/www/html/'
+      - ./nginx/conf.d:/etc/nginx/conf.d
     networks:
       - nlcntt-network
 networks:
