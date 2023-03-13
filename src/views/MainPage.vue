@@ -34,6 +34,7 @@ export default {
 </template>
 
 <style scoped>
+
 .container-fluid {
   padding-inline: 0;
 }
@@ -49,7 +50,8 @@ export default {
   height: 100vh;
   left: 0;
   width: 22%;
-  background-color: grey;
+  background-color: #181a1d;
+  border-right: 1px solid grey;
 }
 
 .friendBar {
@@ -64,6 +66,5 @@ export default {
   background-color: #181a1d;
   margin-left: 22%;
   margin-right: 22%;
-  height: 300vh;
 }
 </style>
