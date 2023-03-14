@@ -1,0 +1,67 @@
+[
+    {
+        "postId": 1,
+        "userId": 1,
+        "content": "First Post",
+        "topicName": "General",
+        "majorName": "General",
+        "reactsCount": 1,
+        "commentsCount": 2,
+        "picUrls": [
+            "../assets/Ganyu_2.jpeg",
+            "../assets/Ganyu_2.jpeg"
+        ]
+    },
+    {
+        "postId": 3,
+        "userId": 2,
+        "content": "Hi this is a Post From special user ",
+        "topicName": "Recreation",
+        "majorName": "Computer Science",
+        "reactsCount": 0,
+        "commentsCount": 1,
+        "picUrls": [
+            "../assets/Ganyu_2.jpeg"
+        ]
+    },
+    {
+        "postId": 4,
+        "userId": 2,
+        "content": "Hi this is a Post From special user ",
+        "topicName": "Recreation",
+        "majorName": "Computer Science",
+        "reactsCount": 0,
+        "commentsCount": 0,
+        "picUrls": []
+    },
+    {
+        "postId": 5,
+        "userId": 2,
+        "content": "Hi this is a Post From special user ",
+        "topicName": "Recreation",
+        "majorName": "Computer Science",
+        "reactsCount": 0,
+        "commentsCount": 0,
+        "picUrls": []
+    },
+    {
+        "postId": 6,
+        "userId": 1,
+        "content": "Hi this is a Post From special user ",
+        "topicName": "Recreation",
+        "majorName": "Computer Science",
+        "reactsCount": 0,
+        "commentsCount": 0,
+        "picUrls": []
+    },
+    {
+        "postId": 7,
+        "userId": 1,
+        "content": "Hi this is a Post From special user ",
+        "topicName": "General",
+        "majorName": "Information Technology",
+        "reactsCount": 0,
+        "commentsCount": 0,
+        "picUrls": []
+    }
+]
