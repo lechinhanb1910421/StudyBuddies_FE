@@ -6,11 +6,6 @@ module.exports = defineConfig({
     config.resolve.alias.set('@', path.resolve(__dirname, './src'))
   },
   devServer: {
-    port: 3000,
-    // proxy: {
-    //   '/api': {
-    //     target: 'http://localhost:8080/nlcntt/api/'
-    //   }
-    // }
+    port: 80
   }
 })
