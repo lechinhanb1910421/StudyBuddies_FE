@@ -6,13 +6,9 @@ import NewFeed from '../components/NewFeed.vue'
 export default {
   components: { HeaderNavbar, MenuBar, NewFeed, FriendBar },
   data() {
-    return {
-      access_token: null
-    }
+    return {}
   },
-  methods: {
-    getToken() {}
-  }
+  methods: {}
 }
 </script>
 
@@ -34,7 +30,6 @@ export default {
 </template>
 
 <style scoped>
-
 .container-fluid {
   padding-inline: 0;
 }
@@ -43,24 +38,6 @@ export default {
   background-color: #181a1d;
   padding-top: 61px;
   display: block;
-}
-.menuBar {
-  position: fixed;
-  top: 60px;
-  height: 100vh;
-  left: 0;
-  width: 22%;
-  background-color: #181a1d;
-  border-right: 1px solid grey;
-}
-
-.friendBar {
-  width: 22%;
-  position: fixed;
-  top: 60px;
-  right: 0;
-  height: 100%;
-  background-color: grey;
 }
 .newFeed {
   background-color: #181a1d;

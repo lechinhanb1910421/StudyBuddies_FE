@@ -154,6 +154,8 @@ hr.hr-white {
 .p_header_creTime span,
 .p_header_major span {
   padding-left: 5px;
+  font-weight: 600;
+  font-size: 15px;
 }
 .posts_ava {
   height: 40px;

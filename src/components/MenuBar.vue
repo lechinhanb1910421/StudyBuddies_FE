@@ -75,6 +75,13 @@ hr.profile {
 .profile {
   color: white;
   padding: 10px;
+  padding-top: 15px;
+  position: fixed;
+  top: 60px;
+  height: 100vh;
+  left: 0;
+  width: 22%;
+  background-color: #181a1d;
 }
 .profile_tile {
   padding-inline-start: 15px;
