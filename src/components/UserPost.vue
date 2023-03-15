@@ -1,5 +1,42 @@
 <script>
-export default {}
+import PostCommentGroup from '@/components/PostCommentGroup.vue'
+// import { storage } from '@/services/firebase.config.js'
+// import { ref, getDownloadURL, uploadBytesResumable } from 'firebase/storage'
+export default {
+  components: { PostCommentGroup },
+  methods: {
+    // async uploadImage() {
+    //   const newImageName = Math.floor(Date.now() / 1000) + this.newImageData.name
+    //   const storageRef = ref(storage, `userImages/${newImageName}`)
+    //   const uploadTask = uploadBytesResumable(storageRef, this.newImageData)
+    //   this.isUploading = true
+    //   uploadTask.on(
+    //     'state_changed',
+    //     (snapshot) => {
+    //       // this.uploadProgress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+    //       switch (snapshot.state) {
+    //         case 'paused':
+    //           console.log('Upload is paused')
+    //           break
+    //       }
+    //     },
+    //     (error) => {
+    //       console.log(error)
+    //     },
+    //     () => {
+    //       getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
+    //         this.newImageLink = downloadURL
+    //         await this.userStore.updateUserInfo(this.editedFName, this.editedLName, downloadURL, this.user.email)
+    //         this.informUploaded()
+    //         this.newImageData = ''
+    //         this.isImageChanged = false
+    //         this.isUploading = false
+    //       })
+    //     }
+    //   )
+    // },
+  }
+}
 </script>
 <template lang="">
   <div class="post_ctn">
@@ -8,7 +45,7 @@ export default {}
         <div class="p_header_ava">
           <img src="../assets/Ganyu_2.jpeg" class="posts_ava" alt="..." />
         </div>
-        <div class="p_header_name">Nhan Le Nguyen <i class="fa fa-check-circle-o" aria-hidden="true"></i></div>
+        <div class="p_header_name">Nhan Le Nguyen Chi<i class="fa fa-check-circle-o" aria-hidden="true"></i></div>
       </div>
       <div class="p_header_subinfo">
         <div class="p_header_creTime">
@@ -36,6 +73,7 @@ export default {}
           <span>comments</span>
         </div>
       </div>
+
       <hr class="hr-white" />
       <div class="p_ctrl">
         <button class="btn p_ctrl_btn_bg btn_like" type="button">
@@ -51,6 +89,8 @@ export default {}
           <span>Share</span>
         </button>
       </div>
+      <hr class="hr-white" />
+      <PostCommentGroup></PostCommentGroup>
     </section>
   </div>
 </template>

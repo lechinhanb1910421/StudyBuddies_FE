@@ -34,7 +34,6 @@ export default {
   padding-inline: 0;
 }
 .main_page {
-  height: 100vh;
   background-color: #181a1d;
   padding-top: 61px;
   display: block;
