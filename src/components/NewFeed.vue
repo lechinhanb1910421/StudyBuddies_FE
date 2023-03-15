@@ -1,25 +1,60 @@
 <script>
 import UserPost from './UserPost.vue'
+import PostService from '@/services/Post.service.offline'
+import AddPostModal from '@/components/AddPostModal.vue'
+// import $ from 'jquery'
 export default {
-  components: { UserPost }
+  components: { UserPost, AddPostModal },
+  data() {
+    return {
+      posts: []
+    }
+  },
+  methods: {
+    async getAllPost() {
+      // let access_token = this.$keycloak.token
+      var posts = await PostService.getAllPosts()
+      console.log(posts)
+    },
+    async getPostById() {
+      // let access_token = this.$keycloak.token
+      var post = await PostService.getPostById(10)
+      console.log(post)
+    },
+    showAddPostModal() {
+      console.log('NEW POST WAS CALLED')
+      // let elem = this.$refs.addNoteModal
+      // console.log(elem)
+      // $(elem).modal('show')
+    }
+  },
+  async mounted() {
+    // await this.getAllPost()
+    // await this.getPostById()
+  }
 }
 </script>
 <template lang="">
+  <AddPostModal ref="addNoteModal"></AddPostModal>
   <div class="container">
     <div class="crePost_ctn">
       <div class="crePost_ava">
         <img src="../assets/Ganyu_2.jpeg" class="posts_ava" alt="..." />
       </div>
-      <div class="crePost_input">
-        <input type="text" class="form-control" placeholder="Hello Everett, how is your study?" />
+      <div class="crePost_input" data-bs-toggle="modal" data-bs-target="#addPostModal">
+        <input type="text" class="form-control" @click="showAddPostModal()" placeholder="Hello Everett, how is your study?" disabled />
       </div>
     </div>
     <hr class="hr-white" />
+    <UserPost></UserPost>
+    <UserPost></UserPost>
+    <UserPost></UserPost>
     <UserPost></UserPost>
   </div>
 </template>
 <style scoped>
 hr.hr-white {
+  margin-inline: 10px;
   border-top: 1px solid white;
 }
 .crePost_ctn {
@@ -60,6 +95,5 @@ hr.hr-white {
 }
 .container {
   padding-inline: 12%;
-  height: 300vh;
 }
 </style>
