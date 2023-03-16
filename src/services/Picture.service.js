@@ -1,6 +1,6 @@
 import createApiClient from '@/services/api.service'
 class PostService {
-  constructor(baseURL = '/post_resources') {
+  constructor(baseURL = '/picture_resources') {
     this.api = createApiClient(baseURL)
   }
   async getAllPosts(access_token) {
@@ -11,10 +11,10 @@ class PostService {
     this.api.defaults.headers.common = { Authorization: `bearer ${access_token}` }
     return (await this.api.get('/' + postId)).data
   }
-  async createPost(access_token, payload) {
-    // const json_body = JSON.stringify(payload)
+  async createPost(access_token, picUrl, postId) {
+    const json_body = JSON.stringify(payload)
     this.api.defaults.headers.common = { Authorization: `bearer ${access_token}` }
-    return (await this.api.post('/', payload)).data
+    return (await this.api.post('/' + postId, { params: { picUrl: picUrl } })).data
   }
 }
 export default new PostService()
