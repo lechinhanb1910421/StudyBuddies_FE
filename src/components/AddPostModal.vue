@@ -1,14 +1,34 @@
 <script>
+import { storage } from '@/services/firebase.service'
+import { ref, getDownloadURL, uploadBytesResumable } from 'firebase/storage'
+import PostService from '@/services/Post.service'
+// import PictureService from '@/services/Picture.service'
 export default {
   data() {
     return {
       post_content: '',
       post_content_lg: true,
       newImagePreview: '',
-      hasImage: false
+      hasImage: false,
+      uploadProgress: '',
+      userLoginName: 'b1910421',
+      postTopic: 1,
+      postMajor: 1
     }
   },
   methods: {
+    async addNewPost(picUrl) {
+      const payload = {
+        content: this.post_content,
+        audienceMode: 'public',
+        topicId: this.postTopic,
+        majorId: this.postMajor,
+        imageUrl: picUrl
+      }
+      const data = await PostService.createPost(this.$keycloak.token, payload)
+      console.log(data)
+      this.resetAddPostModal()
+    },
     resize_textarea() {
       const { textarea } = this.$refs
       var newHeight = textarea.scrollHeight
@@ -28,9 +48,49 @@ export default {
       this.hasImage = true
     },
     async removePreviewImage() {
-      this.newImagePreview = null
-      this.$refs.add_img_input.value = null
+      this.newImagePreview = ''
+      // this.$refs.add_img_input.value = null
       this.hasImage = false
+    },
+    async uploadImage() {
+      const newImage_name = Math.floor(Date.now() / 1000) + this.newImageData.name
+      const storageRef = ref(storage, `/${this.userLoginName}/postImages/${newImage_name}`)
+      const uploadTask = uploadBytesResumable(storageRef, this.newImageData)
+      this.isUploading = true
+      uploadTask.on(
+        'state_changed',
+        (snapshot) => {
+          this.uploadProgress = Math.floor((snapshot.bytesTransferred / snapshot.totalBytes) * 100)
+          console.log('UPLOADING ', this.uploadProgress, '%')
+          switch (snapshot.state) {
+            case 'paused':
+              console.log('Upload is paused')
+              break
+          }
+        },
+        (error) => {
+          console.log(error)
+        },
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
+            this.newImageLink = downloadURL
+            this.addNewPost(downloadURL)
+          })
+        }
+      )
+    },
+    setPostTopic(event) {
+      this.postTopic = event.target.value
+    },
+    setPostMajor(event) {
+      this.postMajor = event.target.value
+    },
+    resetAddPostModal() {
+      this.post_content = ''
+      this.newImagePreview = ''
+      this.postTopic = 1
+      this.postMajor = 1
+      this.resize_textarea()
     }
   },
   watch: {
@@ -74,7 +134,7 @@ export default {
             <div class="options mb-2">
               <div class="opts_topic">
                 <label for="topic">Topic: </label>
-                <select class="form-select post_opts" id="topic" aria-label="Select post topic">
+                <select class="form-select post_opts" @change="setPostTopic($event)" id="topic" aria-label="Select post topic">
                   <option value="1" selected>General</option>
                   <option value="2">Recreation</option>
                   <option value="3">Knowleage Share</option>
@@ -85,7 +145,7 @@ export default {
               </div>
               <div class="opts_major">
                 <label for="major">Major: </label>
-                <select class="form-select post_opts" id="topic" aria-label="Select post topic">
+                <select class="form-select post_opts" @change="setPostMajor($event)" id="major" aria-label="Select post Major">
                   <option value="1" selected>All Majors</option>
                   <option value="2">Information Technology</option>
                   <option value="3">Information System</option>
@@ -109,11 +169,11 @@ export default {
                 @keyup="resize_textarea">
               </textarea>
             </div>
-            <img v-if="hasImage" class="add_pic_pre_image" :src="newImagePreview" alt="..." />
+            <img v-if="this.hasImage" class="add_pic_pre_image" :src="newImagePreview" alt="..." />
           </div>
           <div class="add_pic_ctrs">
             <button type="button" class="btn btn-danger add_pic_del_btn" @click="removePreviewImage" v-if="this.hasImage">Delete Image</button>
-            <label for="add_img_input" class="add_pic">
+            <label for="add_img_input" class="add_pic" v-if="!this.hasImage">
               <i class="fas fa-images"></i>
               <span>Add Image</span>
               <input
@@ -127,7 +187,7 @@ export default {
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary btn_add_post">Post</button>
+          <button type="button" class="btn btn-primary btn_add_post" @click="uploadImage">Post</button>
         </div>
       </div>
     </div>
