@@ -1,8 +1,10 @@
 import { createApp } from 'vue'
 import App from './App.vue'
+import { createPinia } from 'pinia'
 import router from './routers/index'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap/dist/js/bootstrap.bundle'
+const pinia = createPinia()
 // import Keycloak from 'keycloak-js'
 
 // let initOptions = {
@@ -13,7 +15,7 @@ import 'bootstrap/dist/js/bootstrap.bundle'
 //   checkLoginIframe: true,
 //   flow: 'standard'
 // }
-// const myApp = createApp(App).use(router)
+// const myApp = createApp(App).use(router).use(pinia)
 // let keycloak = new Keycloak(initOptions)
 // keycloak
 //   .init({ onLoad: initOptions.onLoad, flow: initOptions.flow })
@@ -46,5 +48,5 @@ import 'bootstrap/dist/js/bootstrap.bundle'
 //     console.log('Authenticated Failed')
 //   })
 
-const myApp = createApp(App).use(router)
+const myApp = createApp(App).use(pinia).use(router)
 myApp.mount('#app')
