@@ -2,7 +2,7 @@
 import UserPost from './UserPost.vue'
 import PostService from '@/services/Post.service.offline'
 import AddPostModal from '@/components/AddPostModal.vue'
-// import $ from 'jquery'
+import { postStorage } from '@/stores/post'
 export default {
   components: { UserPost, AddPostModal },
   data() {
@@ -10,7 +10,16 @@ export default {
       posts: []
     }
   },
+  setup() {
+    const postStore = postStorage()
+    return {
+      postStore
+    }
+  },
   methods: {
+    async getAllPost_Offline() {
+      await this.postStore.getAllPosts()
+    },
     async getAllPost() {
       // let access_token = this.$keycloak.token
       var posts = await PostService.getAllPosts()
@@ -31,10 +40,11 @@ export default {
   async mounted() {
     // await this.getAllPost()
     // await this.getPostById()
+    await this.getAllPost_Offline()
   }
 }
 </script>
-<template lang="">
+<template>
   <AddPostModal ref="addNoteModal"></AddPostModal>
   <div class="container">
     <div class="crePost_ctn">
@@ -46,10 +56,11 @@ export default {
       </div>
     </div>
     <hr class="hr-white" />
-    <UserPost></UserPost>
-    <UserPost></UserPost>
-    <UserPost></UserPost>
-    <UserPost></UserPost>
+    <div v-for="post in postStore.posts" :key="post">
+      <div v-if="post">
+        <UserPost :post="post"></UserPost>
+      </div>
+    </div>
   </div>
 </template>
 <style scoped>
@@ -95,5 +106,6 @@ hr.hr-white {
 }
 .container {
   padding-inline: 12%;
+  padding-bottom: 5%;
 }
 </style>

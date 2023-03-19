@@ -1,75 +1,82 @@
 <script>
 import PostCommentGroup from '@/components/PostCommentGroup.vue'
-// import { storage } from '@/services/firebase.config.js'
-// import { ref, getDownloadURL, uploadBytesResumable } from 'firebase/storage'
+import { userStorage } from '@/stores/user'
+import MyDateTimeService from '@/services/myDateTime.service'
 export default {
   components: { PostCommentGroup },
+  props: ['post'],
+  data() {
+    return {
+      user: {
+        userId: '',
+        userName: '',
+        loginName: '',
+        givenName: '',
+        familyName: '',
+        avaImg: ''
+      },
+      postCreatedAt: '',
+      postCreTime: ''
+    }
+  },
+  setup() {
+    const userStore = userStorage()
+    return {
+      userStore
+    }
+  },
   methods: {
-    // async uploadImage() {
-    //   const newImageName = Math.floor(Date.now() / 1000) + this.newImageData.name
-    //   const storageRef = ref(storage, `userImages/${newImageName}`)
-    //   const uploadTask = uploadBytesResumable(storageRef, this.newImageData)
-    //   this.isUploading = true
-    //   uploadTask.on(
-    //     'state_changed',
-    //     (snapshot) => {
-    //       // this.uploadProgress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-    //       switch (snapshot.state) {
-    //         case 'paused':
-    //           console.log('Upload is paused')
-    //           break
-    //       }
-    //     },
-    //     (error) => {
-    //       console.log(error)
-    //     },
-    //     () => {
-    //       getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
-    //         this.newImageLink = downloadURL
-    //         await this.userStore.updateUserInfo(this.editedFName, this.editedLName, downloadURL, this.user.email)
-    //         this.informUploaded()
-    //         this.newImageData = ''
-    //         this.isImageChanged = false
-    //         this.isUploading = false
-    //       })
-    //     }
-    //   )
-    // },
+    async parseTime() {
+      this.postCreatedAt = MyDateTimeService.parseTimeString({ timeString: this.post.createdTime })
+
+      this.postCreTime = MyDateTimeService.getTimeDifference({ timeString: this.post.createdTime })
+    },
+    async getUserInfo() {
+      this.user = await this.userStore.getUserById(this.post.userId)
+      this.user.userName = this.user.givenName + ' ' + this.user.familyName
+    }
+  },
+  async mounted() {
+    this.getUserInfo()
+    this.parseTime()
   }
 }
 </script>
-<template lang="">
+
+<template v-if="this.post">
   <div class="post_ctn">
     <section class="p_header">
       <div class="p_header_info">
         <div class="p_header_ava">
-          <img src="../assets/Ganyu_2.jpeg" class="posts_ava" alt="..." />
+          <img :src="this.user.avaImg" class="posts_ava" alt="..." />
         </div>
-        <div class="p_header_name">Nhan Le Nguyen Chi<i class="fa fa-check-circle-o" aria-hidden="true"></i></div>
+        <div class="p_header_name">{{ this.user.userName }}<i class="fa fa-check-circle-o" aria-hidden="true"></i></div>
       </div>
       <div class="p_header_subinfo">
         <div class="p_header_creTime">
-          <i class="far fa-clock"></i>
-          <span>2d</span>
+          <tippy :content="this.postCreatedAt">
+            <i class="far fa-clock"></i>
+            <span>{{ this.postCreTime }}</span>
+          </tippy>
         </div>
         <div class="p_header_major">
           <i class="fas fa-graduation-cap"></i>
-          <span> Information Technology</span>
+          <span>{{ this.post.majorName }}</span>
         </div>
       </div>
     </section>
     <section class="p_content">
-      <div class="p_content_text">Hello this is a test post</div>
+      <div class="p_content_text">{{ this.post.content }}</div>
       <div class="p_content_img">
-        <img src="../assets/Ganyu_2.jpeg" class="post_content" alt="..." />
+        <img :src="this.post.picUrls[0]" class="post_content" alt="..." />
       </div>
       <div class="p_stats">
         <div class="p_stats_like">
           <i class="far fa-heart"> </i>
-          <span>272</span>
+          <span>{{ this.post.reactsCount }}</span>
         </div>
         <div class="p_stats_no_cmt">
-          <span>272</span>
+          <span>{{ this.post.commentsCount }}</span>
           <span>comments</span>
         </div>
       </div>
@@ -94,6 +101,7 @@ export default {
     </section>
   </div>
 </template>
+
 <style scoped>
 .p_ctrl i {
   padding-right: 5px;
