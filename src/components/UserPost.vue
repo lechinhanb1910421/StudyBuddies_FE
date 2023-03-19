@@ -13,8 +13,9 @@ export default {
         loginName: '',
         givenName: '',
         familyName: '',
-        avaImg: ''
+        avatars: []
       },
+      userCurrentAva: '',
       postCreatedAt: '',
       postCreTime: ''
     }
@@ -28,12 +29,13 @@ export default {
   methods: {
     async parseTime() {
       this.postCreatedAt = MyDateTimeService.parseTimeString({ timeString: this.post.createdTime })
-
       this.postCreTime = MyDateTimeService.getTimeDifference({ timeString: this.post.createdTime })
     },
     async getUserInfo() {
-      this.user = await this.userStore.getUserById(this.post.userId)
+      let access_token = this.$keycloak.token
+      this.user = await this.userStore.getUserById(access_token, this.post.userId)
       this.user.userName = this.user.givenName + ' ' + this.user.familyName
+      this.userCurrentAva = this.user.avatars[0].avaUrl
     }
   },
   async mounted() {
@@ -48,7 +50,7 @@ export default {
     <section class="p_header">
       <div class="p_header_info">
         <div class="p_header_ava">
-          <img :src="this.user.avaImg" class="posts_ava" alt="..." />
+          <img :src="this.userCurrentAva" class="posts_ava" alt="..." />
         </div>
         <div class="p_header_name">{{ this.user.userName }}<i class="fa fa-check-circle-o" aria-hidden="true"></i></div>
       </div>
@@ -59,10 +61,12 @@ export default {
             <span>{{ this.postCreTime }}</span>
           </tippy>
         </div>
-        <div class="p_header_major">
-          <i class="fas fa-graduation-cap"></i>
-          <span>{{ this.post.majorName }}</span>
-        </div>
+        <tippy :content="this.post.majorName">
+          <div class="p_header_major">
+            <i class="fas fa-graduation-cap"></i>
+            <span>{{ this.post.majorName }}</span>
+          </div>
+        </tippy>
       </div>
     </section>
     <section class="p_content">
@@ -198,6 +202,10 @@ hr.hr-white {
   padding-inline: 11px;
   border-radius: 0.75rem;
   background-color: rgb(255 255 255 /0.15);
+  max-width: 230px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .p_header_creTime span,
 .p_header_major span {
