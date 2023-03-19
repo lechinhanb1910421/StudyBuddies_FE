@@ -1,7 +1,36 @@
+<script>
+import router from '@/routers/index'
+export default {
+  data() {
+    return {
+      input_search: ''
+    }
+  },
+  methods: {
+    submitSeach() {
+      if (this.input_search == null) {
+        return
+      }
+      var search_query = this.input_search.replace(/\s+/g, ' ').trim()
+      if (search_query == '') {
+        return
+      }
+      router.push({ path: 'search', query: { q: '' + search_query } })
+    },
+    checkInput(e) {
+      if (e.shiftKey && e.key == 'Backspace') {
+        this.input_search = ''
+      }
+    }
+  }
+}
+</script>
 <template lang="">
   <nav class="navbar navbar-expand-lg bg_dark1 fixed-top">
     <div class="container-fluid">
-      <img src="../assets/logo.png" class="avatar_img" alt="Avatar" />
+      <router-link :to="{ name: 'home' }">
+        <img src="../assets/logo.png" class="avatar_img" alt="Avatar" />
+      </router-link>
       <button
         class="navbar-toggler"
         type="button"
@@ -16,7 +45,14 @@
         <div class="d-flex">
           <div class="input-group navbar_search_inp">
             <span><i class="fas fa-search search_icon"></i></span>
-            <input type="text" class="form-control navbar_input_search" placeholder="Search StudyBuddies..." />
+            <input
+              type="text"
+              class="form-control navbar_input_search"
+              @keyup.enter="submitSeach"
+              @keyup="checkInput"
+              v-model="input_search"
+              placeholder="Search StudyBuddies..."
+              autofocus />
           </div>
         </div>
         <div class="navbar-nav me-auto mb-2 mb-lg-0"></div>
@@ -28,9 +64,7 @@
     </div>
   </nav>
 </template>
-<script>
-export default {}
-</script>
+
 <style scoped>
 .search_icon {
   color: white;
