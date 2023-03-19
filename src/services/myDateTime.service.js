@@ -1,5 +1,5 @@
 var date_options = [{ month: '2-digit', day: '2-digit', year: 'numeric' }]
-var hour_options = [{ hour: '2-digit', minute: '2-digit', second: '2-digit', hourCycle: 'h23' }]
+var hour_options = [{ hour: '2-digit', minute: '2-digit', second: '2-digit', hourCycle: 'h12' }]
 class MyDateTimeService {
   parseTimeString({ timeString }) {
     var time = new Date(timeString)
