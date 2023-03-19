@@ -109,12 +109,6 @@ export default {
 }
 </script>
 <template>
-  <!-- Button trigger modal -->
-  <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-  Launch static backdrop modal
-</button> -->
-  <!-- style="display: block" -->
-  <!-- Modal -->
   <div class="modal modal-lg fade" id="addPostModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
