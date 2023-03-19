@@ -1,10 +1,17 @@
 import { createWebHistory, createRouter } from 'vue-router'
 import MainPage from '@/views/MainPage.vue'
+import SearchResults from '@/views/SearchResults.vue'
 const routes = [
   {
     path: '/',
     name: 'home',
     component: MainPage
+  },
+  {
+    path: '/search',
+    name: 'searchResults',
+    component: SearchResults,
+    props: (route) => ({ sQuery: route.query.q })
   }
 ]
 
