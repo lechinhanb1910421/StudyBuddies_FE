@@ -1,15 +1,18 @@
 <script>
 export default {
-  props: ['tileName']
+  props: ['titleName']
 }
 </script>
 <template>
   <div class="tile">
-    <span>{{ tileName }}</span>
+    <tippy :content="this.titleName">
+      <span>{{ titleName }}</span>
+    </tippy>
   </div>
 </template>
 <style scoped>
 .tile {
+  position: relative;
   height: 45px;
   padding: 8px;
   padding-inline-start: 25px;
@@ -21,8 +24,15 @@ export default {
   border-radius: 0.5rem;
   font-size: 16px;
   font-weight: 600;
-  /* background-color: rgb(255 255 255 /0.2); */
   transition: background-color linear 0.1s;
+  overflow-x: visible;
+}
+
+.tile span {
+  margin: auto 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .tile:hover {
   background-color: rgb(255 255 255 /0.2);

@@ -4,7 +4,16 @@ export default {
   components: { MenuTile },
   data() {
     return {
-      majorName: 'Infomation Technology'
+      majors: [
+        'General',
+        'Information Technology',
+        'Information System',
+        'Computer Science',
+        'Software Engineering',
+        'Computer Network and Data Communication',
+        'Multimedia Communication'
+      ],
+      topics: ['General', 'Recreation', 'Knowleage Share', 'Experience', 'Help', 'Sale']
     }
   }
 }
@@ -19,13 +28,12 @@ export default {
       <i class="fas fa-graduation-cap menu_icon"></i>
       <span class="menu_name">Majors</span>
     </div>
-    <div class="tiles">
-      <MenuTile :tileName="this.majorName"></MenuTile>
-      <MenuTile :tileName="this.majorName"></MenuTile>
-      <MenuTile :tileName="this.majorName"></MenuTile>
-      <MenuTile :tileName="this.majorName"></MenuTile>
-      <MenuTile :tileName="this.majorName"></MenuTile>
-      <MenuTile :tileName="this.majorName"></MenuTile>
+    <div class="majors_tile_ctn">
+      <div class="tiles" v-if="this.majors">
+        <div v-for="(majorName, index) in this.majors" :key="index">
+          <MenuTile :titleName="majorName"></MenuTile>
+        </div>
+      </div>
     </div>
     <div class="menu_tiles">
       <span>
@@ -33,14 +41,26 @@ export default {
       </span>
       <span class="menu_name">Topics</span>
     </div>
-    <div class="tiles">
-      <MenuTile :tileName="this.majorName"></MenuTile>
-      <MenuTile :tileName="this.majorName"></MenuTile>
-      <MenuTile :tileName="this.majorName"></MenuTile>
+    <div class="topics_tile_ctn">
+      <div class="tiles" v-if="this.topics">
+        <div v-for="(topicName, index) in this.topics" :key="index">
+          <MenuTile :titleName="topicName"></MenuTile>
+        </div>
+      </div>
     </div>
   </section>
 </template>
 <style scoped>
+.majors_tile_ctn,
+.topics_tile_ctn {
+  height: 34%;
+  overflow-y: scroll;
+  margin-bottom: 5px;
+}
+.majors_tile_ctn::-webkit-scrollbar,
+.topics_tile_ctn::-webkit-scrollbar {
+  display: none;
+}
 .tiles {
   padding-inline-start: 10px;
   padding-inline-end: 5px;
