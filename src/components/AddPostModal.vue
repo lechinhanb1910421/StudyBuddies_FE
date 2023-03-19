@@ -113,16 +113,9 @@ export default {
   <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
   Launch static backdrop modal
 </button> -->
-
+  <!-- style="display: block" -->
   <!-- Modal -->
-  <div
-    class="modal modal-lg"
-    id="addPostModal"
-    data-bs-backdrop="static"
-    data-bs-keyboard="false"
-    tabindex="-1"
-    aria-hidden="true"
-    style="display: block">
+  <div class="modal modal-lg fade" id="addPostModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header text-center">
@@ -237,7 +230,7 @@ export default {
   font-size: 30px !important;
 }
 .btn-close {
-  background-color: rgb(0 0 0 /0.2);
+  background-color: rgb(0 0 0 /0.25);
   border-radius: 50%;
   width: 30px;
   height: 30px;
@@ -303,6 +296,7 @@ select option {
 .modal-header {
   /* display: flex;
   justify-content: center; */
+  background-color: rgb(255 255 255 /0.15);
   border-bottom: 1px solid rgba(255 255 255 /0.2);
 }
 .modal-footer {
