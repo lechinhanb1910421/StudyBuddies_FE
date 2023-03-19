@@ -1,12 +1,12 @@
 import { defineStore } from 'pinia'
-import PostServiceOffline from '@/services/Post.service.offline'
+import PostService from '@/services/Post.service'
 export const postStorage = defineStore('post', {
   state: () => ({
     posts: []
   }),
   actions: {
-    async getAllPosts() {
-      const payload = await PostServiceOffline.getAllPosts()
+    async getAllPosts(access_token) {
+      var payload = await PostService.getAllPosts(access_token)
       this.posts = payload
     },
     getPostsById(id) {
