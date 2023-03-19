@@ -1,20 +1,17 @@
 <script scoped>
-import HeaderNavbar from '../components/HeaderNavbar.vue'
 import FriendBar from '../components/FriendBar.vue'
 import MenuBar from '../components/MenuBar.vue'
 import NewFeed from '../components/NewFeed.vue'
 export default {
-  components: { HeaderNavbar, MenuBar, NewFeed, FriendBar },
+  components: { MenuBar, NewFeed, FriendBar },
   data() {
     return {}
   },
   methods: {}
 }
 </script>
-
 <template>
   <div class="container-fluid">
-    <HeaderNavbar></HeaderNavbar>
     <div class="main_page">
       <div class="menuBar">
         <MenuBar></MenuBar>
