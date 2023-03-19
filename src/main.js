@@ -4,7 +4,13 @@ import { createPinia } from 'pinia'
 import router from './routers/index'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap/dist/js/bootstrap.bundle'
+import VueTippy from 'vue-tippy'
+import 'tippy.js/dist/tippy.css'
+import 'tippy.js/themes/light.css'
 const pinia = createPinia()
+const tippyConfig = {
+  defaultProps: { placement: 'bottom-end', delay: [500, 100], theme: 'light', offset: [30, 10] }
+}
 // import Keycloak from 'keycloak-js'
 
 // let initOptions = {
@@ -48,5 +54,5 @@ const pinia = createPinia()
 //     console.log('Authenticated Failed')
 //   })
 
-const myApp = createApp(App).use(pinia).use(router)
+const myApp = createApp(App).use(pinia).use(VueTippy, tippyConfig).use(router)
 myApp.mount('#app')
