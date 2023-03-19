@@ -1,35 +1,41 @@
 <script>
 import UserPost from './UserPost.vue'
-import PostService from '@/services/Post.service.offline'
+// import PostService from '@/services/Post.service'
 import AddPostModal from '@/components/AddPostModal.vue'
 import { postStorage } from '@/stores/post'
+import { userStorage } from '@/stores/user'
 export default {
   components: { UserPost, AddPostModal },
   data() {
     return {
-      posts: []
+      currentAva: ''
     }
   },
   setup() {
     const postStore = postStorage()
+    const userStore = userStorage()
     return {
-      postStore
+      postStore,
+      userStore
     }
   },
   methods: {
-    async getAllPost_Offline() {
-      await this.postStore.getAllPosts()
-    },
+    // async getAllPost_Offline() {
+    //   await this.postStore.getAllPosts()
+    // },
     async getAllPost() {
-      // let access_token = this.$keycloak.token
-      var posts = await PostService.getAllPosts()
-      console.log(posts)
+      let access_token = this.$keycloak.token
+      await this.postStore.getAllPosts(access_token)
     },
-    async getPostById() {
-      // let access_token = this.$keycloak.token
-      var post = await PostService.getPostById(10)
-      console.log(post)
+    async getCurrentUser() {
+      let access_token = this.$keycloak.token
+      await this.userStore.getCurrentUser(access_token)
+      this.currentAva = this.userStore.user.avatars[0].avaUrl
     },
+    // async getPostById() {
+    //   let access_token = this.$keycloak.token
+    //   var post = await PostService.getPostById(10)
+    // },
     showAddPostModal() {
       console.log('NEW POST WAS CALLED')
       // let elem = this.$refs.addNoteModal
@@ -38,9 +44,10 @@ export default {
     }
   },
   async mounted() {
-    // await this.getAllPost()
+    await this.getAllPost()
+    await this.getCurrentUser()
     // await this.getPostById()
-    await this.getAllPost_Offline()
+    // await this.getAllPost_Offline()
   }
 }
 </script>
@@ -49,14 +56,14 @@ export default {
   <div class="container">
     <div class="crePost_ctn">
       <div class="crePost_ava">
-        <img src="../assets/Ganyu_2.jpeg" class="posts_ava" alt="..." />
+        <img :src="this.currentAva" class="posts_ava" alt="..." />
       </div>
       <div class="crePost_input" data-bs-toggle="modal" data-bs-target="#addPostModal">
         <input type="text" class="form-control" @click="showAddPostModal()" placeholder="Hello Everett, how is your study?" disabled />
       </div>
     </div>
     <hr class="hr-white" />
-    <div v-for="post in postStore.posts" :key="post">
+    <div v-for="post in this.postStore.posts" :key="post">
       <div v-if="post">
         <UserPost :post="post"></UserPost>
       </div>
