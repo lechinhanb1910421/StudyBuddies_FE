@@ -1,4 +1,5 @@
 <script>
+import { userStorage } from '@/stores/user'
 import router from '@/routers/index'
 export default {
   data() {
@@ -6,7 +7,18 @@ export default {
       input_search: ''
     }
   },
+  setup() {
+    const userStore = userStorage()
+    return {
+      userStore
+    }
+  },
   methods: {
+    async getCurrentUser() {
+      let access_token = this.$keycloak.token
+      await this.userStore.getCurrentUser(access_token)
+      this.currentAva = this.userStore.user.avatars[0].avaUrl
+    },
     submitSeach() {
       if (this.input_search == null) {
         return
@@ -22,11 +34,14 @@ export default {
         this.input_search = ''
       }
     }
+  },
+  async mounted() {
+    await this.getCurrentUser()
   }
 }
 </script>
 <template lang="">
-  <nav class="navbar navbar-expand-lg bg_dark1 fixed-top">
+  <nav class="navbar navbar-expand-lg bg_dark1 fixed-top" v-if="this.userStore.user.userId">
     <div class="container-fluid">
       <router-link :to="{ name: 'home' }">
         <img src="../assets/logo.png" class="avatar_img" alt="Avatar" />
@@ -59,7 +74,7 @@ export default {
 
         <i class="fas fa-ellipsis-h navbar_icons"></i>
         <i class="fas fa-bell navbar_icons"></i>
-        <img src="../assets/Ganyu_2.jpeg" class="avatar_img" alt="Avatar" />
+        <img :src="this.userStore.user.avatars[0].avaUrl" class="avatar_img" alt="Avatar" />
       </div>
     </div>
   </nav>

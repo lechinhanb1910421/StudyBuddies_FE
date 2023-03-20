@@ -8,7 +8,7 @@ export default {
   components: { UserPost, AddPostModal },
   data() {
     return {
-      currentAva: '',
+      currentAva: ''
     }
   },
   setup() {
@@ -20,46 +20,25 @@ export default {
     }
   },
   methods: {
-    // async getAllPost_Offline() {
-    //   await this.postStore.getAllPosts()
-    // },
     async getAllPost() {
       let access_token = this.$keycloak.token
       await this.postStore.getAllPosts(access_token)
-    },
-    async getCurrentUser() {
-      let access_token = this.$keycloak.token
-      await this.userStore.getCurrentUser(access_token)
-      this.currentAva = this.userStore.user.avatars[0].avaUrl
-    },
-    // async getPostById() {
-    //   let access_token = this.$keycloak.token
-    //   var post = await PostService.getPostById(10)
-    // },
-    showAddPostModal() {
-      console.log('NEW POST WAS CALLED')
-      // let elem = this.$refs.addNoteModal
-      // console.log(elem)
-      // $(elem).modal('show')
     }
   },
   async mounted() {
     await this.getAllPost()
-    await this.getCurrentUser()
-    // await this.getPostById()
-    // await this.getAllPost_Offline()
   }
 }
 </script>
 <template>
   <AddPostModal ref="addNoteModal"></AddPostModal>
-  <div class="container">
+  <div class="container" v-if="this.userStore.user.userId">
     <div class="crePost_ctn">
       <div class="crePost_ava">
-        <img :src="this.currentAva" class="posts_ava" alt="..." />
+        <img :src="this.userStore.user.avatars[0].avaUrl" class="posts_ava" alt="..." />
       </div>
       <div class="crePost_input" data-bs-toggle="modal" data-bs-target="#addPostModal">
-        <input type="text" class="form-control" @click="showAddPostModal()" placeholder="Hello Everett, how is your study?" disabled />
+        <input type="text" class="form-control" placeholder="Hello Everett, how is your study?" disabled />
       </div>
     </div>
     <hr class="hr-white" />

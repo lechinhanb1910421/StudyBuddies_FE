@@ -5,9 +5,16 @@ import NewFeed from '../components/NewFeed.vue'
 export default {
   components: { MenuBar, NewFeed, FriendBar },
   data() {
-    return {}
+    return {
+      currentAva: ''
+    }
   },
-  methods: {}
+ 
+  methods: {
+    
+  },
+  async mounted() {
+  }
 }
 </script>
 <template>

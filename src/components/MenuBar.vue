@@ -1,7 +1,15 @@
 <script>
 import MenuTile from './MenuTile.vue'
+import { userStorage } from '@/stores/user'
+
 export default {
   components: { MenuTile },
+  setup() {
+    const userStore = userStorage()
+    return {
+      userStore
+    }
+  },
   data() {
     return {
       majors: [
@@ -18,11 +26,11 @@ export default {
   }
 }
 </script>
-<template lang="">
-  <section class="profile">
+<template>
+  <section class="profile" v-if="this.userStore.user.userId">
     <div class="profile_tile">
-      <img src="../assets/Ganyu_2.jpeg" class="avatar_img" alt="Avatar" />
-      <span class="profile_name">Nhan Le Nguyen Chi</span>
+      <img :src="this.userStore.user.avatars[0].avaUrl" class="avatar_img" alt="Avatar" />
+      <span class="profile_name">{{ this.userStore.user.fullName }}</span>
     </div>
     <div class="menu_tiles">
       <i class="fas fa-graduation-cap menu_icon"></i>

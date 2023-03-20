@@ -19,10 +19,14 @@ export default {
       uploadProgress: '',
       postTopic: 1,
       postMajor: 1,
-      postImageUrl: ''
+      postImageUrl: '',
+      loginName: ''
     }
   },
   methods: {
+    getUserLoginName() {
+      this.loginName = this.userStore.user.loginName
+    },
     async createNewPost() {
       const payload = {
         content: this.post_content,
@@ -31,12 +35,12 @@ export default {
         majorId: this.postMajor,
         imageUrl: this.postImageUrl
       }
-      const data = await PostService.createPost(this.$keycloak.token, payload)
-      console.log(data)
+      await PostService.createPost(this.$keycloak.token, payload)
       this.resetAddPostModal()
       setTimeout(() => {
         ToastService.showPostAddedToast()
-      }, 2000)
+      }, 1000)
+      this.removePreviewImage()
     },
     async submitAddPostForm() {
       this.$refs.closeModal.click()
@@ -70,16 +74,17 @@ export default {
       // this.$refs.add_img_input.value = null
       this.hasImage = false
     },
-    async uploadImage(userLoginName) {
+    async uploadImage() {
+      this.getUserLoginName()
       const newImage_name = Math.floor(Date.now() / 1000) + this.newImageData.name
-      const storageRef = ref(storage, `/${userLoginName}/postImages/${newImage_name}`)
+      const storageRef = ref(storage, `/${this.loginName}/postImages/${newImage_name}`)
       const uploadTask = uploadBytesResumable(storageRef, this.newImageData)
-      this.isUploading = true
+      // console.log('UPLOADING FOR USER: ' + this.loginName)
       uploadTask.on(
         'state_changed',
         (snapshot) => {
           this.uploadProgress = Math.floor((snapshot.bytesTransferred / snapshot.totalBytes) * 100)
-          console.log('UPLOADING ', this.uploadProgress, '%')
+          // console.log('UPLOADING ', this.uploadProgress, '%')
           switch (snapshot.state) {
             case 'paused':
               console.log('Upload is paused')
@@ -131,9 +136,7 @@ export default {
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header text-center">
-          <h1 class="modal-title fs-5 w-100" id="modal_title">
-            Create new post <button type="button" class="btn btn-primary" @click="postAddedToast">Toast it!</button>
-          </h1>
+          <h1 class="modal-title fs-5 w-100" id="modal_title">Create new post</h1>
           <button type="button" ref="closeModal" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
