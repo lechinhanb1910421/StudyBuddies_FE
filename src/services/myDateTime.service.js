@@ -15,7 +15,7 @@ class MyDateTimeService {
   getTimeDifference({ timeString }) {
     var diff = (Date.now() - Date.parse(timeString)) / 1000
     if (diff < 60) {
-      return diff + 's'
+      return Math.floor(diff) + 's'
     }
     var min = Math.floor(diff / 60)
     if (min < 60) {

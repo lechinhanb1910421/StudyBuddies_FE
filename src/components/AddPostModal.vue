@@ -2,8 +2,14 @@
 import { storage } from '@/services/firebase.service'
 import { ref, getDownloadURL, uploadBytesResumable } from 'firebase/storage'
 import PostService from '@/services/Post.service'
-// import PictureService from '@/services/Picture.service'
+import { userStorage } from '@/stores/user'
+// import { createToast, clearToasts } from 'mosha-vue-toastify'
+import ToastService from '@/services/toast.service'
 export default {
+  setup() {
+    const userStore = userStorage()
+    return { userStore }
+  },
   data() {
     return {
       post_content: '',
@@ -11,23 +17,35 @@ export default {
       newImagePreview: '',
       hasImage: false,
       uploadProgress: '',
-      userLoginName: 'b1910421',
       postTopic: 1,
-      postMajor: 1
+      postMajor: 1,
+      postImageUrl: ''
     }
   },
   methods: {
-    async addNewPost(picUrl) {
+    async createNewPost() {
       const payload = {
         content: this.post_content,
         audienceMode: 'public',
         topicId: this.postTopic,
         majorId: this.postMajor,
-        imageUrl: picUrl
+        imageUrl: this.postImageUrl
       }
       const data = await PostService.createPost(this.$keycloak.token, payload)
       console.log(data)
       this.resetAddPostModal()
+      setTimeout(() => {
+        ToastService.showPostAddedToast()
+      }, 2000)
+    },
+    async submitAddPostForm() {
+      this.$refs.closeModal.click()
+      ToastService.showPostProcessingToast()
+      if (this.hasImage) {
+        await this.uploadImage(this.userLoginName)
+      } else {
+        this.createNewPost()
+      }
     },
     resize_textarea() {
       const { textarea } = this.$refs
@@ -52,9 +70,9 @@ export default {
       // this.$refs.add_img_input.value = null
       this.hasImage = false
     },
-    async uploadImage() {
+    async uploadImage(userLoginName) {
       const newImage_name = Math.floor(Date.now() / 1000) + this.newImageData.name
-      const storageRef = ref(storage, `/${this.userLoginName}/postImages/${newImage_name}`)
+      const storageRef = ref(storage, `/${userLoginName}/postImages/${newImage_name}`)
       const uploadTask = uploadBytesResumable(storageRef, this.newImageData)
       this.isUploading = true
       uploadTask.on(
@@ -73,8 +91,8 @@ export default {
         },
         () => {
           getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
-            this.newImageLink = downloadURL
-            this.addNewPost(downloadURL)
+            this.postImageUrl = downloadURL
+            this.createNewPost()
           })
         }
       )
@@ -113,8 +131,10 @@ export default {
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header text-center">
-          <h1 class="modal-title fs-5 w-100" id="modal_title">Create new post</h1>
-          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+          <h1 class="modal-title fs-5 w-100" id="modal_title">
+            Create new post <button type="button" class="btn btn-primary" @click="postAddedToast">Toast it!</button>
+          </h1>
+          <button type="button" ref="closeModal" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <div style="flex-grow: 1; flex: 1">
@@ -174,7 +194,7 @@ export default {
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary btn_add_post" @click="uploadImage">Post</button>
+          <button type="button" class="btn btn-primary btn_add_post" @click="submitAddPostForm">Post</button>
         </div>
       </div>
     </div>

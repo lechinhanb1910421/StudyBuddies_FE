@@ -8,7 +8,7 @@ export default {
   components: { UserPost, AddPostModal },
   data() {
     return {
-      currentAva: ''
+      currentAva: '',
     }
   },
   setup() {

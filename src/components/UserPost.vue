@@ -71,7 +71,7 @@ export default {
     </section>
     <section class="p_content">
       <div class="p_content_text">{{ this.post.content }}</div>
-      <div class="p_content_img">
+      <div class="p_content_img" v-if="this.post.picUrls[0]">
         <img :src="this.post.picUrls[0]" class="post_content" alt="..." />
       </div>
       <div class="p_stats">
@@ -151,6 +151,10 @@ hr.hr-white {
   padding-top: 5px;
   color: white;
   font-size: 17px;
+}
+.p_content_img {
+  display: flex;
+  justify-content: center;
 }
 .p_content_img img {
   max-width: 100%;
