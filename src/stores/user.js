@@ -8,6 +8,7 @@ export const userStorage = defineStore('user', {
       loginName: '',
       givenName: '',
       familyName: '',
+      fullName: '',
       avatars: []
     }
   }),
@@ -20,6 +21,7 @@ export const userStorage = defineStore('user', {
     },
     async getCurrentUser(access_token) {
       this.user = await UserService.getCurrentUser(access_token)
+      this.user.fullName = this.user.givenName + ' ' + this.user.familyName
     }
   }
 })
