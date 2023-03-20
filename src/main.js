@@ -7,6 +7,7 @@ import 'bootstrap/dist/js/bootstrap.bundle'
 import VueTippy from 'vue-tippy'
 import 'tippy.js/dist/tippy.css'
 import 'tippy.js/themes/light.css'
+import 'mosha-vue-toastify/dist/style.css'
 const pinia = createPinia()
 const tippyConfig = {
   defaultProps: { placement: 'bottom-end', delay: [500, 100], theme: 'light', offset: [30, 10] }
