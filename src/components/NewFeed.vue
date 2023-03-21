@@ -1,6 +1,7 @@
 <script>
 import UserPost from './UserPost.vue'
 // import PostService from '@/services/Post.service'
+import '@/assets/preloader.css'
 import AddPostModal from '@/components/AddPostModal.vue'
 import { postStorage } from '@/stores/post'
 import { userStorage } from '@/stores/user'
@@ -8,7 +9,8 @@ export default {
   components: { UserPost, AddPostModal },
   data() {
     return {
-      currentAva: ''
+      currentAva: '',
+      pageLoaded: false
     }
   },
   setup() {
@@ -27,29 +29,57 @@ export default {
   },
   async mounted() {
     await this.getAllPost()
+    setTimeout(() => {
+      this.pageLoaded = true
+    }, 700)
   }
 }
 </script>
 <template>
-  <AddPostModal ref="addNoteModal"></AddPostModal>
-  <div class="container" v-if="this.userStore.user.userId">
-    <div class="crePost_ctn">
-      <div class="crePost_ava">
-        <img :src="this.userStore.user.avatars[0].avaUrl" class="posts_ava" alt="..." />
-      </div>
-      <div class="crePost_input" data-bs-toggle="modal" data-bs-target="#addPostModal">
-        <input type="text" class="form-control" placeholder="Hello Everett, how is your study?" disabled />
-      </div>
-    </div>
-    <hr class="hr-white" />
-    <div v-for="post in this.postStore.posts" :key="post">
-      <div v-if="post">
-        <UserPost :post="post"></UserPost>
+  <Transition name="fade">
+    <div v-if="!this.pageLoaded" class="preloader_ctn">
+      <div class="loader">
+        <div class="one"></div>
+        <div class="two"></div>
+        <div class="three"></div>
+        <div class="four"></div>
+        <div class="five"></div>
+        <div class="six"></div>
+        <div class="seven"></div>
+        <div class="eight"></div>
       </div>
     </div>
-  </div>
+  </Transition>
+  <Transition name="fade">
+    <div v-if="this.pageLoaded">
+      <AddPostModal ref="addNoteModal"></AddPostModal>
+      <div class="container" v-if="this.userStore.user.userId">
+        <div class="crePost_ctn">
+          <div class="crePost_ava">
+            <img :src="this.userStore.user.avatars[0].avaUrl" class="posts_ava" alt="..." />
+          </div>
+          <div class="crePost_input" data-bs-toggle="modal" data-bs-target="#addPostModal">
+            <input type="text" class="form-control" placeholder="Hello Everett, how is your study?" disabled />
+          </div>
+        </div>
+        <hr class="hr-white" />
+        <div v-for="post in this.postStore.posts" :key="post">
+          <div v-if="post">
+            <UserPost :post="post"></UserPost>
+          </div>
+        </div>
+      </div>
+    </div>
+  </Transition>
+  <!--  -->
 </template>
 <style scoped>
+.preloader_ctn {
+  display: flex;
+  align-items: center;
+  height: 100vh;
+  padding-bottom: 150px;
+}
 hr.hr-white {
   margin-inline: 10px;
   border-top: 1px solid white;
@@ -93,5 +123,12 @@ hr.hr-white {
 .container {
   padding-inline: 12%;
   padding-bottom: 5%;
+}
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
 }
 </style>
