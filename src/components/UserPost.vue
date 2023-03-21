@@ -101,7 +101,7 @@ export default {
         </button>
       </div>
       <hr class="hr-white" />
-      <PostCommentGroup></PostCommentGroup>
+      <PostCommentGroup :postId="this.post.postId"></PostCommentGroup>
     </section>
   </div>
 </template>
@@ -166,7 +166,7 @@ hr.hr-white {
   margin-bottom: 3%;
 }
 .p_content {
-  padding-bottom: 20px;
+  padding-bottom: 5px;
 }
 .p_header {
   /* background-color: rgb(255 255 255 /0.4); */

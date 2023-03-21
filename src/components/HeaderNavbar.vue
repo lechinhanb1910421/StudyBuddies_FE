@@ -4,7 +4,8 @@ import router from '@/routers/index'
 export default {
   data() {
     return {
-      input_search: ''
+      input_search: '',
+      isMainDropDown: true
     }
   },
   setup() {
@@ -33,6 +34,15 @@ export default {
       if (e.shiftKey && e.key == 'Backspace') {
         this.input_search = ''
       }
+    },
+    openSettingsDropdown() {
+      this.isMainDropDown = false
+    },
+    openMainDropdown() {
+      this.isMainDropDown = true
+    },
+    logMeOut() {
+      this.$keycloak.logout({ redirectUri: 'http://localhost/' })
     }
   },
   async mounted() {
@@ -74,13 +84,128 @@ export default {
 
         <i class="fas fa-ellipsis-h navbar_icons"></i>
         <i class="fas fa-bell navbar_icons"></i>
-        <img :src="this.userStore.user.avatars[0].avaUrl" class="avatar_img" alt="Avatar" />
+        <div class="dropdown">
+          <img :src="this.userStore.user.avatars[0].avaUrl" class="avatar_img" alt="Avatar" data-bs-toggle="dropdown" aria-expanded="false" />
+          <!-- <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Dropdown button</button> -->
+          <ul class="dropdown-menu dropdown-menu-end">
+            <div v-if="this.isMainDropDown">
+              <li>
+                <div class="dropdown-item">
+                  <div class="profile_tile">
+                    <img :src="this.userStore.user.avatars[0].avaUrl" class="avatar_img" alt="Avatar" />
+                    <span class="profile_name">{{ this.userStore.user.fullName }}</span>
+                  </div>
+                </div>
+              </li>
+              <li class="dropdown-item">
+                <div class="dropdown_tile" @click.stop="openSettingsDropdown()">
+                  <i class="fas fa-cog"></i>
+                  <span> Settings </span>
+                </div>
+              </li>
+              <li class="dropdown-item">
+                <div class="dropdown_tile">
+                  <i class="fas fa-question"></i>
+                  <span> Help </span>
+                </div>
+              </li>
+              <li class="dropdown-item">
+                <div class="dropdown_tile">
+                  <i class="fas fa-comment-alt"></i>
+                  <span> Send Feedback </span>
+                </div>
+              </li>
+              <li class="dropdown-item">
+                <div class="dropdown_tile" @click="logMeOut()">
+                  <i class="fas fa-sign-out-alt"></i>
+                  <span> Log out </span>
+                </div>
+              </li>
+            </div>
+            <div v-if="!this.isMainDropDown">
+              <li class="dropdown-item">
+                <div class="dropdown_tile" @click.stop="openMainDropdown()">
+                  <i class="fas fa-arrow-left"></i>
+                  <span> Back </span>
+                </div>
+              </li>
+              <li class="dropdown-item">
+                <div class="dropdown_tile">
+                  <i class="fas fa-cog"></i>
+                  <span> Setting 1 </span>
+                </div>
+              </li>
+              <li class="dropdown-item">
+                <div class="dropdown_tile">
+                  <i class="fas fa-cog"></i>
+                  <span> Setting 2 </span>
+                </div>
+              </li>
+              <li class="dropdown-item">
+                <div class="dropdown_tile">
+                  <i class="fas fa-cog"></i>
+                  <span> Setting 3 </span>
+                </div>
+              </li>
+            </div>
+          </ul>
+        </div>
       </div>
     </div>
   </nav>
 </template>
 
 <style scoped>
+.dropdown_tile {
+  padding-inline: 25px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 17px;
+  font-weight: 600;
+  border-radius: 0.55rem;
+}
+.dropdown_tile:hover {
+  background-color: rgb(255 255 255 /0.2);
+}
+.dropdown_tile i {
+  font-size: 22px;
+}
+.dropdown-item {
+  color: white;
+}
+
+.dropdown-item:hover {
+  background-color: #3a3e45;
+  color: white;
+}
+.dropdown-menu {
+  width: 330px;
+  background-color: #3a3e45;
+}
+.dropdown_user_name {
+  font-size: 18px;
+  font-weight: 600;
+}
+.dropdown_avatar {
+  border-radius: 50%;
+  height: 40px;
+  aspect-ratio: 1/1;
+}
+.profile_tile {
+  padding-inline-start: 15px;
+  height: 55px;
+  background-color: rgb(255 255 255 /0.3);
+  display: flex;
+  gap: 12px;
+  padding-right: 5px;
+  justify-content: flex-start;
+  align-items: center;
+  border-radius: 0.75rem;
+  margin-bottom: 12px;
+  transition: background-color linear 0.1s;
+}
 .search_icon {
   color: white;
   font-size: 20px;
