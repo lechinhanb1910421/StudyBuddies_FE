@@ -1,16 +1,22 @@
 <script>
 export default {
-  props: ['titleName']
+  emits: ['toggleActive'],
+  props: ['titleName'],
+  methods: {
+    emitActive() {
+      this.$emit('toggleActive', this.titleName)
+    }
+  }
 }
 </script>
 <template>
-  <div class="tile">
+  <div class="tile" :id="this.titleName" @click="emitActive()">
     <tippy :content="this.titleName">
       <span>{{ titleName }}</span>
     </tippy>
   </div>
 </template>
-<style scoped>
+<style scoped>  
 .tile {
   position: relative;
   height: 45px;
