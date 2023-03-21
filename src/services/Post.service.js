@@ -19,5 +19,9 @@ class PostService {
     this.api.defaults.headers.common = { Authorization: `bearer ${access_token}` }
     return (await this.api.get('/' + postId + '/comments')).data
   }
+  async getSearchedPosts(access_token, sQuery) {
+    this.api.defaults.headers.common = { Authorization: `bearer ${access_token}` }
+    return (await this.api.get('/search', { params: { keywords: sQuery } })).data
+  }
 }
 export default new PostService()
