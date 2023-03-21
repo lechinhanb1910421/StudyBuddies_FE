@@ -12,9 +12,12 @@ class PostService {
     return (await this.api.get('/' + postId)).data
   }
   async createPost(access_token, payload) {
-    // const json_body = JSON.stringify(payload)
     this.api.defaults.headers.common = { Authorization: `bearer ${access_token}` }
     return (await this.api.post('/', payload)).data
+  }
+  async getPostComments(access_token, postId) {
+    this.api.defaults.headers.common = { Authorization: `bearer ${access_token}` }
+    return (await this.api.get('/' + postId + '/comments')).data
   }
 }
 export default new PostService()
