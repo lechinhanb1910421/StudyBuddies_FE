@@ -1,41 +1,50 @@
 <script>
-export default {}
+import UserService from '@/services/User.service'
+import MyDateTimeService from '@/services/myDateTime.service'
+export default {
+  props: ['cmt'],
+  data() {
+    return {
+      user: { userId: '', userName: '', loginName: '', givenName: '', familyName: '', fullName: '', avatars: [] },
+      cmtCreatedAt: '',
+      cmtCreTime: ''
+    }
+  },
+  methods: {
+    async getCmtUser() {
+      this.user = await UserService.getUserById(this.$keycloak.token, this.cmt.userId)
+    },
+    async parseTime() {
+      this.cmtCreatedAt = MyDateTimeService.parseTimeString({ timeString: this.cmt.createdTime })
+      this.cmtCreTime = MyDateTimeService.getTimeDifference({ timeString: this.cmt.createdTime })
+    }
+  },
+  async mounted() {
+    await this.getCmtUser()
+    await this.parseTime()
+  }
+}
 </script>
 <template>
   <div class="cmt_ctn">
-    <div>
-      <img src="../assets/Ganyu_2.jpeg" class="cmt_ava" alt="..." />
+    <div v-if="this.user.userId">
+      <img :src="this.user.avatars[0].avaUrl" class="cmt_ava" alt="..." />
     </div>
     <div class="cmt_main">
-      <div class="cmt_main_header">
-        <span class="cmt_user_name">Nhan Le Nguyen Chi</span>
-        <span class="cmt_user_creTime">22m <span class="cmt_user_creTime_full">Tuesday March 14th 2023 at 10:40 AM</span></span>
+      <div class="cmt_main_header" v-if="this.user.userId">
+        <span class="cmt_user_name">{{ this.user.fullName }}</span>
+        <tippy :content="this.cmtCreatedAt">
+          <span class="cmt_user_creTime">{{ this.cmtCreTime }}</span>
+        </tippy>
       </div>
       <div class="cmt_main_text">
-        <span>
-          Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever
-          since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five
-        </span>
+        <span> {{ this.cmt.content }}</span>
       </div>
       <!-- <input type="text" class="form-control" placeholder="Leave a comment" /> -->
     </div>
   </div>
 </template>
 <style scoped>
-.cmt_user_creTime_full {
-  color: black;
-  position: absolute;
-  width: 250px;
-  top: 22px;
-  left: 0;
-  height: 30px;
-  font-size: 14px;
-  border-radius: 0.5rem;
-  display: none;
-  justify-content: center;
-  align-items: center;
-  background-color: rgb(255 255 255);
-}
 .cmt_main_header {
   display: flex;
 }

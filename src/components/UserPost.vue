@@ -17,7 +17,9 @@ export default {
       },
       userCurrentAva: '',
       postCreatedAt: '',
-      postCreTime: ''
+      postCreTime: '',
+      postCommentCount: 0,
+      postReactionCount: 0
     }
   },
   setup() {
@@ -36,6 +38,12 @@ export default {
       this.user = await this.userStore.getUserById(access_token, this.post.userId)
       this.user.userName = this.user.givenName + ' ' + this.user.familyName
       this.userCurrentAva = this.user.avatars[0].avaUrl
+    },
+    setNoOfComment(value) {
+      this.postCommentCount = value
+    },
+    setNoOfReaction(value) {
+      this.postReactionCount = value
     }
   },
   async mounted() {
@@ -77,10 +85,10 @@ export default {
       <div class="p_stats">
         <div class="p_stats_like">
           <i class="far fa-heart"> </i>
-          <span>{{ this.post.reactsCount }}</span>
+          <span>{{ this.postReactionCount }}</span>
         </div>
         <div class="p_stats_no_cmt">
-          <span>{{ this.post.commentsCount }}</span>
+          <span>{{ this.postCommentCount }}</span>
           <span>comments</span>
         </div>
       </div>
@@ -101,7 +109,7 @@ export default {
         </button>
       </div>
       <hr class="hr-white" />
-      <PostCommentGroup :postId="this.post.postId"></PostCommentGroup>
+      <PostCommentGroup :postId="this.post.postId" @comment-count="setNoOfComment"></PostCommentGroup>
     </section>
   </div>
 </template>

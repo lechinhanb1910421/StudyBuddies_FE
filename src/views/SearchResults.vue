@@ -131,12 +131,12 @@ export default {
 .fade-leave-active {
   transition: opacity 0.5s;
 }
-.fade-enter-from, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+.fade-enter-from, .fade-leave-to{
   opacity: 0;
 }
 
 .active {
-  background-color: rgb(255 255 255 /0.3);
+  background-color: rgb(255 255 255 /0.4);
 }
 .menu_hr {
   margin-block: 7px;

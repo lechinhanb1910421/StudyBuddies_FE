@@ -121,14 +121,15 @@ hr.hr-white {
   opacity: 0.7;
 }
 .container {
-  padding-inline: 12%;
+  padding-left: 15%;
+  padding-right: 9%;
   padding-bottom: 5%;
 }
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.5s;
 }
-.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+.fade-enter-from, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
   opacity: 0;
 }
 </style>
