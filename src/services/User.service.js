@@ -7,7 +7,7 @@ class UserServiceOff {
     this.api.defaults.headers.common = { Authorization: `bearer ${access_token}` }
     return (await this.api.get()).data
   }
-  async getAllUserById(access_token, userId) {
+  async getUserById(access_token, userId) {
     this.api.defaults.headers.common = { Authorization: `bearer ${access_token}` }
     return (await this.api.get('/id/' + userId)).data
   }

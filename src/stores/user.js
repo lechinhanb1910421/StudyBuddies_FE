@@ -17,7 +17,7 @@ export const userStorage = defineStore('user', {
     //   this.users = await UserService.getAllUsers()
     // },
     async getUserById(access_token, id) {
-      return await UserService.getAllUserById(access_token, id)
+      return await UserService.getUserById(access_token, id)
     },
     async getCurrentUser(access_token) {
       this.user = await UserService.getCurrentUser(access_token)

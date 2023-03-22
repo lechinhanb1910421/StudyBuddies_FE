@@ -23,5 +23,6 @@ class PostService {
     this.api.defaults.headers.common = { Authorization: `bearer ${access_token}` }
     return (await this.api.get('/search', { params: { keywords: sQuery } })).data
   }
+
 }
 export default new PostService()
