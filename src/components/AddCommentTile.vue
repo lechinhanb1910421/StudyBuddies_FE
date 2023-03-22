@@ -1,13 +1,40 @@
 <script>
-export default {}
+import { userStorage } from '@/stores/user'
+import CommentService from '@/services/Comment.service'
+
+export default {
+  emits: ['cmtAdded'],
+  props: ['postId'],
+  data() {
+    return {
+      cmt_input: ''
+    }
+  },
+  setup() {
+    const userStore = userStorage()
+    return {
+      userStore
+    }
+  },
+  methods: {
+    async submitComment() {
+      var value = this.cmt_input.replace(/\s+/g, ' ').trim()
+      if (value != '') {
+        await CommentService.addCmtToPost(this.$keycloak.token, this.postId, this.cmt_input)
+      }
+      this.cmt_input = ''
+      this.$emit('cmtAdded')
+    }
+  }
+}
 </script>
 <template>
   <div class="add_cmt_ctn">
-    <div class="add_cmt_ava">
-      <img src="../assets/Ganyu_2.jpeg" class="add_cmt_ava" alt="..." />
+    <div class="add_cmt_ava" v-if="this.userStore.user.userId">
+      <img :src="this.userStore.user.avatars[0].avaUrl" class="add_cmt_ava" alt="..." />
     </div>
     <div class="add_cmt_input">
-      <input type="text" class="form-control" placeholder="Leave a comment" />
+      <input type="text" class="form-control" @keyup.enter="submitComment" v-model="this.cmt_input" placeholder="Leave a comment" />
     </div>
   </div>
 </template>
@@ -34,6 +61,7 @@ export default {}
   outline: none;
   box-shadow: none;
   border-radius: 1rem;
+  color: white;
 }
 .add_cmt_input input::placeholder {
   color: white;
