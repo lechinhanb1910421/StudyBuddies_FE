@@ -3,8 +3,9 @@ import { storage } from '@/services/firebase.service'
 import { ref, getDownloadURL, uploadBytesResumable } from 'firebase/storage'
 import PostService from '@/services/Post.service'
 import { loggedInUserStorage } from '@/stores/loggedInUser'
+import ToastService from '@/services/toast.service'
+
 export default {
-  emits: ['postUpdated'],
   props: ['oldPost'],
   setup() {
     const userStore = loggedInUserStorage()
@@ -20,13 +21,18 @@ export default {
       postTopic: 1,
       postMajor: 1,
       postImageUrl: '',
-      loginName: ''
+      loginName: '',
+      newInputImage: false
     }
   },
   methods: {
     setOldData() {
-      this.post_content = this.oldPost.post_content
-      this.newImagePreview = this.oldPost.picUrls[0]
+      this.post_content = this.oldPost.content
+      if (this.oldPost.picUrls[0] != undefined) {
+        this.newImagePreview = this.oldPost.picUrls[0]
+        this.hasImage = true
+      }
+      this.resize_textarea()
     },
     getUserLoginName() {
       this.loginName = this.userStore.user.loginName
@@ -36,25 +42,22 @@ export default {
         content: this.post_content,
         topicId: this.postTopic,
         majorId: this.postMajor,
-        imageUrl: this.postImageUrl
+        imageUrl: this.newInputImage ? this.postImageUrl : this.oldPost.picUrls[0]
       }
-      await PostService.updatePost(this.$keycloak.token, payload)
+      await PostService.updatePost(this.$keycloak.token, payload, this.oldPost.postId)
       this.resetAddPostModal()
       this.removePreviewImage()
-      this.$emit('postUpdated')
+      setTimeout(() => {
+        ToastService.showPostUpdateToast()
+      }, 700)
     },
     async submitEditPostForm() {
-      console.log('EDIT POST CALLED')
-      console.log('CONTENT: ' + this.post_content)
-      console.log('TOPICID: ' + this.postTopic)
-      console.log('MAJORID: ' + this.postMajor)
-      console.log('IMAGEURL: ' + this.postImageUrl)
-      // this.$refs.closeModal.click()
-      // if (this.hasImage) {
-      //   await this.uploadImage(this.userLoginName)
-      // } else {
-      //   this.updatePost()
-      // }
+      this.$refs.closeModal.click()
+      if (this.newInputImage) {
+        await this.uploadImage(this.userLoginName)
+      } else {
+        this.updatePost()
+      }
     },
     resize_textarea() {
       const { textarea } = this.$refs
@@ -66,13 +69,16 @@ export default {
       textarea.style.height = newHeight - 4 + 'px'
     },
     async setPreviewImage(event) {
+      this.newImageData = ''
       this.newImageData = event.target.files[0]
       const reader = new FileReader()
       reader.readAsDataURL(this.newImageData)
+      this.newImagePreview = ''
       reader.onload = (e) => {
         this.newImagePreview = e.target.result
       }
       this.hasImage = true
+      this.newInputImage = true
     },
     async removePreviewImage() {
       this.newImagePreview = ''
@@ -132,8 +138,8 @@ export default {
     }
   },
   mounted() {
-    this.resize_textarea()
     this.setOldData()
+    this.resize_textarea()
   }
 }
 </script>

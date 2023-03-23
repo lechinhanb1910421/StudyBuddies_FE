@@ -3,7 +3,9 @@ import PostCommentGroup from '@/components/PostCommentGroup.vue'
 import { loggedInUserStorage } from '@/stores/loggedInUser'
 import MyDateTimeService from '@/services/myDateTime.service'
 import EditPostModal from '@/components/EditPostModal.vue'
+import PostService from '@/services/Post.service'
 export default {
+  emits: ['postDeleted'],
   components: { PostCommentGroup, EditPostModal },
   props: ['post', 'allowModify'],
   data() {
@@ -45,6 +47,12 @@ export default {
     },
     setNoOfReaction(value) {
       this.postReactionCount = value
+    },
+    async deletePost() {
+      const data = await PostService.deletePost(this.$keycloak.token, this.post.postId)
+      if (data.message == 'Post was deleted successfully') {
+        this.$emit('postDeleted')
+      }
     }
   },
   async mounted() {
@@ -56,7 +64,7 @@ export default {
 
 <template v-if="this.post">
   <!-- data-bs-toggle="modal" data-bs-target="#addPostModal" -->
-  <EditPostModal></EditPostModal>
+  <EditPostModal :oldPost="this.post"></EditPostModal>
   <div class="post_ctn">
     <section class="p_header">
       <div class="p_header_info">
@@ -80,10 +88,12 @@ export default {
         </tippy>
         <div v-if="this.allowModify">
           <div class="dropdown">
-            <i class="fas fa-ellipsis-v" type="button" data-bs-toggle="dropdown" aria-expanded="false"></i>
-            <ul class="dropdown-menu">
-              <li><div class="dropdown-item">Edit Post</div></li>
-              <li><div class="dropdown-item">Delete Post</div></li>
+            <div data-bs-toggle="dropdown" class="post_modi_dd" aria-expanded="false">
+              <i class="fas fa-ellipsis-h"></i>
+            </div>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li><div class="dropdown-item" data-bs-toggle="modal" data-bs-target="#editPostModal">Edit Post</div></li>
+              <li><div class="dropdown-item" data-bs-toggle="modal" data-bs-target="#deletePost_confirm">Delete Post</div></li>
             </ul>
           </div>
         </div>
@@ -124,9 +134,62 @@ export default {
       <PostCommentGroup :postId="this.post.postId" @comment-count="setNoOfComment"></PostCommentGroup>
     </section>
   </div>
+  <div class="modal fade" id="deletePost_confirm" tabindex="-1" aria-labelledby="deletePost_title" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="deletePost_title">Delete this post ?</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">Are you sure you want to delete this post?</div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary btn_close" data-bs-dismiss="modal">No</button>
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal" @click="deletePost">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <style scoped>
+.btn-close {
+  background-color: rgb(255 255 255 / 0.5);
+  border-radius: 50%;
+  padding: 10px;
+}
+.modal-dialog {
+  color: white;
+}
+.modal-footer button {
+  width: 100px;
+}
+.btn_close {
+  background-color: #373737;
+  color: white;
+  border: none;
+}
+.btn_close:hover {
+  background-color: rgb(255 255 255 /0.3);
+}
+.modal-content {
+  background-color: #373737;
+}
+.dropdown-item {
+  font-weight: 600;
+  font-size: 17px;
+}
+.dropdown-item:hover {
+  background-color: rgb(220 220 220);
+}
+.dropdown-menu {
+  background-color: rgb(170 170 170);
+}
+.post_modi_dd {
+  padding-inline: 11px;
+  padding-block: 7px;
+  background-color: rgb(255 255 255 /0.2);
+  border-radius: 50%;
+}
 .p_ctrl i {
   padding-right: 5px;
 }
