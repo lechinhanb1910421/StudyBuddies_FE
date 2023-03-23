@@ -1,10 +1,11 @@
 <script>
 import PostCommentGroup from '@/components/PostCommentGroup.vue'
-import { userStorage } from '@/stores/user'
+import { loggedInUserStorage } from '@/stores/loggedInUser'
 import MyDateTimeService from '@/services/myDateTime.service'
+import EditPostModal from '@/components/EditPostModal.vue'
 export default {
-  components: { PostCommentGroup },
-  props: ['post'],
+  components: { PostCommentGroup, EditPostModal },
+  props: ['post', 'allowModify'],
   data() {
     return {
       user: {
@@ -23,7 +24,7 @@ export default {
     }
   },
   setup() {
-    const userStore = userStorage()
+    const userStore = loggedInUserStorage()
     return {
       userStore
     }
@@ -54,6 +55,8 @@ export default {
 </script>
 
 <template v-if="this.post">
+  <!-- data-bs-toggle="modal" data-bs-target="#addPostModal" -->
+  <EditPostModal></EditPostModal>
   <div class="post_ctn">
     <section class="p_header">
       <div class="p_header_info">
@@ -75,6 +78,15 @@ export default {
             <span>{{ this.post.majorName }}</span>
           </div>
         </tippy>
+        <div v-if="this.allowModify">
+          <div class="dropdown">
+            <i class="fas fa-ellipsis-v" type="button" data-bs-toggle="dropdown" aria-expanded="false"></i>
+            <ul class="dropdown-menu">
+              <li><div class="dropdown-item">Edit Post</div></li>
+              <li><div class="dropdown-item">Delete Post</div></li>
+            </ul>
+          </div>
+        </div>
       </div>
     </section>
     <section class="p_content">

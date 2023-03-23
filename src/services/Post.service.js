@@ -23,6 +23,10 @@ class PostService {
     this.api.defaults.headers.common = { Authorization: `bearer ${access_token}` }
     return (await this.api.get('/search', { params: { keywords: sQuery } })).data
   }
+  async updatePost(access_token, payload) {
+    this.api.defaults.headers.common = { Authorization: `bearer ${access_token}` }
+    return (await this.api.put('/', payload)).data
+  }
 
 }
 export default new PostService()

@@ -21,8 +21,10 @@ export default {
       this.commentCount = this.comments.length == undefined ? 0 : this.comments.length
       this.$emit('commentCount', this.commentCount)
     },
-    newCmtAdded() {
-      this.getPostComments()
+    async reloadCmt() {
+      this.comments = []
+      this.commentCount = ''
+      await this.getPostComments()
     }
   },
   async mounted() {
@@ -31,10 +33,10 @@ export default {
 }
 </script>
 <template>
-  <AddCommentTile :postId="this.postId" @cmtAdded="newCmtAdded"></AddCommentTile>
+  <AddCommentTile :postId="this.postId" @cmtAdded="reloadCmt"></AddCommentTile>
   <div class="comments_ctn" v-if="this.comments.length > 0">
     <div v-for="(cmt, index) in this.comments" :key="index">
-      <UserCommentTile :cmt="cmt"></UserCommentTile>
+      <UserCommentTile :cmt="cmt" @cmtDeleted="reloadCmt"></UserCommentTile>
     </div>
   </div>
 </template>

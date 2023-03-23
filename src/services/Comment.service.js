@@ -7,5 +7,9 @@ class PostService {
     this.api.defaults.headers.common = { Authorization: `bearer ${access_token}` }
     return (await this.api.post('/' + postId, null, { params: { content: cmt } })).data
   }
+  async removeCmt(access_token, cmtId) {
+    this.api.defaults.headers.common = { Authorization: `bearer ${access_token}` }
+    return (await this.api.delete('/' + cmtId)).data
+  }
 }
 export default new PostService()
