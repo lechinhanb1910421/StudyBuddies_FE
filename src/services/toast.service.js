@@ -34,5 +34,22 @@ class ToastService {
       }
     )
   }
+  async showPostUpdateToast() {
+    clearToasts()
+    return createToast(
+      {
+        title: 'Post was updated successfully',
+        description: 'You might need to refresh the page to see the changes'
+      },
+      {
+        timeout: 7000,
+        toastBackgroundColor: '#20cbac',
+        position: 'bottom-right',
+        showIcon: 'true',
+        type: 'success',
+        transition: 'bounce'
+      }
+    )
+  }
 }
 export default new ToastService()

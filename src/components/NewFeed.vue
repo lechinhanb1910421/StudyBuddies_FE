@@ -67,7 +67,7 @@ export default {
         <hr class="hr-white" />
         <div v-for="post in this.postStore.posts" :key="post">
           <div v-if="post">
-            <UserPost :post="post" :allowModify="post.userId == this.userStore.user.userId"></UserPost>
+            <UserPost :post="post" :allowModify="post.userId == this.userStore.user.userId" @postDeleted="getAllPost"></UserPost>
           </div>
         </div>
       </div>
