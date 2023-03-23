@@ -1,5 +1,5 @@
 <script>
-import { userStorage } from '@/stores/user'
+import { loggedInUserStorage } from '@/stores/loggedInUser'
 import CommentService from '@/services/Comment.service'
 
 export default {
@@ -11,7 +11,7 @@ export default {
     }
   },
   setup() {
-    const userStore = userStorage()
+    const userStore = loggedInUserStorage()
     return {
       userStore
     }

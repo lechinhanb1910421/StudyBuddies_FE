@@ -1,5 +1,5 @@
 <script>
-import { userStorage } from '@/stores/user'
+import { loggedInUserStorage } from '@/stores/loggedInUser'
 import router from '@/routers/index'
 export default {
   data() {
@@ -9,7 +9,7 @@ export default {
     }
   },
   setup() {
-    const userStore = userStorage()
+    const userStore = loggedInUserStorage()
     return {
       userStore
     }

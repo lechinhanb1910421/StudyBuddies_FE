@@ -2,12 +2,12 @@
 import { storage } from '@/services/firebase.service'
 import { ref, getDownloadURL, uploadBytesResumable } from 'firebase/storage'
 import PostService from '@/services/Post.service'
-import { userStorage } from '@/stores/user'
+import { loggedInUserStorage } from '@/stores/loggedInUser'
 // import { createToast, clearToasts } from 'mosha-vue-toastify'
 import ToastService from '@/services/toast.service'
 export default {
   setup() {
-    const userStore = userStorage()
+    const userStore = loggedInUserStorage()
     return { userStore }
   },
   data() {

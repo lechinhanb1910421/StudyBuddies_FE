@@ -4,7 +4,7 @@ import UserPost from './UserPost.vue'
 import '@/assets/preloader.css'
 import AddPostModal from '@/components/AddPostModal.vue'
 import { postStorage } from '@/stores/post'
-import { userStorage } from '@/stores/user'
+import { loggedInUserStorage } from '@/stores/loggedInUser'
 export default {
   components: { UserPost, AddPostModal },
   data() {
@@ -15,7 +15,7 @@ export default {
   },
   setup() {
     const postStore = postStorage()
-    const userStore = userStorage()
+    const userStore = loggedInUserStorage()
     return {
       postStore,
       userStore
@@ -29,9 +29,10 @@ export default {
   },
   async mounted() {
     await this.getAllPost()
-    setTimeout(() => {
-      this.pageLoaded = true
-    }, 700)
+    await this.userStore.getCurrentUser(this.$keycloak.token)
+    // setTimeout(() => {
+    this.pageLoaded = true
+    // }, 700)
   }
 }
 </script>
@@ -52,7 +53,8 @@ export default {
   </Transition>
   <Transition name="fade">
     <div v-if="this.pageLoaded">
-      <AddPostModal ref="addNoteModal"></AddPostModal>
+      <AddPostModal></AddPostModal>
+
       <div class="container" v-if="this.userStore.user.userId">
         <div class="crePost_ctn">
           <div class="crePost_ava">
@@ -65,7 +67,7 @@ export default {
         <hr class="hr-white" />
         <div v-for="post in this.postStore.posts" :key="post">
           <div v-if="post">
-            <UserPost :post="post"></UserPost>
+            <UserPost :post="post" :allowModify="post.userId == this.userStore.user.userId"></UserPost>
           </div>
         </div>
       </div>

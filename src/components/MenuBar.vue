@@ -1,11 +1,11 @@
 <script>
 import MenuTile from './MenuTile.vue'
-import { userStorage } from '@/stores/user'
+import { loggedInUserStorage } from '@/stores/loggedInUser'
 
 export default {
   components: { MenuTile },
   setup() {
-    const userStore = userStorage()
+    const userStore = loggedInUserStorage()
     return {
       userStore
     }
