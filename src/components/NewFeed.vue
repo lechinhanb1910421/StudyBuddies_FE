@@ -34,7 +34,7 @@ export default {
   async mounted() {
     await this.getAllPost()
     setTimeout(() => {
-      // this.pageLoaded = true
+      this.pageLoaded = true
     }, 272)
   },
   watch: {
