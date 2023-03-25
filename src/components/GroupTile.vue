@@ -1,10 +1,17 @@
 <script>
-export default {}
+export default {
+  props: ['groupName', 'gAvatar'],
+  // data() {
+  //   return {
+  //     avatars: { aavn: '../assets/axon_active_logo.jpg', justDang: '../assets/just_Dang_logo.png' }
+  //   }
+  // }
+}
 </script>
 <template>
   <div class="group_tile_ctn">
-    <img src="../assets/Ganyu_2.jpeg" class="group_ava" alt="Avatar" />
-    <span class="group_name">Group Name goes here Group Name goes here</span>
+    <img :src="this.gAvatar" class="group_ava" alt="Avatar" />
+    <span class="group_name">{{ this.groupName }}</span>
   </div>
 </template>
 <style scoped>

@@ -1,0 +1,159 @@
+[
+    {
+        "userId": 1,
+        "loginName": "b1910421",
+        "givenName": "Nhan",
+        "familyName": "Le Nguyen Chi",
+        "fullName": "Nhan Le Nguyen Chi",
+        "email": "nhanb1910421@student.ctu.edu.vn",
+        "createdDate": "2023-02-27T02:27:01Z",
+        "accountStatus": "active",
+        "avatars": [
+            {
+                "avaId": 15,
+                "avaUrl": "https://firebasestorage.googleapis.com/v0/b/study-buddies-8b16e.appspot.com/o/b1910421%2Favatars%2FGanyu_2.jpeg?alt=media&token=df053a2c-1cbd-4013-bbdf-46606bfc4480"
+            }
+        ]
+    },
+    {
+        "userId": 2,
+        "loginName": "b2702201",
+        "givenName": "Special",
+        "familyName": "User",
+        "fullName": "Special User",
+        "email": "special@user.com",
+        "createdDate": "2023-03-16T13:14:02Z",
+        "accountStatus": "active",
+        "avatars": [
+            {
+                "avaId": 16,
+                "avaUrl": "https://firebasestorage.googleapis.com/v0/b/study-buddies-8b16e.appspot.com/o/b2702201%2Favatars%2F9.png?alt=media&token=ab7639be-3248-49d2-9728-d1173a86a3ab"
+            }
+        ]
+    },
+    {
+        "userId": 3,
+        "loginName": "b1906489",
+        "givenName": "Khang",
+        "familyName": "Huynh Quy",
+        "fullName": "Khang Huynh Quy",
+        "email": "khangb1906489@student.ctu.edu.vn",
+        "createdDate": "2023-03-24T12:50:40Z",
+        "accountStatus": "active",
+        "avatars": [
+            {
+                "avaId": 22,
+                "avaUrl": "https://firebasestorage.googleapis.com/v0/b/study-buddies-8b16e.appspot.com/o/b1906489%2Favatars%2Fkhang.jpg?alt=media&token=f966e1c5-f574-4358-a419-513920d17edc"
+            },
+            {
+                "avaId": 17,
+                "avaUrl": "https://firebasestorage.googleapis.com/v0/b/study-buddies-8b16e.appspot.com/o/b1910421%2Favatars%2Fdefault_user.png?alt=media&token=39c9e8fc-dd4c-41ad-b946-1b50efe416d4"
+            }
+        ]
+    },
+    {
+        "userId": 8,
+        "loginName": "b1906631",
+        "givenName": "Ca",
+        "familyName": "Luu",
+        "fullName": "Ca Luu",
+        "email": "cab1906631@student.ctu.edu.vn",
+        "createdDate": "2023-03-25T02:59:09Z",
+        "accountStatus": "active",
+        "avatars": [
+            {
+                "avaId": 24,
+                "avaUrl": "https://firebasestorage.googleapis.com/v0/b/study-buddies-8b16e.appspot.com/o/b1906631%2Favatars%2Fluuca.jpg?alt=media&token=ed25f9f1-32ab-4922-8541-99b2c60e46a8"
+            },
+            {
+                "avaId": 23,
+                "avaUrl": "https://firebasestorage.googleapis.com/v0/b/study-buddies-8b16e.appspot.com/o/b1910421%2Favatars%2Fdefault_user.png?alt=media&token=39c9e8fc-dd4c-41ad-b946-1b50efe416d4"
+            }
+        ]
+    },
+    {
+        "userId": 9,
+        "loginName": "b1910641",
+        "givenName": "Hien",
+        "familyName": "Vo Phan Minh",
+        "fullName": "Hien Vo Phan Minh",
+        "email": "hienb1910641@student.ctu.edu.vn",
+        "createdDate": "2023-03-25T03:01:06Z",
+        "accountStatus": "active",
+        "avatars": [
+            {
+                "avaId": 26,
+                "avaUrl": "https://firebasestorage.googleapis.com/v0/b/study-buddies-8b16e.appspot.com/o/b1910641%2Favatars%2Fhien_vo.jpg?alt=media&token=f6d84deb-2926-4666-826a-a8a0dccd934f"
+            },
+            {
+                "avaId": 25,
+                "avaUrl": "https://firebasestorage.googleapis.com/v0/b/study-buddies-8b16e.appspot.com/o/b1910421%2Favatars%2Fdefault_user.png?alt=media&token=39c9e8fc-dd4c-41ad-b946-1b50efe416d4"
+            }
+        ]
+    },
+    {
+        "userId": 4,
+        "loginName": "b1910428",
+        "givenName": "Nhut",
+        "familyName": "Nguyen Minh",
+        "fullName": "Nhut Nguyen Minh",
+        "email": "nhutb1910428@student.ctu.edu.vn",
+        "createdDate": "2023-03-24T12:52:10Z",
+        "accountStatus": "active",
+        "avatars": [
+            {
+                "avaId": 18,
+                "avaUrl": "https://firebasestorage.googleapis.com/v0/b/study-buddies-8b16e.appspot.com/o/b1910421%2Favatars%2Fdefault_user.png?alt=media&token=39c9e8fc-dd4c-41ad-b946-1b50efe416d4"
+            }
+        ]
+    },
+    {
+        "userId": 5,
+        "loginName": "b1910450",
+        "givenName": "Thang",
+        "familyName": "Tran Duc",
+        "fullName": "Thang Tran Duc",
+        "email": "thangb1910450@student.ctu.edu.vn",
+        "createdDate": "2023-03-24T12:53:37Z",
+        "accountStatus": "active",
+        "avatars": [
+            {
+                "avaId": 19,
+                "avaUrl": "https://firebasestorage.googleapis.com/v0/b/study-buddies-8b16e.appspot.com/o/b1910421%2Favatars%2Fdefault_user.png?alt=media&token=39c9e8fc-dd4c-41ad-b946-1b50efe416d4"
+            }
+        ]
+    },
+    {
+        "userId": 6,
+        "loginName": "b1910415",
+        "givenName": "Nang",
+        "familyName": "Phan Hoai",
+        "fullName": "Nang Phan Hoai",
+        "email": "nangb1910415@student.ctu.edu.vn",
+        "createdDate": "2023-03-24T12:56:20Z",
+        "accountStatus": "active",
+        "avatars": [
+            {
+                "avaId": 20,
+                "avaUrl": "https://firebasestorage.googleapis.com/v0/b/study-buddies-8b16e.appspot.com/o/b1910421%2Favatars%2Fdefault_user.png?alt=media&token=39c9e8fc-dd4c-41ad-b946-1b50efe416d4"
+            }
+        ]
+    },
+    {
+        "userId": 7,
+        "loginName": "b1910413",
+        "givenName": "Nam",
+        "familyName": "Duong Bao",
+        "fullName": "Nam Duong Bao",
+        "email": "namb1910413@student.ctu.edu.vn",
+        "createdDate": "2023-03-24T12:59:03Z",
+        "accountStatus": "active",
+        "avatars": [
+            {
+                "avaId": 21,
+                "avaUrl": "https://firebasestorage.googleapis.com/v0/b/study-buddies-8b16e.appspot.com/o/b1910421%2Favatars%2Fdefault_user.png?alt=media&token=39c9e8fc-dd4c-41ad-b946-1b50efe416d4"
+            }
+        ]
+    }
+   
+]

@@ -1,6 +1,7 @@
 <script>
 import FriendProfileTile from '@/components/FriendProfileTile.vue'
 import GroupTile from '@/components/GroupTile.vue'
+import UserService from '@/services/User.service'
 export default {
   components: {
     FriendProfileTile,
@@ -8,8 +9,16 @@ export default {
   },
   data() {
     return {
-      majorName: 'Infomation Technology'
+      friends: ''
     }
+  },
+  methods: {
+    async getUserFiend() {
+      this.friends = await UserService.getUserFriendsDemo()
+    }
+  },
+  created() {
+    this.getUserFiend()
   }
 }
 </script>
@@ -17,29 +26,15 @@ export default {
   <section class="interact_bar">
     <div class="i_bar_titles">Groups</div>
     <div class="groups">
-      <GroupTile></GroupTile>
-      <GroupTile></GroupTile>
-      <GroupTile></GroupTile>
-      <GroupTile></GroupTile>
-      <GroupTile></GroupTile>
-      <GroupTile></GroupTile>
-      <GroupTile></GroupTile>
-      <GroupTile></GroupTile>
+      <GroupTile :groupName="'AAVN'" :g-avatar="'img/axon_active_logo.jpg'"></GroupTile>
+      <GroupTile :groupName="'Just the DANG'" :g-avatar="'img/just_Dang_logo.png'"></GroupTile>
     </div>
     <hr class="i_bar_hr" />
     <div class="i_bar_titles">Friends</div>
-    <div class="friends">
-      <FriendProfileTile></FriendProfileTile>
-      <FriendProfileTile></FriendProfileTile>
-      <FriendProfileTile></FriendProfileTile>
-      <FriendProfileTile></FriendProfileTile>
-      <FriendProfileTile></FriendProfileTile>
-      <FriendProfileTile></FriendProfileTile>
-      <FriendProfileTile></FriendProfileTile>
-      <FriendProfileTile></FriendProfileTile>
-      <FriendProfileTile></FriendProfileTile>
-      <FriendProfileTile></FriendProfileTile>
-      <FriendProfileTile></FriendProfileTile>
+    <div class="friends" v-if="this.friends.length > 0">
+      <div v-for="(friend, index) in this.friends" :key="index">
+        <FriendProfileTile :user="friend"></FriendProfileTile>
+      </div>
     </div>
   </section>
 </template>
@@ -66,7 +61,7 @@ export default {
   padding: 10px;
 }
 .groups {
-  height: 30%;
+  height: 25%;
 }
 .friends {
   /* min-height: 45%; */

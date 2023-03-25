@@ -1,10 +1,12 @@
 <script>
-export default {}
+export default {
+  props: ['user']
+}
 </script>
 <template lang="">
-  <div class="profile_tile">
-    <img src="../assets/Ganyu_2.jpeg" class="avatar_img" alt="Avatar" />
-    <span class="profile_name">Nhan Le Nguyen Chi</span>
+  <div class="profile_tile" v-if="this.user">
+    <img :src="this.user.avatars[0].avaUrl" class="avatar_img" alt="Avatar" />
+    <span class="profile_name">{{ this.user.fullName }}</span>
   </div>
 </template>
 <style scoped>

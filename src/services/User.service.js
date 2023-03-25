@@ -1,4 +1,5 @@
 import createApiClient from '@/services/api.service'
+import friends_payload from '@/assets/friend_list.json'
 class UserServiceOff {
   constructor(baseURL = '/user_resources') {
     this.api = createApiClient(baseURL)
@@ -14,6 +15,9 @@ class UserServiceOff {
   async getCurrentUser(access_token) {
     this.api.defaults.headers.common = { Authorization: `bearer ${access_token}` }
     return (await this.api.get('/whoami')).data
+  }
+  async getUserFriendsDemo() {
+    return friends_payload
   }
 }
 export default new UserServiceOff()
