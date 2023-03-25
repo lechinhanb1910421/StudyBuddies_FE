@@ -10,7 +10,7 @@ services:
       - '$VUE_HOST_PORT:$VUE_CONTAINER_PORT'
     container_name: vue_ui
     volumes:
-      - './:/app/node_modules'
+      - './src/assets/img:/app/img'
       - 'vue_ui:/var/www/html/'
       - ./nginx/conf.d:/etc/nginx/conf.d
     networks:
