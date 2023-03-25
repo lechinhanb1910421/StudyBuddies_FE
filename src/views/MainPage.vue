@@ -9,12 +9,9 @@ export default {
       currentAva: ''
     }
   },
- 
-  methods: {
-    
-  },
-  async mounted() {
-  }
+
+  methods: {},
+  async mounted() {}
 }
 </script>
 <template>
@@ -41,6 +38,7 @@ export default {
   background-color: #181a1d;
   padding-top: 61px;
   display: block;
+  min-height: 100vh;
 }
 .newFeed {
   background-color: #181a1d;

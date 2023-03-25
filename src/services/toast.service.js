@@ -51,5 +51,22 @@ class ToastService {
       }
     )
   }
+  async showErrorToast(errMessage) {
+    clearToasts()
+    return createToast(
+      {
+        title: 'Something went wrong',
+        description: errMessage
+      },
+      {
+        timeout: 7000,
+        toastBackgroundColor: '#E97777',
+        position: 'bottom-right',
+        showIcon: 'true',
+        type: 'success',
+        transition: 'bounce'
+      }
+    )
+  }
 }
 export default new ToastService()

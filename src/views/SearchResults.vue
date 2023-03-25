@@ -69,17 +69,17 @@ export default {
           </div>
         </div>
       </Transition>
+      <div class="search_no_res" v-if="this.posts.length == 0 && this.searchsLoaded">
+        <span class="search_no_res_inform">
+          <i class="fas fa-dizzy fa-lg"></i>
+          SORRY!
+        </span>
+        <br />
+        <span class="search_no_res_text">
+          We can not find anything related to "<strong> {{ this.sQuery }} </strong>"
+        </span>
+      </div>
       <Transition name="fade">
-        <div class="search_no_res" v-if="this.posts.length == 0">
-          <span class="search_no_res_inform">
-            <i class="fas fa-dizzy fa-lg"></i>
-            SORRY!
-          </span>
-          <br />
-          <span class="search_no_res_text">
-            We can not find anything related to "<strong> {{ this.sQuery }} </strong>"
-          </span>
-        </div>
         <div v-if="this.searchsLoaded" style="padding-top: 20px">
           <div v-for="(post, index) in this.posts" :key="index">
             <UserPost :post="post"></UserPost>
@@ -124,14 +124,20 @@ export default {
 .preloader_ctn {
   display: flex;
   align-items: center;
-  height: 100vh;
-  padding-bottom: 150px;
+  height: 100%;
+  padding-bottom: 180px;
+  padding-left: 150px;
+  position: fixed;
 }
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.5s;
 }
-.fade-enter-from, .fade-leave-to{
+/* .fade-enter, */
+.fade-leave-to {
+  opacity: 0;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active in <2.1.8 */ {
   opacity: 0;
 }
 
