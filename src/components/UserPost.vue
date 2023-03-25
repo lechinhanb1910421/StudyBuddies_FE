@@ -2,10 +2,10 @@
 import PostCommentGroup from '@/components/PostCommentGroup.vue'
 import { loggedInUserStorage } from '@/stores/loggedInUser'
 import MyDateTimeService from '@/services/myDateTime.service'
-import EditPostModal from '@/components/EditPostModal.vue'
 import PostService from '@/services/Post.service'
+import EditPostModal from '@/components/EditPostModal.vue'
 export default {
-  emits: ['postDeleted'],
+  emits: ['postDeleted', 'postEdited'],
   components: { PostCommentGroup, EditPostModal },
   props: ['post', 'allowModify'],
   data() {
@@ -22,7 +22,8 @@ export default {
       postCreatedAt: '',
       postCreTime: '',
       postCommentCount: 0,
-      postReactionCount: 0
+      postReactionCount: 0,
+      editModalId: ''
     }
   },
   setup() {
@@ -53,9 +54,13 @@ export default {
       if (data.message == 'Post was deleted successfully') {
         this.$emit('postDeleted')
       }
+    },
+    callReloadPosts(){
+      this.$emit('postEdited')
     }
   },
   async mounted() {
+    this.editModalId = 'editPostModal' + this.post.postId
     this.getUserInfo()
     this.parseTime()
   }
@@ -63,8 +68,11 @@ export default {
 </script>
 
 <template v-if="this.post">
-  <!-- data-bs-toggle="modal" data-bs-target="#addPostModal" -->
-  <EditPostModal :oldPost="this.post"></EditPostModal>
+  <!-- <button type="button" style="display: none" ref="editModal" data-bs-toggle="modal" data-bs-target="#editPostModal">toggle edit</button> -->
+
+  <div class="modal modal-lg fade" :id="editModalId" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
+    <EditPostModal :oldPost="this.post" @postEdited="callReloadPosts"></EditPostModal>
+  </div>
   <div class="post_ctn">
     <section class="p_header">
       <div class="p_header_info">
@@ -92,7 +100,7 @@ export default {
               <i class="fas fa-ellipsis-h"></i>
             </div>
             <ul class="dropdown-menu dropdown-menu-end">
-              <li><div class="dropdown-item" data-bs-toggle="modal" data-bs-target="#editPostModal">Edit Post</div></li>
+              <li><div class="dropdown-item" data-bs-toggle="modal" :data-bs-target="'#' + this.editModalId">Edit Post</div></li>
               <li><div class="dropdown-item" data-bs-toggle="modal" data-bs-target="#deletePost_confirm">Delete Post</div></li>
             </ul>
           </div>
