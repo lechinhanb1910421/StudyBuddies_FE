@@ -12,7 +12,6 @@
     "bootstrap": "^5.2.3",
     "core-js": "^3.8.3",
     "firebase": "^9.17.2",
-    "jquery": "^3.6.4",
     "keycloak-js": "^21.0.1",
     "mosha-vue-toastify": "^1.0.23",
     "pinia": "^2.0.33",
