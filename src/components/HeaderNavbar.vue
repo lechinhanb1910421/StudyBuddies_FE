@@ -1,24 +1,27 @@
 <script>
 import { loggedInUserStorage } from '@/stores/loggedInUser'
 import router from '@/routers/index'
+import { storeToRefs } from 'pinia'
 export default {
   data() {
     return {
       input_search: '',
-      isMainDropDown: true
+      isMainDropDown: true,
+      currentAvatar: ''
     }
   },
   setup() {
     const userStore = loggedInUserStorage()
+    const { user } = storeToRefs(userStore)
     return {
-      userStore
+      userStore,
+      user
     }
   },
   methods: {
     async getCurrentUser() {
       let access_token = this.$keycloak.token
       await this.userStore.getCurrentUser(access_token)
-      this.currentAva = this.userStore.user.avatars[0].avaUrl
     },
     submitSeach() {
       if (this.input_search == null) {
@@ -47,6 +50,18 @@ export default {
   },
   async mounted() {
     await this.getCurrentUser()
+  },
+  watch: {
+    user: function (value) {
+      let avatar = value.avatars[0]
+      for (let i = 1; i < value.avatars.length; i++) {
+        const elem = value.avatars[i]
+        if (elem.avaId > avatar.avaId) {
+          avatar = elem
+        }
+      }
+      this.currentAvatar = avatar.avaUrl
+    }
   }
 }
 </script>
@@ -84,15 +99,15 @@ export default {
 
         <i class="fas fa-ellipsis-h navbar_icons"></i>
         <i class="fas fa-bell navbar_icons"></i>
-        <div class="dropdown">
-          <img :src="this.userStore.user.avatars[0].avaUrl" class="avatar_img" alt="Avatar" data-bs-toggle="dropdown" aria-expanded="false" />
+        <div class="dropdown" v-if="this.currentAvatar">
+          <img :src="this.currentAvatar" class="avatar_img" alt="Avatar" data-bs-toggle="dropdown" aria-expanded="false" />
           <!-- <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Dropdown button</button> -->
           <ul class="dropdown-menu dropdown-menu-end">
             <div v-if="this.isMainDropDown">
               <li>
                 <div class="dropdown-item">
-                  <div class="profile_tile">
-                    <img :src="this.userStore.user.avatars[0].avaUrl" class="avatar_img" alt="Avatar" />
+                  <div class="profile_tile" v-if="this.currentAvatar">
+                    <img :src="this.currentAvatar" class="avatar_img" alt="Avatar" />
                     <span class="profile_name">{{ this.userStore.user.fullName }}</span>
                   </div>
                 </div>

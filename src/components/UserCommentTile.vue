@@ -1,7 +1,7 @@
 <script>
 // import UserService from '@/services/User.service'
 import { loggedInUserStorage } from '@/stores/loggedInUser'
-import { usersStorage } from '@/stores/users'
+// import { usersStorage } from '@/stores/users'
 import CommentService from '@/services/Comment.service'
 import MyDateTimeService from '@/services/myDateTime.service'
 export default {
@@ -9,23 +9,20 @@ export default {
   props: ['cmt'],
   setup() {
     const loggedInUserStore = loggedInUserStorage()
-    const usersStore = usersStorage()
     return {
-      loggedInUserStore,
-      usersStore
+      loggedInUserStore
     }
   },
   data() {
     return {
-      user: [],
       cmtCreatedAt: '',
       cmtCreTime: ''
     }
   },
   methods: {
-    async getCmtUser() {
-      this.user = await this.usersStore.getUserById(this.$keycloak.token, this.cmt.userId)
-    },
+    // async getCmtUser() {
+    //   this.user = await this.usersStore.getUserById(this.$keycloak.token, this.cmt.userId)
+    // },
     async parseTime() {
       this.cmtCreatedAt = MyDateTimeService.parseTimeString({ timeString: this.cmt.createdTime })
       this.cmtCreTime = MyDateTimeService.getTimeDifference({ timeString: this.cmt.createdTime })
@@ -38,19 +35,19 @@ export default {
     }
   },
   async mounted() {
-    await this.getCmtUser()
+    // await this.getCmtUser()
     await this.parseTime()
   }
 }
 </script>
 <template>
-  <div class="cmt_ctn" v-if="this.user.userId">
-    <div v-if="this.user.userId">
-      <img :src="this.user.avatars[0].avaUrl" class="cmt_ava" alt="..." />
+  <div class="cmt_ctn" v-if="this.cmt.userId">
+    <div>
+      <img :src="this.cmt.userAvatarUrl" class="cmt_ava" alt="..." />
     </div>
     <div class="cmt_main">
-      <div class="cmt_main_header" v-if="this.user.userId">
-        <span class="cmt_user_name">{{ this.user.fullName }}</span>
+      <div class="cmt_main_header" v-if="this.cmt.userId">
+        <span class="cmt_user_name">{{ this.cmt.userFullName }}</span>
         <tippy :content="this.cmtCreatedAt">
           <span class="cmt_user_creTime">{{ this.cmtCreTime }}</span>
         </tippy>

@@ -6,6 +6,7 @@ import { loggedInUserStorage } from '@/stores/loggedInUser'
 // import { createToast, clearToasts } from 'mosha-vue-toastify'
 import ToastService from '@/services/toast.service'
 export default {
+  emits: ['postAdded'],
   setup() {
     const userStore = loggedInUserStorage()
     return { userStore }
@@ -35,11 +36,16 @@ export default {
         majorId: this.postMajor,
         imageUrl: this.postImageUrl
       }
-      await PostService.createPost(this.$keycloak.token, payload)
+      const data = await PostService.createPost(this.$keycloak.token, payload)
+      if (data.message != 'New Post was created successfully') {
+        ToastService.showErrorToast(data.message)
+        return
+      }
+      this.$emit('postAdded')
       this.resetAddPostModal()
       setTimeout(() => {
         ToastService.showPostAddedToast()
-      }, 1000)
+      }, 700)
       this.removePreviewImage()
     },
     async submitAddPostForm() {
@@ -253,7 +259,7 @@ export default {
   height: 30px;
 }
 .modal-body {
-  height: 400px;
+  height: 550px;
   display: flex;
   flex-direction: column;
   overflow-y: scroll;

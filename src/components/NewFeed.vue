@@ -5,20 +5,24 @@ import '@/assets/preloader.css'
 import AddPostModal from '@/components/AddPostModal.vue'
 import { postStorage } from '@/stores/post'
 import { loggedInUserStorage } from '@/stores/loggedInUser'
+import { storeToRefs } from 'pinia'
 export default {
   components: { UserPost, AddPostModal },
   data() {
     return {
       currentAva: '',
-      pageLoaded: false
+      pageLoaded: false,
+      currentAvatar: ''
     }
   },
   setup() {
     const postStore = postStorage()
     const userStore = loggedInUserStorage()
+    const { user } = storeToRefs(userStore)
     return {
       postStore,
-      userStore
+      userStore,
+      user
     }
   },
   methods: {
@@ -29,10 +33,21 @@ export default {
   },
   async mounted() {
     await this.getAllPost()
-    await this.userStore.getCurrentUser(this.$keycloak.token)
-    // setTimeout(() => {
-    this.pageLoaded = true
-    // }, 700)
+    setTimeout(() => {
+      // this.pageLoaded = true
+    }, 272)
+  },
+  watch: {
+    user: function (value) {
+      let avatar = value.avatars[0]
+      for (let i = 1; i < value.avatars.length; i++) {
+        const elem = value.avatars[i]
+        if (elem.avaId > avatar.avaId) {
+          avatar = elem
+        }
+      }
+      this.currentAvatar = avatar.avaUrl
+    }
   }
 }
 </script>
@@ -53,12 +68,12 @@ export default {
   </Transition>
   <Transition name="fade">
     <div v-if="this.pageLoaded">
-      <AddPostModal></AddPostModal>
+      <AddPostModal @postAdded="getAllPost"></AddPostModal>
 
       <div class="container" v-if="this.userStore.user.userId">
         <div class="crePost_ctn">
-          <div class="crePost_ava">
-            <img :src="this.userStore.user.avatars[0].avaUrl" class="posts_ava" alt="..." />
+          <div class="crePost_ava" v-if="this.currentAvatar">
+            <img :src="this.currentAvatar" class="posts_ava" alt="..." />
           </div>
           <div class="crePost_input" data-bs-toggle="modal" data-bs-target="#addPostModal">
             <input type="text" class="form-control" placeholder="Hello Everett, how is your study?" disabled />
@@ -67,7 +82,11 @@ export default {
         <hr class="hr-white" />
         <div v-for="post in this.postStore.posts" :key="post">
           <div v-if="post">
-            <UserPost :post="post" :allowModify="post.userId == this.userStore.user.userId" @postDeleted="getAllPost"></UserPost>
+            <UserPost
+              :post="post"
+              :allowModify="post.userId == this.userStore.user.userId"
+              @postDeleted="getAllPost"
+              @postEdited="getAllPost"></UserPost>
           </div>
         </div>
       </div>
@@ -79,8 +98,11 @@ export default {
 .preloader_ctn {
   display: flex;
   align-items: center;
-  height: 100vh;
-  padding-bottom: 150px;
+  height: 100%;
+  padding-bottom: 200px;
+  padding-left: 57%;
+  transform: translate(-50%);
+  position: fixed;
 }
 hr.hr-white {
   margin-inline: 10px;
@@ -126,6 +148,7 @@ hr.hr-white {
   padding-left: 15%;
   padding-right: 9%;
   padding-bottom: 5%;
+  min-height: 100%;
 }
 .fade-enter-active,
 .fade-leave-active {
