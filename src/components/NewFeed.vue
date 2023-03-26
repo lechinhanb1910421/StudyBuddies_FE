@@ -69,14 +69,13 @@ export default {
   <Transition name="fade">
     <div v-if="this.pageLoaded">
       <AddPostModal @postAdded="getAllPost"></AddPostModal>
-
       <div class="container" v-if="this.userStore.user.userId">
         <div class="crePost_ctn">
           <div class="crePost_ava" v-if="this.currentAvatar">
             <img :src="this.currentAvatar" class="posts_ava" alt="..." />
           </div>
           <div class="crePost_input" data-bs-toggle="modal" data-bs-target="#addPostModal">
-            <input type="text" class="form-control" placeholder="Hello Everett, how is your study?" disabled />
+            <input type="text" class="form-control" :placeholder="'Hello ' + this.userStore.user.givenName + ', what is in your mind?'" disabled />
           </div>
         </div>
         <hr class="hr-white" />
