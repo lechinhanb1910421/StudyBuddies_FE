@@ -1,4 +1,5 @@
 var date_options = [{ month: '2-digit', day: '2-digit', year: 'numeric' }]
+var date_options_date = { month: 'long', day: '2-digit', year: 'numeric' }
 var hour_options = [{ hour: '2-digit', minute: '2-digit', second: '2-digit', hourCycle: 'h12' }]
 class MyDateTimeService {
   parseTimeString({ timeString }) {
@@ -11,6 +12,10 @@ class MyDateTimeService {
     result += ' ' + date_options.map(format).join('/')
     result += ' at ' + hour_options.map(format).join(':')
     return result
+  }
+  parseTimeStringToDate({ timeString }) {
+    var time = new Date(timeString)
+    return new Intl.DateTimeFormat('en', date_options_date).format(time)
   }
   getTimeDifference({ timeString }) {
     var diff = (Date.now() - Date.parse(timeString)) / 1000

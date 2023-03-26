@@ -9,6 +9,7 @@ export const loggedInUserStorage = defineStore('loggedInUser', {
       givenName: '',
       familyName: '',
       fullName: '',
+      createdDate: '',
       avatars: []
     }
   }),
@@ -21,7 +22,16 @@ export const loggedInUserStorage = defineStore('loggedInUser', {
     },
     async getCurrentUser(access_token) {
       this.user = await UserService.getCurrentUser(access_token)
-      this.user.fullName = this.user.givenName + ' ' + this.user.familyName
     }
+    // async getUserAvatar() {
+    //   let avatar = this.user.avatars[0]
+    //   for (let i = 1; i < this.user.avatars.length; i++) {
+    //     const elem = this.user.avatars[i]
+    //     if (elem.avaId > avatar.avaId) {
+    //       avatar = elem
+    //     }
+    //   }
+    //   return avatar.avaUrl
+    // }
   }
 })
