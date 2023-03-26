@@ -1,21 +1,22 @@
 <script>
 import { loggedInUserStorage } from '@/stores/loggedInUser'
 import router from '@/routers/index'
-import { storeToRefs } from 'pinia'
+// import { storeToRefs } from 'pinia'
 export default {
   data() {
     return {
       input_search: '',
       isMainDropDown: true,
-      currentAvatar: ''
+      currentAvatar: '',
+      userId: ''
     }
   },
   setup() {
     const userStore = loggedInUserStorage()
-    const { user } = storeToRefs(userStore)
+    // const { user } = storeToRefs(userStore)
     return {
-      userStore,
-      user
+      userStore
+      // user
     }
   },
   methods: {
@@ -46,22 +47,16 @@ export default {
     },
     logMeOut() {
       this.$keycloak.logout({ redirectUri: 'http://localhost/' })
+    },
+    goToProfile() {
+      const value = this.userStore.user.userId
+      // router.push({ name: 'userProfile', query: { userId: value } })
+      router.push({ name: 'userProfile', params: { id: value } })
     }
   },
   async mounted() {
     await this.getCurrentUser()
-  },
-  watch: {
-    user: function (value) {
-      let avatar = value.avatars[0]
-      for (let i = 1; i < value.avatars.length; i++) {
-        const elem = value.avatars[i]
-        if (elem.avaId > avatar.avaId) {
-          avatar = elem
-        }
-      }
-      this.currentAvatar = avatar.avaUrl
-    }
+    this.currentAvatar = this.userStore.user.avatars[0].avaUrl
   }
 }
 </script>
@@ -106,7 +101,7 @@ export default {
             <div v-if="this.isMainDropDown">
               <li>
                 <div class="dropdown-item">
-                  <div class="profile_tile" v-if="this.currentAvatar">
+                  <div class="profile_tile" v-if="this.currentAvatar" @click="goToProfile">
                     <img :src="this.currentAvatar" class="avatar_img" alt="Avatar" />
                     <span class="profile_name">{{ this.userStore.user.fullName }}</span>
                   </div>
@@ -220,6 +215,10 @@ export default {
   border-radius: 0.75rem;
   margin-bottom: 12px;
   transition: background-color linear 0.1s;
+}
+.profile_name {
+  font-size: 18px;
+  font-weight: 700;
 }
 .search_icon {
   color: white;

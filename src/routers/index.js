@@ -1,6 +1,8 @@
 import { createWebHistory, createRouter } from 'vue-router'
 import MainPage from '@/views/MainPage.vue'
 import SearchResults from '@/views/SearchResults.vue'
+import UserProfile from '@/views/UserProfile.vue'
+import NotFound from '@/views/NotFound.vue'
 const routes = [
   {
     path: '/',
@@ -12,6 +14,18 @@ const routes = [
     name: 'searchResults',
     component: SearchResults,
     props: (route) => ({ sQuery: route.query.q })
+  },
+  {
+    path: '/profile/:id',
+    name: 'userProfile',
+    component: UserProfile,
+    props: true
+    // props: (route) => ({ userId: route.query.userId })
+  },
+  {
+    path: '/error',
+    name: 'notFound',
+    component: NotFound
   }
 ]
 

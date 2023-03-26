@@ -1,15 +1,15 @@
 <script>
 import MenuTile from './MenuTile.vue'
 import { loggedInUserStorage } from '@/stores/loggedInUser'
-import { storeToRefs } from 'pinia'
+// import { storeToRefs } from 'pinia'
 export default {
   components: { MenuTile },
   setup() {
     const userStore = loggedInUserStorage()
-    const { user } = storeToRefs(userStore)
+    // const { user } = storeToRefs(userStore)
     return {
-      userStore,
-      user
+      userStore
+      // user
     }
   },
   data() {
@@ -27,25 +27,15 @@ export default {
       currentAvatar: ''
     }
   },
-  watch: {
-    user: function (value) {
-      let avatar = value.avatars[0]
-      for (let i = 1; i < value.avatars.length; i++) {
-        const elem = value.avatars[i]
-        if (elem.avaId > avatar.avaId) {
-          avatar = elem
-        }
-      }
-      this.currentAvatar = avatar.avaUrl
-    }
-  },
-  async created() {}
+  // async created() {
+  //   this.currentAvatar = this.userStore.user.avatars[0].avaUrl
+  // },
 }
 </script>
 <template>
   <section class="profile" v-if="this.userStore.user.userId">
-    <div class="profile_tile" v-if="this.currentAvatar">
-      <img :src="this.currentAvatar" class="avatar_img" alt="Avatar" />
+    <div class="profile_tile" v-if="this.userStore.user.userId">
+      <img :src="this.userStore.user.avatars[0].avaUrl" class="avatar_img" alt="Avatar" />
       <span class="profile_name">{{ this.userStore.user.fullName }}</span>
     </div>
     <div class="menu_tiles">
