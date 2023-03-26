@@ -3,8 +3,11 @@ import router from '@/routers/index'
 import { loggedInUserStorage } from '@/stores/loggedInUser'
 import MyDateTimeService from '@/services/myDateTime.service'
 import UserService from '@/services/User.service'
+import UserPost from '@/components/UserPost.vue'
+import AddPostModal from '@/components/AddPostModal.vue'
 export default {
   props: ['id'],
+  components: { UserPost, AddPostModal },
   data() {
     return {
       user: {
@@ -18,7 +21,19 @@ export default {
         avatars: []
       },
       currentAvatar: '',
-      userCreatedDate: ''
+      userCreatedDate: '',
+      postsLoaded: false,
+      posts: [],
+      userMajor: '',
+      majors: {
+        '00': 'General',
+        10: 'Information Technology',
+        '01': 'Information System',
+        '02': 'Computer Science',
+        '06': 'Software Engineering',
+        '03': 'Computer Network and Data Communication',
+        '04': 'Multimedia Communication'
+      }
     }
   },
   setup() {
@@ -38,6 +53,17 @@ export default {
       this.currentAvatar = this.user.avatars[0].avaUrl
       var userCreDate = this.user.createdDate ?? '2023-01-01T01:02:27Z'
       this.userCreatedDate = MyDateTimeService.parseTimeStringToDate({ timeString: userCreDate })
+    },
+    async getAllUserPosts() {
+      this.postsLoaded = false
+      this.posts = await UserService.getAllUserPosts(this.$keycloak.token, this.user.userId)
+      var majorCode = this.user.loginName.slice(3, 5)
+      console.log('MAJOR CODE: ' + majorCode)
+      this.userMajor = this.majors[majorCode]
+      console.log('userMajor: ' + this.userMajor)
+      setTimeout(() => {
+        this.postsLoaded = true
+      }, 272)
     }
   },
   async created() {
@@ -50,6 +76,7 @@ export default {
   },
   async mounted() {
     await this.getUserInfo()
+    await this.getAllUserPosts()
   }
 }
 </script>
@@ -73,17 +100,132 @@ export default {
     </div>
     <div class="main_profile">
       <div class="user_info_cnt">
-        <h2>Preserved for user info column</h2>
+        <div class="info_cnt_title">Info</div>
+        <hr style="color: white; border: none; border-bottom: 2px solid rgb(255 255 255 / 0.8)" />
+        <div class="info_tile">
+          <span class="info_title">Student Code: </span>
+          <span class="info_student_code">{{ this.user.loginName.toUpperCase() }}</span>
+        </div>
+        <div class="info_tile">
+          <span class="info_title">Major: </span>
+          <span class="info_student_code">{{ this.userMajor }}</span>
+        </div>
+        <div class="info_tile">
+          <span class="info_title">School: </span>
+          <span class="info_student_code">Can Tho University</span>
+        </div>
+        <div class="info_tile">
+          <span class="info_title">Total posts: </span>
+          <span class="info_student_code">{{ this.posts.length }}</span>
+        </div>
       </div>
       <div class="main_col">
-        <h1>Hello to your profile {{ userId }}</h1>
-        <h3>Display add posts</h3>
-        <h3>Display posts here</h3>
+        <Transition name="fade">
+          <div v-if="!this.postsLoaded" class="preloader_ctn">
+            <div class="loader">
+              <div class="one"></div>
+              <div class="two"></div>
+              <div class="three"></div>
+              <div class="four"></div>
+              <div class="five"></div>
+              <div class="six"></div>
+              <div class="seven"></div>
+              <div class="eight"></div>
+            </div>
+          </div>
+        </Transition>
+        <AddPostModal @postAdded="getAllUserPosts"></AddPostModal>
+        <div class="crePost_ctn">
+          <div class="crePost_ava" v-if="this.currentAvatar">
+            <img :src="this.currentAvatar" class="posts_ava" alt="..." />
+          </div>
+          <div class="crePost_input" data-bs-toggle="modal" data-bs-target="#addPostModal">
+            <input type="text" class="form-control" :placeholder="'Hello ' + this.user.givenName + ', what is on your mind?'" disabled />
+          </div>
+        </div>
+        <div class="search_no_res" v-if="this.posts.length == 0 && this.postsLoaded">
+          <span class="no_posts_inform"> You have no posts yet! </span>
+        </div>
+        <Transition name="fade">
+          <div v-if="this.postsLoaded" style="padding-top: 20px">
+            <div v-for="(post, index) in this.posts" :key="index">
+              <UserPost :post="post"></UserPost>
+            </div>
+          </div>
+        </Transition>
       </div>
     </div>
   </div>
 </template>
 <style scoped>
+.info_cnt_title {
+  color: white;
+  font-size: 30px;
+  font-weight: 700;
+}
+.info_tile {
+  color: white;
+  padding-bottom: 20px;
+}
+.info_title {
+  font-size: 23px;
+  font-weight: 600;
+}
+.info_student_code {
+  font-size: 18px;
+}
+.crePost_ctn {
+  margin-top: 5px;
+  color: white;
+  background-color: rgb(255 255 255 /0.1);
+  display: flex;
+  justify-content: center;
+  border-radius: 0.75rem;
+  padding: 12px;
+  gap: 10px;
+}
+.crePost_ava {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.posts_ava {
+  height: 40px;
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+}
+
+.crePost_input {
+  flex-shrink: 0;
+  flex-grow: 1;
+}
+.crePost_input input {
+  height: 45px;
+  background-color: rgb(255 255 255 /0.15);
+  box-shadow: none;
+  border: none;
+  font-size: 17px;
+  border-radius: 1.5rem;
+}
+.crePost_input input::placeholder {
+  color: white;
+  opacity: 0.7;
+}
+.no_posts_inform {
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  font-size: 30px;
+  font-weight: 600;
+  opacity: 0.6;
+  margin-top: 20px;
+}
+.no_posts_inform i {
+  font-size: 80px;
+  font-weight: 800;
+}
 .edit_info_btn {
   padding: 5px 10px;
   background-color: #fff;
@@ -120,14 +262,22 @@ export default {
   outline: 5px solid #54bab9;
 }
 .main_col {
-  flex: 5;
+  width: 67%;
+  min-height: 100%;
+  padding-inline: 3%;
 }
 .user_info_cnt {
-  flex: 2;
+  background-color: rgb(255 255 255 / 0.1);
+  display: flex;
+  flex-direction: column;
+  width: 36%;
+  padding-inline: 3%;
+  padding-top: 2%;
+  border-radius: 1rem;
+  margin-top: 5px;
 }
 .main_profile {
-  width: 90%;
-  background-color: rgb(255 255 255 /0.4);
+  width: 95%;
   display: flex;
   gap: 10px;
 }
@@ -154,7 +304,7 @@ export default {
   flex: 7;
 }
 .brief_info_ctn {
-  width: 70%;
+  width: 80%;
   height: 210px;
   background-color: rgb(255 255 255 /0.8);
   border-radius: 1.5rem;
@@ -175,10 +325,12 @@ export default {
   gap: 15px;
   padding-top: 69px;
 }
-.user_info_cnt {
-  min-height: 100%;
-}
-.main_col {
-  min-height: 100%;
+.preloader_ctn {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding-bottom: 400px;
+  padding-left: 250px;
+  position: fixed;
 }
 </style>

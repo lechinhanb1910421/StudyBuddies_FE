@@ -19,5 +19,9 @@ class UserServiceOff {
   async getUserFriendsDemo() {
     return friends_payload
   }
+  async getAllUserPosts(access_token, userId) {
+    this.api.defaults.headers.common = { Authorization: `bearer ${access_token}` }
+    return (await this.api.get('/' + userId + '/posts')).data
+  }
 }
 export default new UserServiceOff()
