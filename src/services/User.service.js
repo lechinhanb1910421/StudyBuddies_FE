@@ -23,5 +23,10 @@ class UserServiceOff {
     this.api.defaults.headers.common = { Authorization: `bearer ${access_token}` }
     return (await this.api.get('/' + userId + '/posts')).data
   }
+  async addUserAvatar(access_token, avaUrl) {
+    const payload = { avaUrl: avaUrl }
+    this.api.defaults.headers.common = { Authorization: `bearer ${access_token}` }
+    return (await this.api.get('/avatars', payload)).data
+  }
 }
 export default new UserServiceOff()
