@@ -23,7 +23,10 @@ export default {
       postCreTime: '',
       postCommentCount: 0,
       postReactionCount: 0,
-      editModalId: ''
+      editModalId: '',
+      reactedUsers: [],
+      reactedUsersDisplayed: '',
+      isReacted: false
     }
   },
   setup() {
@@ -55,13 +58,31 @@ export default {
         this.$emit('postDeleted')
       }
     },
-    callReloadPosts(){
+    callReloadPosts() {
       this.$emit('postEdited')
+    },
+    async getReactedUsers() {
+      const payload = await PostService.getReactedUsers(this.$keycloak.token, this.post.postId)
+      if (payload.message && payload.message == 'This post has no reaction yet') {
+        return
+      } else {
+        this.reactedUsers = payload
+        this.postReactionCount = payload.length
+        var display = ''
+        payload.forEach((element) => {
+          if (element.userId == this.userStore.user.userId) {
+            this.isReacted = true
+          }
+          display += element.fullName + '<br/>'
+        })
+        this.reactedUsersDisplayed = display
+      }
     }
   },
   async mounted() {
     this.editModalId = 'editPostModal' + this.post.postId
     this.getUserInfo()
+    this.getReactedUsers()
     this.parseTime()
   }
 }
@@ -113,10 +134,12 @@ export default {
         <img :src="this.post.picUrls[0]" class="post_content" alt="..." />
       </div>
       <div class="p_stats">
-        <div class="p_stats_like">
-          <i class="far fa-heart"> </i>
-          <span>{{ this.postReactionCount }}</span>
-        </div>
+        <tippy :content="this.reactedUsersDisplayed" :offset="[10, 10]">
+          <div class="p_stats_like" :class="{ stats_reacted: this.isReacted }">
+            <i class="far fa-heart"> </i>
+            <span>{{ this.postReactionCount }}</span>
+          </div>
+        </tippy>
         <div class="p_stats_no_cmt">
           <span>{{ this.postCommentCount }}</span>
           <span>comments</span>
@@ -125,7 +148,7 @@ export default {
 
       <hr class="hr-white" />
       <div class="p_ctrl">
-        <button class="btn p_ctrl_btn_bg btn_like" type="button">
+        <button class="btn p_ctrl_btn_bg btn_like" :class="{ btn_reacted: this.isReacted }" type="button">
           <i class="far fa-heart"> </i>
           <span>Love</span>
         </button>
@@ -231,6 +254,7 @@ export default {
   display: flex;
   opacity: 0.9;
   font-size: 17px;
+  font-weight: 500;
   gap: 50px;
 }
 hr.hr-white {
@@ -312,5 +336,19 @@ hr.hr-white {
   height: 40px;
   aspect-ratio: 1/1;
   border-radius: 50%;
+}
+.stats_reacted {
+  color: #ff7878;
+}
+.btn_reacted,
+.btn_reacted:focus,
+.btn_like:focus {
+  color: #ff7878 !important;
+  outline: 3px solid rgb(255 120 120 /0.8);
+}
+.btn_like:active,
+.btn_like:focus {
+  outline: none;
+  color: white;
 }
 </style>

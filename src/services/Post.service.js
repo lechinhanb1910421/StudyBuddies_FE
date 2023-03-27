@@ -31,5 +31,9 @@ class PostService {
     this.api.defaults.headers.common = { Authorization: `bearer ${access_token}` }
     return (await this.api.delete('/' + postId)).data
   }
+  async getReactedUsers(access_token, postId) {
+    this.api.defaults.headers.common = { Authorization: `bearer ${access_token}` }
+    return (await this.api.get('/' + postId + '/reacts')).data
+  }
 }
 export default new PostService()
