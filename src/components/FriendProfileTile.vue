@@ -1,10 +1,16 @@
 <script>
+import router from '@/routers/index'
 export default {
-  props: ['user']
+  props: ['user'],
+  methods: {
+    goToProfile(userId) {
+      router.push({ name: 'userProfile', params: { id: userId } })
+    }
+  }
 }
 </script>
 <template lang="">
-  <div class="profile_tile" v-if="this.user">
+  <div class="profile_tile" v-if="this.user" @click="goToProfile(this.user.userId)">
     <img :src="this.user.avatars[0].avaUrl" class="avatar_img" alt="Avatar" />
     <span class="profile_name">{{ this.user.fullName }}</span>
   </div>

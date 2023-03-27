@@ -1,15 +1,13 @@
 <script>
 import MenuTile from './MenuTile.vue'
 import { loggedInUserStorage } from '@/stores/loggedInUser'
-// import { storeToRefs } from 'pinia'
+import router from '@/routers/index'
 export default {
   components: { MenuTile },
   setup() {
     const userStore = loggedInUserStorage()
-    // const { user } = storeToRefs(userStore)
     return {
       userStore
-      // user
     }
   },
   data() {
@@ -27,14 +25,17 @@ export default {
       currentAvatar: ''
     }
   },
-  // async created() {
-  //   this.currentAvatar = this.userStore.user.avatars[0].avaUrl
-  // },
+  methods: {
+    goToProfile() {
+      const value = this.userStore.user.userId
+      router.push({ name: 'userProfile', params: { id: value } })
+    }
+  }
 }
 </script>
 <template>
   <section class="profile" v-if="this.userStore.user.userId">
-    <div class="profile_tile" v-if="this.userStore.user.userId">
+    <div class="profile_tile" v-if="this.userStore.user.userId" @click="goToProfile">
       <img :src="this.userStore.user.avatars[0].avaUrl" class="avatar_img" alt="Avatar" />
       <span class="profile_name">{{ this.userStore.user.fullName }}</span>
     </div>

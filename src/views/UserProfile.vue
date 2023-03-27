@@ -49,34 +49,48 @@ export default {
       return !isNaN(str) && isnum
     },
     async getUserInfo() {
-      this.user = await UserService.getUserById(this.$keycloak.token, this.id)
+      try {
+        this.user = await UserService.getUserById(this.$keycloak.token, this.id)
+      } catch (error) {
+        router.push({ name: 'notFound' })
+        return
+      }
       this.currentAvatar = this.user.avatars[0].avaUrl
       var userCreDate = this.user.createdDate ?? '2023-01-01T01:02:27Z'
       this.userCreatedDate = MyDateTimeService.parseTimeStringToDate({ timeString: userCreDate })
+      this.getAllUserPosts()
     },
     async getAllUserPosts() {
       this.postsLoaded = false
       this.posts = await UserService.getAllUserPosts(this.$keycloak.token, this.user.userId)
       var majorCode = this.user.loginName.slice(3, 5)
-      console.log('MAJOR CODE: ' + majorCode)
       this.userMajor = this.majors[majorCode]
-      console.log('userMajor: ' + this.userMajor)
       setTimeout(() => {
         this.postsLoaded = true
       }, 272)
+    },
+    checkValidUserId() {
+      if (this.id == undefined || this.id == '') {
+        router.push({ name: 'notFound' })
+      }
+      if (!this.isNumeric(this.id)) {
+        router.push({ name: 'notFound' })
+      }
     }
   },
   async created() {
-    if (this.id == undefined || this.id == '') {
-      router.push({ name: 'notFound' })
-    }
-    if (!this.isNumeric(this.id)) {
-      router.push({ name: 'notFound' })
-    }
+    this.checkValidUserId()
   },
   async mounted() {
     await this.getUserInfo()
-    await this.getAllUserPosts()
+    // await this.getAllUserPosts()
+  },
+  watch: {
+    id: async function () {
+      this.checkValidUserId()
+      await this.getUserInfo()
+      await this.getAllUserPosts()
+    }
   }
 }
 </script>
@@ -85,7 +99,7 @@ export default {
     <div class="brief_info_ctn">
       <div class="ava_col" v-if="this.currentAvatar">
         <img :src="this.currentAvatar" class="main_avatar" alt="" />
-        <button type="button" class="edit_ava_button">
+        <button type="button" class="edit_ava_button" v-if="this.user.userId == this.userStore.user.userId">
           <i class="fas fa-camera"></i>
         </button>
       </div>
@@ -93,7 +107,7 @@ export default {
         <div class="user_name">{{ this.user.fullName }}</div>
         <div class="user_created_date">Member since {{ this.userCreatedDate }}</div>
       </div>
-      <button type="button" class="edit_info_btn">
+      <button type="button" class="edit_info_btn" v-if="this.user.userId == this.userStore.user.userId">
         <i class="fas fa-edit"></i>
         Edit profile
       </button>
@@ -134,13 +148,15 @@ export default {
             </div>
           </div>
         </Transition>
-        <AddPostModal @postAdded="getAllUserPosts"></AddPostModal>
-        <div class="crePost_ctn">
-          <div class="crePost_ava" v-if="this.currentAvatar">
-            <img :src="this.currentAvatar" class="posts_ava" alt="..." />
-          </div>
-          <div class="crePost_input" data-bs-toggle="modal" data-bs-target="#addPostModal">
-            <input type="text" class="form-control" :placeholder="'Hello ' + this.user.givenName + ', what is on your mind?'" disabled />
+        <div v-if="this.user.userId == this.userStore.user.userId">
+          <AddPostModal @postAdded="getAllUserPosts"></AddPostModal>
+          <div class="crePost_ctn">
+            <div class="crePost_ava" v-if="this.currentAvatar">
+              <img :src="this.currentAvatar" class="posts_ava" alt="..." />
+            </div>
+            <div class="crePost_input" data-bs-toggle="modal" data-bs-target="#addPostModal">
+              <input type="text" class="form-control" :placeholder="'Hello ' + this.user.givenName + ', what is on your mind?'" disabled />
+            </div>
           </div>
         </div>
         <div class="search_no_res" v-if="this.posts.length == 0 && this.postsLoaded">
@@ -273,8 +289,10 @@ export default {
   width: 36%;
   padding-inline: 3%;
   padding-top: 2%;
+  padding-bottom: 20px;
   border-radius: 1rem;
   margin-top: 5px;
+  height: 100%;
 }
 .main_profile {
   width: 95%;
