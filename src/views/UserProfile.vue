@@ -5,9 +5,10 @@ import MyDateTimeService from '@/services/myDateTime.service'
 import UserService from '@/services/User.service'
 import UserPost from '@/components/UserPost.vue'
 import AddPostModal from '@/components/AddPostModal.vue'
+import AddAvatarModal from '@/components/AddAvatarModal.vue'
 export default {
   props: ['id'],
-  components: { UserPost, AddPostModal },
+  components: { UserPost, AddPostModal, AddAvatarModal },
   data() {
     return {
       user: {
@@ -95,11 +96,17 @@ export default {
 }
 </script>
 <template>
+  <AddAvatarModal @newAvaAdded="getUserInfo" :user="this.user"></AddAvatarModal>
   <div class="container-fluid">
     <div class="brief_info_ctn">
       <div class="ava_col" v-if="this.currentAvatar">
         <img :src="this.currentAvatar" class="main_avatar" alt="" />
-        <button type="button" class="edit_ava_button" v-if="this.user.userId == this.userStore.user.userId">
+        <button
+          type="button"
+          class="edit_ava_button"
+          v-if="this.user.userId == this.userStore.user.userId"
+          data-bs-toggle="modal"
+          data-bs-target="#addAvaModal">
           <i class="fas fa-camera"></i>
         </button>
       </div>
