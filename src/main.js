@@ -40,18 +40,16 @@ keycloak
         .updateToken(25)
         .then((refreshed) => {
           if (refreshed) {
-            // console.log('Token refreshed ' + refreshed)
+            // console.log('Token refreshed ' + keycloak.token)
           } else {
-            // console
-            //   .log
-            // 'Token not refreshed, valid for ' + Math.round(keycloak.tokenParsed.exp + keycloak.timeSkew - new Date().getTime() / 1000) + ' seconds'
-            // ()
+            // console.log
+            // 'Token not refreshed, valid for ' + Math.round(keycloak.tokenParsed.exp + keycloak.timeSkew - new Date().getTime() / 1000) + ' seconds'()
           }
         })
         .catch(() => {
           console.log('Failed to refresh token')
         })
-    }, 255000)
+    }, 25000)
   })
   .catch(() => {
     console.log('Authenticated Failed')
