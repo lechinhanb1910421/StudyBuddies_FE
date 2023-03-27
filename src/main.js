@@ -10,7 +10,7 @@ import 'tippy.js/themes/light.css'
 import 'mosha-vue-toastify/dist/style.css'
 const pinia = createPinia()
 const tippyConfig = {
-  defaultProps: { placement: 'bottom-end', delay: [500, 100], theme: 'light', offset: [30, 10] }
+  defaultProps: { placement: 'bottom-end', delay: [500, 100], theme: 'light', offset: [30, 10], allowHTML: true }
 }
 import Keycloak from 'keycloak-js'
 
@@ -37,7 +37,7 @@ keycloak
     }
     setInterval(() => {
       keycloak
-        .updateToken(255)
+        .updateToken(25)
         .then((refreshed) => {
           if (refreshed) {
             // console.log('Token refreshed ' + refreshed)
