@@ -26,8 +26,8 @@ export default {
   <section class="interact_bar">
     <div class="i_bar_titles">Groups</div>
     <div class="groups">
-      <GroupTile :groupName="'AAVN'" :g-avatar="'img/axon_active_logo.jpg'"></GroupTile>
-      <GroupTile :groupName="'Just the DANG'" :g-avatar="'img/just_Dang_logo.png'"></GroupTile>
+      <GroupTile :groupName="'AAVN'" :g-avatar="'pics/axon_active_logo.jpg'"></GroupTile>
+      <GroupTile :groupName="'Just the DANG'" :g-avatar="'pics/just_Dang_logo.png'"></GroupTile>
     </div>
     <hr class="i_bar_hr" />
     <div class="i_bar_titles">Friends</div>

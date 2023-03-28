@@ -36,6 +36,9 @@ export default {
     setTimeout(() => {
       this.pageLoaded = true
     }, 272)
+    if (this.userStore.user.avatars) {
+      this.currentAvatar = this.userStore.user.avatars[0].avaUrl
+    }
   },
   watch: {
     user: function (value) {

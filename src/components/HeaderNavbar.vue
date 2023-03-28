@@ -28,11 +28,11 @@ export default {
       if (this.input_search == null) {
         return
       }
-      var search_query = this.input_search.replace(/\s+/g, ' ').trim()
+      var search_query = this.input_search.replace(/\s+/g, ' ').trim().toLocaleLowerCase()
       if (search_query == '') {
         return
       }
-      router.push({ path: 'search', query: { q: '' + search_query } })
+      router.push({ name: 'searchResults', query: { q: '' + search_query, t: 0, m: 0 } })
     },
     checkInput(e) {
       if (e.shiftKey && e.key == 'Backspace') {
@@ -50,21 +50,23 @@ export default {
     },
     goToProfile() {
       const value = this.userStore.user.userId
-      // router.push({ name: 'userProfile', query: { userId: value } })
       router.push({ name: 'userProfile', params: { id: value } })
     }
   },
   async mounted() {
     await this.getCurrentUser()
     this.currentAvatar = this.userStore.user.avatars[0].avaUrl
-  }
+    if (this.$route.query.q != null || this.$route.query.q != '') {
+      this.input_search = this.$route.query.q
+    }
+  },
 }
 </script>
 <template lang="">
   <nav class="navbar navbar-expand-lg bg_dark1 fixed-top" v-if="this.userStore.user.userId">
     <div class="container-fluid">
       <router-link :to="{ name: 'home' }">
-        <img src="../assets/logo.png" class="avatar_img" alt="Avatar" />
+        <img src="../assets/pics/android-chrome-192x192.png" class="avatar_img" alt="..." />
       </router-link>
       <button
         class="navbar-toggler"
@@ -184,6 +186,7 @@ export default {
 }
 .dropdown-item {
   color: white;
+  cursor: pointer;
 }
 
 .dropdown-item:hover {
@@ -260,6 +263,10 @@ export default {
   font-size: 20px;
   border-radius: 50%;
   background-color: rgb(255 255 255 / 0.1);
+  cursor: pointer;
+}
+.navbar_icons:hover {
+  background-color: rgb(255 255 255 / 0.4);
 }
 .navbar {
   border: 1px solid rgb(255 255 255 /0.2);

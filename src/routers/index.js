@@ -13,7 +13,7 @@ const routes = [
     path: '/search',
     name: 'searchResults',
     component: SearchResults,
-    props: (route) => ({ sQuery: route.query.q })
+    props: (route) => ({ q: route.query.q, t: route.query.t, m: route.query.m })
   },
   {
     path: '/profile/:id',

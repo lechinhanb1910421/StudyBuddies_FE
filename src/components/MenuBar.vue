@@ -30,6 +30,14 @@ export default {
       const value = this.userStore.user.userId
       router.push({ name: 'userProfile', params: { id: value } })
     }
+    // toggleActiveMajor(name) {
+    //   var majorId = this.majors.indexOf(name) + 1
+    //   router.push({ name: 'searchResults', query: { m: '' + majorId } })
+    // },
+    // toggleActiveTopic(name) {
+    //   var topicId = this.topics.indexOf(name) + 1
+    //   router.push({ name: 'searchResults', query: { t: '' + topicId } })
+    // }
   }
 }
 </script>
@@ -46,7 +54,7 @@ export default {
     <div class="majors_tile_ctn">
       <div class="tiles" v-if="this.majors">
         <div v-for="(majorName, index) in this.majors" :key="index">
-          <MenuTile :titleName="majorName"></MenuTile>
+          <MenuTile :titleName="majorName" @toggleActive="toggleActiveMajor"></MenuTile>
         </div>
       </div>
     </div>
@@ -59,7 +67,7 @@ export default {
     <div class="topics_tile_ctn">
       <div class="tiles" v-if="this.topics">
         <div v-for="(topicName, index) in this.topics" :key="index">
-          <MenuTile :titleName="topicName"></MenuTile>
+          <MenuTile :titleName="topicName" @toggleActive="toggleActiveTopic"></MenuTile>
         </div>
       </div>
     </div>
