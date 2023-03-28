@@ -2,6 +2,7 @@
 import { storage } from '@/services/firebase.service'
 import { ref, getDownloadURL, uploadBytesResumable } from 'firebase/storage'
 import UserService from '@/services/User.service'
+import ToastService from '@/services/toast.service'
 export default {
   props: ['user'],
   emits: ['newAvaAdded'],
@@ -16,13 +17,12 @@ export default {
   },
   methods: {
     async addUserAvatar() {
-      console.log('UPLOADING FOR USER: ' + this.user.loginName)
-      const res = await UserService.addUserAvatar(this.$keycloak.token, this.newAvaImageUrl)
-      console.log(res)
+      await UserService.addUserAvatar(this.$keycloak.token, this.newAvaImageUrl)
+      ToastService.showAvatarAddedToast()
       this.$emit('newAvaAdded')
     },
     async removePreviewImage() {
-      this.newImagePreview = ''
+      this.newImagePreview = this.user.avatars[0].avaUrl
       this.isNewAva = false
     },
     async setPreviewImage(event) {
@@ -42,7 +42,7 @@ export default {
         'state_changed',
         (snapshot) => {
           this.uploadProgress = Math.floor((snapshot.bytesTransferred / snapshot.totalBytes) * 100)
-          // console.log('UPLOADING ', this.uploadProgress, '%')
+        //   console.log('UPLOADING ', this.uploadProgress, '%')
           switch (snapshot.state) {
             case 'paused':
               console.log('Upload is paused')
@@ -61,14 +61,17 @@ export default {
       )
     },
     submitAvatar() {
+      this.$refs.closeModal.click()
+
       if (!this.isNewAva) {
         return
       }
+      ToastService.showAvatarProcessingToast()
       this.uploadImage()
     },
     discardChanges() {
-      this.newImagePreview = ''
-      this.hasImgae = false
+      this.$refs.closeModal.click()
+      this.newImagePreview = this.user.avatars[0].avaUrl
       this.isNewAva = false
     }
   },
@@ -80,6 +83,7 @@ export default {
   },
   watch: {
     user: function (value) {
+      this.loginName = this.user.loginName
       this.newImagePreview = value.avatars[0].avaUrl
     }
   }
@@ -111,7 +115,7 @@ export default {
                 accept="image/png, image/gif, image/jpeg" />
             </label>
             <button type="button" class="btn btn-secondary btn_discard" @click="discardChanges">Discard changes</button>
-            <button type="button" class="btn btn-primary btn_add_post" @click="submitAvatar">Add avatar</button>
+            <button type="button" class="btn btn-primary btn_add_post" @click="submitAvatar" :disabled="!this.isNewAva">Add avatar</button>
           </div>
         </div>
         <!-- <div class="modal-footer"></div> -->

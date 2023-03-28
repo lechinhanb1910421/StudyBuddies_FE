@@ -68,5 +68,40 @@ class ToastService {
       }
     )
   }
+
+  async showAvatarProcessingToast() {
+    return createToast(
+      {
+        title: 'Your new avatar is being processed',
+        description: "We'll inform you when new avatar is ready"
+      },
+      {
+        timeout: 30000,
+        toastBackgroundColor: '#2778a4',
+        position: 'bottom-right',
+        showIcon: 'true',
+        type: 'info',
+        hideProgressBar: 'true',
+        transition: 'bounce'
+      }
+    )
+  }
+  async showAvatarAddedToast() {
+    clearToasts()
+    return createToast(
+      {
+        title: 'Avatar was updated successfully',
+        description: 'Congratulations, now you have a new appearance'
+      },
+      {
+        timeout: 7000,
+        toastBackgroundColor: '#20cbac',
+        position: 'bottom-right',
+        showIcon: 'true',
+        type: 'success',
+        transition: 'bounce'
+      }
+    )
+  }
 }
 export default new ToastService()
