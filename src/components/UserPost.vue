@@ -62,6 +62,8 @@ export default {
       this.$emit('postEdited')
     },
     async getReactedUsers() {
+      this.isReacted = false
+      this.postReactionCount = 0
       const payload = await PostService.getReactedUsers(this.$keycloak.token, this.post.postId)
       if (payload.message && payload.message == 'This post has no reaction yet') {
         return
@@ -77,13 +79,23 @@ export default {
         })
         this.reactedUsersDisplayed = display
       }
+    },
+    async reactPost(event) {
+      event.target.blur
+      if (this.isReacted) {
+        await PostService.unReactPost(this.$keycloak.token, this.post.postId)
+      } else {
+        await PostService.reactPost(this.$keycloak.token, this.post.postId)
+      }
+      this.isReacted = !this.isReacted
+      await this.getReactedUsers()
     }
   },
   async mounted() {
     this.editModalId = 'editPostModal' + this.post.postId
-    this.getUserInfo()
-    this.getReactedUsers()
-    this.parseTime()
+    await this.getUserInfo()
+    await this.getReactedUsers()
+    await this.parseTime()
   }
 }
 </script>
@@ -134,7 +146,7 @@ export default {
         <img :src="this.post.picUrls[0]" class="post_content" alt="..." />
       </div>
       <div class="p_stats">
-        <tippy :content="this.reactedUsersDisplayed" :offset="[10, 10]">
+        <tippy :content="this.reactedUsersDisplayed" :offset="[10, 10]" interactive="true">
           <div class="p_stats_like" :class="{ stats_reacted: this.isReacted }">
             <i class="far fa-heart"> </i>
             <span>{{ this.postReactionCount }}</span>
@@ -148,7 +160,7 @@ export default {
 
       <hr class="hr-white" />
       <div class="p_ctrl">
-        <button class="btn p_ctrl_btn_bg btn_like" :class="{ btn_reacted: this.isReacted }" type="button">
+        <button class="btn p_ctrl_btn_bg btn_like" @click="reactPost" :class="{ btn_reacted: this.isReacted }" type="button">
           <i class="far fa-heart"> </i>
           <span>Love</span>
         </button>
@@ -337,18 +349,16 @@ hr.hr-white {
   aspect-ratio: 1/1;
   border-radius: 50%;
 }
-.stats_reacted {
-  color: #ff7878;
-}
-.btn_reacted,
 .btn_reacted:focus,
-.btn_like:focus {
-  color: #ff7878 !important;
-  outline: 3px solid rgb(255 120 120 /0.8);
-}
-.btn_like:active,
 .btn_like:focus {
   outline: none;
   color: white;
+}
+.stats_reacted {
+  color: #ff7878;
+}
+.btn_reacted {
+  color: #ff7878 !important;
+  outline: 3px solid rgb(255 120 120 /0.8) !important;
 }
 </style>

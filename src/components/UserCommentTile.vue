@@ -132,6 +132,7 @@ export default {
   display: flex;
 }
 .cmt_ctn {
+  padding-top: 5px;
   padding-left: 5px;
   display: flex;
   margin-bottom: 12px;

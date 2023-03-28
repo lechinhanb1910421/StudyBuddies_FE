@@ -3,7 +3,6 @@ import { storage } from '@/services/firebase.service'
 import { ref, getDownloadURL, uploadBytesResumable } from 'firebase/storage'
 import PostService from '@/services/Post.service'
 import { loggedInUserStorage } from '@/stores/loggedInUser'
-// import { createToast, clearToasts } from 'mosha-vue-toastify'
 import ToastService from '@/services/toast.service'
 export default {
   emits: ['postAdded'],
@@ -21,7 +20,8 @@ export default {
       postTopic: 1,
       postMajor: 1,
       postImageUrl: '',
-      loginName: ''
+      loginName: '',
+      newImageData:''
     }
   },
   methods: {
