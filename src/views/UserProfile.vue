@@ -172,7 +172,11 @@ export default {
         <Transition name="fade">
           <div v-if="this.postsLoaded" style="padding-top: 20px">
             <div v-for="(post, index) in this.posts" :key="index">
-              <UserPost :post="post"></UserPost>
+              <UserPost
+                :post="post"
+                :allowModify="post.userId == this.userStore.user.userId"
+                @postDeleted="getAllUserPosts"
+                @postEdited="getAllUserPosts"></UserPost>
             </div>
           </div>
         </Transition>
