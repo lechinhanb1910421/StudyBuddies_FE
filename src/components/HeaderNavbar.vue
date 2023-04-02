@@ -51,6 +51,9 @@ export default {
     goToProfile() {
       const value = this.userStore.user.userId
       router.push({ name: 'userProfile', params: { id: value } })
+    },
+    changePassword() {
+      this.$keycloak.login({ action: 'UPDATE_PASSWORD' })
     }
   },
   async mounted() {
@@ -59,7 +62,7 @@ export default {
     if (this.$route.query.q != null || this.$route.query.q != '') {
       this.input_search = this.$route.query.q
     }
-  },
+  }
 }
 </script>
 <template lang="">
@@ -141,10 +144,10 @@ export default {
                   <span> Back </span>
                 </div>
               </li>
-              <li class="dropdown-item">
+              <li class="dropdown-item" @click="changePassword()">
                 <div class="dropdown_tile">
                   <i class="fas fa-cog"></i>
-                  <span> Setting 1 </span>
+                  <span>Change Password</span>
                 </div>
               </li>
               <li class="dropdown-item">
