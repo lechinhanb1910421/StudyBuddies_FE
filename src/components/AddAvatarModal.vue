@@ -42,7 +42,7 @@ export default {
         'state_changed',
         (snapshot) => {
           this.uploadProgress = Math.floor((snapshot.bytesTransferred / snapshot.totalBytes) * 100)
-        //   console.log('UPLOADING ', this.uploadProgress, '%')
+          //   console.log('UPLOADING ', this.uploadProgress, '%')
           switch (snapshot.state) {
             case 'paused':
               console.log('Upload is paused')
@@ -115,7 +115,7 @@ export default {
                 accept="image/png, image/gif, image/jpeg" />
             </label>
             <button type="button" class="btn btn-secondary btn_discard" @click="discardChanges">Discard changes</button>
-            <button type="button" class="btn btn-primary btn_add_post" @click="submitAvatar" :disabled="!this.isNewAva">Add avatar</button>
+            <button type="button" class="btn btn-primary btn_add_post" @click="submitAvatar" :disabled="!this.isNewAva">Change avatar</button>
           </div>
         </div>
         <!-- <div class="modal-footer"></div> -->
