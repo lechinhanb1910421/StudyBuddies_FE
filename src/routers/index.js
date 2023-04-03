@@ -23,10 +23,11 @@ const routes = [
     // props: (route) => ({ userId: route.query.userId })
   },
   {
-    path: '/error',
+    path: '/404',
     name: 'notFound',
     component: NotFound
-  }
+  },
+  { path: '/:catchAll(.*)', redirect: '/404' }
 ]
 
 const router = createRouter({
