@@ -167,7 +167,8 @@ export default {
           </div>
         </div>
         <div class="search_no_res" v-if="this.posts.length == 0 && this.postsLoaded">
-          <span class="no_posts_inform"> You have no posts yet! </span>
+          <span class="no_posts_inform" v-if="this.user.userId == this.userStore.user.userId"> You have no posts yet! </span>
+          <span class="no_posts_inform" v-else> {{ this.user.givenName }} have no posts yet! </span>
         </div>
         <Transition name="fade">
           <div v-if="this.postsLoaded" style="padding-top: 20px">

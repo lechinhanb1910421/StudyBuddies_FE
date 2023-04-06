@@ -1,6 +1,5 @@
 <script>
 import UserPost from './UserPost.vue'
-// import PostService from '@/services/Post.service'
 import '@/assets/preloader.css'
 import AddPostModal from '@/components/AddPostModal.vue'
 import { postStorage } from '@/stores/post'

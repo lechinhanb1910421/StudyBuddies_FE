@@ -1,6 +1,6 @@
 import createApiClient from '@/services/api.service'
 import friends_payload from '@/assets/friend_list.json'
-class UserServiceOff {
+class UserService {
   constructor(baseURL = '/user_resources') {
     this.api = createApiClient(baseURL)
   }
@@ -29,4 +29,4 @@ class UserServiceOff {
     return (await this.api.post('/avatars', payload)).data
   }
 }
-export default new UserServiceOff()
+export default new UserService()

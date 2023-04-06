@@ -3,6 +3,7 @@ import MainPage from '@/views/MainPage.vue'
 import SearchResults from '@/views/SearchResults.vue'
 import UserProfile from '@/views/UserProfile.vue'
 import NotFound from '@/views/NotFound.vue'
+import AdminPage from '@/views/AdminPage.vue'
 const routes = [
   {
     path: '/',
@@ -20,7 +21,12 @@ const routes = [
     name: 'userProfile',
     component: UserProfile,
     props: true
-    // props: (route) => ({ userId: route.query.userId })
+  },
+  {
+    path: '/admin',
+    name: 'Admin',
+    component: AdminPage,
+    props: true
   },
   {
     path: '/404',
@@ -32,7 +38,10 @@ const routes = [
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
-  routes
+  routes,
+  scrollBehavior() {
+    return { top: 0 }
+  }
 })
 router.beforeEach((to, from, next) => {
   if (to.name != 'home') {

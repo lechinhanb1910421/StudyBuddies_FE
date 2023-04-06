@@ -27,6 +27,7 @@ export default {
   border-radius: 0.5rem;
   margin-bottom: 5px;
   transition: background-color linear 0.1s;
+  cursor: pointer;
 }
 .profile_tile:hover {
   background-color: rgb(255 255 255 /0.4);

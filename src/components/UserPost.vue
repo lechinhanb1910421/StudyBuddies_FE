@@ -4,6 +4,7 @@ import { loggedInUserStorage } from '@/stores/loggedInUser'
 import MyDateTimeService from '@/services/myDateTime.service'
 import PostService from '@/services/Post.service'
 import EditPostModal from '@/components/EditPostModal.vue'
+import router from '@/routers/index'
 export default {
   emits: ['postDeleted', 'postEdited'],
   components: { PostCommentGroup, EditPostModal },
@@ -89,6 +90,10 @@ export default {
       }
       this.isReacted = !this.isReacted
       await this.getReactedUsers()
+    },
+    gotoUserProfile() {
+      const value = this.user.userId
+      router.push({ name: 'userProfile', params: { id: value } })
     }
   },
   async mounted() {
@@ -109,10 +114,10 @@ export default {
   <div class="post_ctn">
     <section class="p_header">
       <div class="p_header_info">
-        <div class="p_header_ava">
+        <div class="p_header_ava" @click="gotoUserProfile">
           <img :src="this.userCurrentAva" class="posts_ava" alt="..." />
         </div>
-        <div class="p_header_name">{{ this.user.userName }}<i class="fa fa-check-circle-o" aria-hidden="true"></i></div>
+        <div class="p_header_name" @click="gotoUserProfile">{{ this.user.userName }}</div>
       </div>
       <div class="p_header_subinfo">
         <div class="p_header_creTime">
@@ -317,6 +322,10 @@ hr.hr-white {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  cursor: pointer;
+}
+.p_header_name:hover {
+  text-decoration: underline;
 }
 .p_header_subinfo {
   flex: 1;

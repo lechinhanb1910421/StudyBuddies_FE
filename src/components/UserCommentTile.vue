@@ -1,7 +1,6 @@
 <script>
-// import UserService from '@/services/User.service'
+import router from '@/routers/index'
 import { loggedInUserStorage } from '@/stores/loggedInUser'
-// import { usersStorage } from '@/stores/users'
 import CommentService from '@/services/Comment.service'
 import MyDateTimeService from '@/services/myDateTime.service'
 export default {
@@ -20,9 +19,6 @@ export default {
     }
   },
   methods: {
-    // async getCmtUser() {
-    //   this.user = await this.usersStore.getUserById(this.$keycloak.token, this.cmt.userId)
-    // },
     async parseTime() {
       this.cmtCreatedAt = MyDateTimeService.parseTimeString({ timeString: this.cmt.createdTime })
       this.cmtCreTime = MyDateTimeService.getTimeDifference({ timeString: this.cmt.createdTime })
@@ -32,10 +28,13 @@ export default {
       if (data.message == 'Comment was successfully removed') {
         this.$emit('cmtDeleted')
       }
+    },
+    gotoUserProfile() {
+      const value = this.cmt.userId
+      router.push({ name: 'userProfile', params: { id: value } })
     }
   },
   async mounted() {
-    // await this.getCmtUser()
     await this.parseTime()
   }
 }
@@ -47,7 +46,7 @@ export default {
     </div>
     <div class="cmt_main">
       <div class="cmt_main_header" v-if="this.cmt.userId">
-        <span class="cmt_user_name">{{ this.cmt.userFullName }}</span>
+        <span class="cmt_user_name" @click="gotoUserProfile">{{ this.cmt.userFullName }}</span>
         <tippy :content="this.cmtCreatedAt">
           <span class="cmt_user_creTime">{{ this.cmtCreTime }}</span>
         </tippy>
@@ -122,6 +121,10 @@ export default {
 }
 .cmt_user_name {
   font-weight: 700;
+  cursor: pointer;
+}
+.cmt_user_name:hover {
+  text-decoration: underline;
 }
 .cmt_user_creTime {
   position: relative;
