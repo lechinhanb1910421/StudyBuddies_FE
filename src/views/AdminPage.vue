@@ -1,12 +1,18 @@
 <script>
 import router from '@/routers/index'
 import AdminService from '@/services/Admin.service'
+import AdminUserTile from '@/components/AdminUserTile.vue'
+import AdminPostTile from '@/components/AdminPostTile.vue'
+import PostService from '@/services/Post.service'
 export default {
+  components: { AdminUserTile, AdminPostTile },
   data() {
     return {
       isForbidden: true,
       isLoaded: false,
-      briefStats: ''
+      briefStats: '',
+      users: '',
+      posts: ''
     }
   },
   methods: {
@@ -15,9 +21,10 @@ export default {
     },
     async getStats() {
       try {
-        this.briefStats = await AdminService.getAllUsers(this.$keycloak.token)
+        this.briefStats = await AdminService.getBriefStats(this.$keycloak.token)
+        this.users = await AdminService.getAllUsers(this.$keycloak.token)
+        this.posts = await PostService.getAllPosts(this.$keycloak.token)
         this.isForbidden = false
-        console.table(this.briefStats)
       } catch (error) {
         this.isForbidden = true
       }
@@ -75,13 +82,23 @@ export default {
             </div>
           </div>
         </div>
-        <div class="catalogue_title">User Details</div>
-        <div class="cat_user_ctn">
-          <div class="cat_user">preserved for detail users</div>
-        </div>
-        <div class="catalogue_title">Post Details</div>
-        <div class="cat_posts_ctn">
-          <div class="cat_posts">preserved for detail posts</div>
+        <div class="catalogue_ctn">
+          <div class="users_del_ctn">
+            <div class="catalogue_title">User Details</div>
+            <div class="cat_user_ctn" v-if="this.users.length > 0">
+              <div v-for="(user, index) in this.users" :key="index">
+                <AdminUserTile :user="user"></AdminUserTile>
+              </div>
+            </div>
+          </div>
+          <div class="posts_del_ctn">
+            <div class="catalogue_title">Post Details</div>
+            <div class="cat_posts_ctn" v-if="this.posts.length > 0">
+              <div v-for="(post, index) in this.posts" :key="index">
+                <AdminPostTile @postDeleted="getStats" :post="post"></AdminPostTile>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </Transition>
@@ -120,18 +137,16 @@ hr {
 .overview_users {
   outline: 7px solid #93c6e7;
 }
-.cat_user,
-.cat_posts {
-  color: white;
-  font-size: 30px;
-  font-weight: 600;
-}
+
 .cat_user_ctn,
 .cat_posts_ctn {
-  background-color: rgb(255 255 255 / 0.3);
-  width: 90%;
-  height: 150px;
-  margin-left: 5%;
+  background-color: rgb(230 230 230);
+  border-radius: 0.75rem;
+  height: 600px;
+  overflow-y: scroll;
+  padding-left: 7px;
+  padding-top: 10px;
+  margin-top: 10px;
 }
 .overview_detail_ctn {
   height: 100%;
@@ -150,11 +165,24 @@ hr {
   height: 200px;
   margin-bottom: 30px;
 }
+.posts_del_ctn {
+  flex: 5;
+}
+.users_del_ctn {
+  flex: 4;
+}
 .catalogue_title {
   font-size: 45px;
   font-weight: 600;
   color: #fff;
-  padding-left: 100px;
+  padding-left: 40px;
+}
+.catalogue_ctn {
+  width: 100%;
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  align-items: center;
 }
 .stats_ctn {
   width: 90%;
