@@ -111,7 +111,7 @@ export default {
   <div class="modal modal-lg fade" :id="editModalId" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
     <EditPostModal :oldPost="this.post" @postEdited="callReloadPosts"></EditPostModal>
   </div>
-  <div class="post_ctn">
+  <div class="post_ctn" :id="this.post.postId">
     <section class="p_header">
       <div class="p_header_info">
         <div class="p_header_ava" @click="gotoUserProfile">
