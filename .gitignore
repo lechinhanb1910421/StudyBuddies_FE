@@ -2,6 +2,7 @@
 node_modules
 /dist
 run_serve.bat
+/public/firebase-messaging-sw.js
 
 # local env files
 .env
