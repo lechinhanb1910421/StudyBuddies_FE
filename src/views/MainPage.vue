@@ -9,8 +9,8 @@ export default {
       currentAva: ''
     }
   },
-
-  methods: {},
+  methods: {
+  },
   async mounted() {}
 }
 </script>

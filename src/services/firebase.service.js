@@ -1,5 +1,6 @@
 import { initializeApp } from 'firebase/app'
 import { getStorage } from 'firebase/storage'
+import { getMessaging } from 'firebase/messaging'
 
 const firebaseConfig = {
   apiKey: process.env.VUE_APP_FB_APIKEY,
@@ -12,4 +13,5 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig)
 const storage = getStorage(app)
-export { storage }
+const messaging = getMessaging(app)
+export { storage, messaging }

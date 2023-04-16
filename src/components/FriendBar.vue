@@ -26,8 +26,12 @@ export default {
   <section class="interact_bar">
     <div class="i_bar_titles">Groups</div>
     <div class="groups">
-      <GroupTile :groupName="'AAVN'" :g-avatar="'pics/axon_active_logo.jpg'"></GroupTile>
-      <GroupTile :groupName="'Just the DANG'" :g-avatar="'pics/just_Dang_logo.png'"></GroupTile>
+      <GroupTile
+        :groupName="'AAVN'"
+        :g-avatar="'https://firebasestorage.googleapis.com/v0/b/study-buddies-8b16e.appspot.com/o/shared%2Faxon_active_logo.jpg?alt=media&token=361d3a11-b10c-4f1a-94d9-82093e108094'"></GroupTile>
+      <GroupTile
+        :groupName="'Just the DANG'"
+        :g-avatar="'https://firebasestorage.googleapis.com/v0/b/study-buddies-8b16e.appspot.com/o/shared%2Fjust_Dang_logo.png?alt=media&token=53dbfdac-459c-4163-a0bf-1daf50a66eff'"></GroupTile>
     </div>
     <hr class="i_bar_hr" />
     <div class="i_bar_titles">Friends</div>

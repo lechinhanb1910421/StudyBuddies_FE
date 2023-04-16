@@ -4,6 +4,7 @@ import SearchResults from '@/views/SearchResults.vue'
 import UserProfile from '@/views/UserProfile.vue'
 import NotFound from '@/views/NotFound.vue'
 import AdminPage from '@/views/AdminPage.vue'
+import PostDetail from '@/views/PostDetail.vue'
 const routes = [
   {
     path: '/',
@@ -20,6 +21,12 @@ const routes = [
     path: '/profile/:id',
     name: 'userProfile',
     component: UserProfile,
+    props: true
+  },
+  {
+    path: '/post/:id',
+    name: 'postDetail',
+    component: PostDetail,
     props: true
   },
   {

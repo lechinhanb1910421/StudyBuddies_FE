@@ -94,6 +94,10 @@ export default {
     gotoUserProfile() {
       const value = this.user.userId
       router.push({ name: 'userProfile', params: { id: value } })
+    },
+    gotoDetailPost() {
+      const value = this.post.postId
+      router.push({ name: 'postDetail', params: { id: value } })
     }
   },
   async mounted() {
@@ -119,7 +123,7 @@ export default {
         </div>
         <div class="p_header_name" @click="gotoUserProfile">{{ this.user.userName }}</div>
       </div>
-      <div class="p_header_subinfo">
+      <div class="p_header_subinfo" @click="gotoDetailPost">
         <div class="p_header_creTime">
           <tippy :content="this.postCreatedAt">
             <i class="far fa-clock"></i>
@@ -335,6 +339,7 @@ hr.hr-white {
   align-items: center;
   color: white;
   gap: 10px;
+  cursor: pointer;
 }
 .p_header_creTime,
 .p_header_major {
