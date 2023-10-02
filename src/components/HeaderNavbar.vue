@@ -58,7 +58,7 @@ export default {
   },
   async mounted() {
     await this.getCurrentUser()
-    this.currentAvatar = this.userStore.user.avatars[0].avaUrl
+    this.currentAvatar = await this.userStore.getUserActiveAvatar()
     if (this.$route.query.q != null || this.$route.query.q != '') {
       this.input_search = this.$route.query.q
     }

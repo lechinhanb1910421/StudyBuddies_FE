@@ -17,7 +17,8 @@ export default {
         loginName: '',
         givenName: '',
         familyName: '',
-        avatars: []
+        avatars: [],
+        activeAvatar: ''
       },
       userCurrentAva: '',
       postCreatedAt: '',
@@ -45,7 +46,7 @@ export default {
       let access_token = this.$keycloak.token
       this.user = await this.userStore.getUserById(access_token, this.post.userId)
       this.user.userName = this.user.givenName + ' ' + this.user.familyName
-      this.userCurrentAva = this.user.avatars[0].avaUrl
+      this.userCurrentAva = this.user.activeAvatar
     },
     setNoOfComment(value) {
       this.postCommentCount = value
@@ -112,7 +113,8 @@ export default {
 <template v-if="this.post">
   <!-- <button type="button" style="display: none" ref="editModal" data-bs-toggle="modal" data-bs-target="#editPostModal">toggle edit</button> -->
 
-  <div class="modal modal-lg fade" :id="editModalId" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
+  <div class="modal modal-lg fade" :id="editModalId" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-hidden="true">
     <EditPostModal :oldPost="this.post" @postEdited="callReloadPosts"></EditPostModal>
   </div>
   <div class="post_ctn" :id="this.post.postId">
@@ -142,8 +144,12 @@ export default {
               <i class="fas fa-ellipsis-h"></i>
             </div>
             <ul class="dropdown-menu dropdown-menu-end">
-              <li><div class="dropdown-item" data-bs-toggle="modal" :data-bs-target="'#' + this.editModalId">Edit Post</div></li>
-              <li><div class="dropdown-item" data-bs-toggle="modal" data-bs-target="#deletePost_confirm">Delete Post</div></li>
+              <li>
+                <div class="dropdown-item" data-bs-toggle="modal" :data-bs-target="'#' + this.editModalId">Edit Post</div>
+              </li>
+              <li>
+                <div class="dropdown-item" data-bs-toggle="modal" data-bs-target="#deletePost_confirm">Delete Post</div>
+              </li>
             </ul>
           </div>
         </div>
@@ -169,7 +175,8 @@ export default {
 
       <hr class="hr-white" />
       <div class="p_ctrl">
-        <button class="btn p_ctrl_btn_bg btn_like" @click="reactPost" :class="{ btn_reacted: this.isReacted }" type="button">
+        <button class="btn p_ctrl_btn_bg btn_like" @click="reactPost" :class="{ btn_reacted: this.isReacted }"
+          type="button">
           <i class="far fa-heart"> </i>
           <span>Love</span>
         </button>
@@ -209,42 +216,53 @@ export default {
   border-radius: 50%;
   padding: 10px;
 }
+
 .modal-dialog {
   color: white;
 }
+
 .modal-footer button {
   width: 100px;
 }
+
 .btn_close {
   background-color: #373737;
   color: white;
   border: none;
 }
+
 .btn_close:hover {
   background-color: rgb(255 255 255 /0.3);
 }
+
 .modal-content {
   background-color: #373737;
 }
+
 .dropdown-item {
   font-weight: 600;
   font-size: 17px;
 }
+
 .dropdown-item:hover {
   background-color: rgb(220 220 220);
 }
+
 .dropdown-menu {
   background-color: rgb(170 170 170);
 }
+
 .post_modi_dd {
   padding-inline: 11px;
   padding-block: 7px;
   background-color: rgb(255 255 255 /0.2);
   border-radius: 50%;
 }
+
 .p_ctrl i {
   padding-right: 5px;
 }
+
 .p_ctrl {
   display: flex;
   justify-content: center;
@@ -252,22 +270,27 @@ export default {
   gap: 20px;
   padding-inline: 30px;
 }
+
 .p_ctrl_btn_bg {
   background-color: rgb(255 255 255 /0.15);
 }
+
 .p_ctrl button {
   color: white;
   font-size: 16px;
   font-weight: 700;
   flex: 1;
 }
+
 .p_ctrl button:hover {
   background-color: rgb(255 255 255 /0.3);
 }
+
 .p_stats_like i,
 .p_stats_no_cmt span {
   padding-right: 8px;
 }
+
 .p_stats {
   padding-top: 10px;
   padding-left: 30px;
@@ -278,38 +301,46 @@ export default {
   font-weight: 500;
   gap: 50px;
 }
+
 hr.hr-white {
   margin: 10px;
   border-top: 1px solid white;
 }
+
 .p_content_text {
   padding: 20px;
   padding-top: 5px;
   color: white;
   font-size: 17px;
 }
+
 .p_content_img {
   display: flex;
   justify-content: center;
 }
+
 .p_content_img img {
   max-width: 100%;
   max-height: 100%;
 }
+
 .post_ctn {
   background-color: rgb(255 255 255 /0.1);
   border-radius: 0.75rem;
   margin-bottom: 3%;
 }
+
 .p_content {
   padding-bottom: 5px;
 }
+
 .p_header {
   /* background-color: rgb(255 255 255 /0.4); */
   display: flex;
   align-self: center;
   padding-inline: 5px;
 }
+
 .p_header_info {
   flex: 1;
   display: flex;
@@ -319,6 +350,7 @@ hr.hr-white {
   padding: 10px;
   overflow: hidden;
 }
+
 .p_header_name {
   font-size: 18px;
   color: white;
@@ -328,9 +360,11 @@ hr.hr-white {
   text-overflow: ellipsis;
   cursor: pointer;
 }
+
 .p_header_name:hover {
   text-decoration: underline;
 }
+
 .p_header_subinfo {
   flex: 1;
   display: flex;
@@ -341,6 +375,7 @@ hr.hr-white {
   gap: 10px;
   cursor: pointer;
 }
+
 .p_header_creTime,
 .p_header_major {
   padding: 8px;
@@ -352,25 +387,30 @@ hr.hr-white {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
 .p_header_creTime span,
 .p_header_major span {
   padding-left: 5px;
   font-weight: 600;
   font-size: 15px;
 }
+
 .posts_ava {
   height: 40px;
   aspect-ratio: 1/1;
   border-radius: 50%;
 }
+
 .btn_reacted:focus,
 .btn_like:focus {
   outline: none;
   color: white;
 }
+
 .stats_reacted {
   color: #ff7878;
 }
+
 .btn_reacted {
   color: #ff7878 !important;
   outline: 3px solid rgb(255 120 120 /0.8) !important;
