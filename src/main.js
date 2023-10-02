@@ -38,8 +38,6 @@ keycloak
       // getToken(messaging, { vapidKey: 'BHyqOE0G2_LsZ7adqV9VAAx5HHrPImwErndmpHQjYdgHYmCYdQgr5WmePAufIx5_JRUk0AA6sYsJm21dlyjCyiI' })
       //   .then(async (currentToken) => {
       //     if (currentToken) {
-      //       console.log('recreating device with client token ', currentToken.substring(0, 10))
-      //       console.log('keycloak token: ', keycloak.token.substring(0, 27))
       //       await NotificationService.createUserDevice(keycloak.token, currentToken)
       //     } else {
       //       console.log('No registration token available. Request permission to generate one.')
