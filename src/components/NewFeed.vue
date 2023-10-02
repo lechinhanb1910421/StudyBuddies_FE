@@ -72,21 +72,19 @@ export default {
     <div v-if="this.pageLoaded">
       <AddPostModal @postAdded="getAllPost"></AddPostModal>
       <div class="container" v-if="this.userStore.user.userId">
-        <div class="crePost_ctn">
+        <div class="crePost_ctn cursor_pointer" data-bs-toggle="modal" data-bs-target="#addPostModal">
           <div class="crePost_ava" v-if="this.currentAvatar">
             <img :src="this.currentAvatar" class="posts_ava" alt="..." />
           </div>
           <div class="crePost_input" data-bs-toggle="modal" data-bs-target="#addPostModal">
-            <input type="text" class="form-control" :placeholder="'Hello ' + this.userStore.user.givenName + ', what is in your mind?'" disabled />
+            <input type="text" class="form-control cursor_pointer"
+              :placeholder="'Hello ' + this.userStore.user.givenName + ', what is in your mind?'" readonly />
           </div>
         </div>
         <hr class="hr-white" />
         <div v-for="post in this.postStore.posts" :key="post">
           <div v-if="post">
-            <UserPost
-              :post="post"
-              :allowModify="post.userId == this.userStore.user.userId"
-              @postDeleted="getAllPost"
+            <UserPost :post="post" :allowModify="post.userId == this.userStore.user.userId" @postDeleted="getAllPost"
               @postEdited="getAllPost"></UserPost>
           </div>
         </div>
@@ -105,10 +103,12 @@ export default {
   transform: translate(-50%);
   position: fixed;
 }
+
 hr.hr-white {
   margin-inline: 10px;
   border-top: 1px solid white;
 }
+
 .crePost_ctn {
   margin-top: 15px;
   color: white;
@@ -119,20 +119,28 @@ hr.hr-white {
   padding: 12px;
   gap: 10px;
 }
+
+.cursor_pointer {
+  cursor: pointer;
+}
+
 .crePost_ava {
   display: flex;
   justify-content: center;
   align-items: center;
 }
+
 .posts_ava {
   height: 40px;
   aspect-ratio: 1/1;
   border-radius: 50%;
 }
+
 .crePost_input {
   flex-shrink: 0;
   flex-grow: 1;
 }
+
 .crePost_input input {
   height: 45px;
   background-color: rgb(255 255 255 /0.15);
@@ -141,21 +149,29 @@ hr.hr-white {
   font-size: 17px;
   border-radius: 1.5rem;
 }
+
 .crePost_input input::placeholder {
   color: white;
   opacity: 0.7;
 }
+
 .container {
   padding-left: 15%;
   padding-right: 9%;
   padding-bottom: 5%;
   min-height: 100%;
 }
+
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.5s;
 }
-.fade-enter-from, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+
+.fade-enter-from,
+.fade-leave-to
+
+/* .fade-leave-active below version 2.1.8 */
+  {
   opacity: 0;
 }
 </style>

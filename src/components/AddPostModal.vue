@@ -1,6 +1,6 @@
 <script>
-import { storage } from '@/services/firebase.service'
-import { ref, getDownloadURL, uploadBytesResumable } from 'firebase/storage'
+// import { storage } from '@/services/firebase.service'
+// import { ref, getDownloadURL, uploadBytesResumable } from 'firebase/storage'
 import PostService from '@/services/Post.service'
 import { loggedInUserStorage } from '@/stores/loggedInUser'
 import ToastService from '@/services/toast.service'
@@ -81,32 +81,33 @@ export default {
       this.hasImage = false
     },
     async uploadImage() {
-      this.getUserLoginName()
-      const newImage_name = Math.floor(Date.now() / 1000) + this.newImageData.name
-      const storageRef = ref(storage, `/${this.loginName}/postImages/${newImage_name}`)
-      const uploadTask = uploadBytesResumable(storageRef, this.newImageData)
-      // console.log('UPLOADING FOR USER: ' + this.loginName)
-      uploadTask.on(
-        'state_changed',
-        (snapshot) => {
-          this.uploadProgress = Math.floor((snapshot.bytesTransferred / snapshot.totalBytes) * 100)
-          // console.log('UPLOADING ', this.uploadProgress, '%')
-          switch (snapshot.state) {
-            case 'paused':
-              console.log('Upload is paused')
-              break
-          }
-        },
-        (error) => {
-          console.log(error)
-        },
-        () => {
-          getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
-            this.postImageUrl = downloadURL
-            this.createNewPost()
-          })
-        }
-      )
+      const name = this.getUserLoginName()
+      console.log(name);
+      // const newImage_name = Math.floor(Date.now() / 1000) + this.newImageData.name
+      // const storageRef = ref(storage, `/${this.loginName}/postImages/${newImage_name}`)
+      // const uploadTask = uploadBytesResumable(storageRef, this.newImageData)
+      // // console.log('UPLOADING FOR USER: ' + this.loginName)
+      // uploadTask.on(
+      //   'state_changed',
+      //   (snapshot) => {
+      //     this.uploadProgress = Math.floor((snapshot.bytesTransferred / snapshot.totalBytes) * 100)
+      //     // console.log('UPLOADING ', this.uploadProgress, '%')
+      //     switch (snapshot.state) {
+      //       case 'paused':
+      //         console.log('Upload is paused')
+      //         break
+      //     }
+      //   },
+      //   (error) => {
+      //     console.log(error)
+      //   },
+      //   () => {
+      //     getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
+      //       this.postImageUrl = downloadURL
+      //       this.createNewPost()
+      //     })
+      //   }
+      // )
     },
     setPostTopic(event) {
       this.postTopic = event.target.value
