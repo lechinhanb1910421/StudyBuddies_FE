@@ -18,7 +18,6 @@ export default {
         givenName: '',
         familyName: '',
         avatars: [],
-        activeAvatar: ''
       },
       userCurrentAva: '',
       postCreatedAt: '',
@@ -46,7 +45,7 @@ export default {
       let access_token = this.$keycloak.token
       this.user = await this.userStore.getUserById(access_token, this.post.userId)
       this.user.userName = this.user.givenName + ' ' + this.user.familyName
-      this.userCurrentAva = this.user.activeAvatar
+      this.userCurrentAva = await this.userStore.getUserActiveAvatar()
     },
     setNoOfComment(value) {
       this.postCommentCount = value
