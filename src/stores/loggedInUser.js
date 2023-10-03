@@ -23,7 +23,9 @@ export const loggedInUserStorage = defineStore('loggedInUser', {
       return await UserService.getUserById(access_token, id)
     },
     async getCurrentUser(access_token) {
-      this.user = await UserService.getCurrentUser(access_token)
+      if (this.user.isActive == '') {
+        this.user = await UserService.getCurrentUser(access_token)
+      }
     },
     async getUserActiveAvatar() {
       for (let i = 0; i < this.user.avatars.length; i++) {
