@@ -56,7 +56,7 @@ export default {
         router.push({ name: 'notFound' })
         return
       }
-      this.currentAvatar = this.user.avatars[0].avaUrl
+      this.currentAvatar = await this.userStore.getUserActiveAvatar()
       var userCreDate = this.user.createdDate ?? '2023-01-01T01:02:27Z'
       this.userCreatedDate = MyDateTimeService.parseTimeStringToDate({ timeString: userCreDate })
       this.getAllUserPosts()
@@ -101,12 +101,8 @@ export default {
     <div class="brief_info_ctn">
       <div class="ava_col" v-if="this.currentAvatar">
         <img :src="this.currentAvatar" class="main_avatar" alt="" />
-        <button
-          type="button"
-          class="edit_ava_button"
-          v-if="this.user.userId == this.userStore.user.userId"
-          data-bs-toggle="modal"
-          data-bs-target="#addAvaModal">
+        <button type="button" class="edit_ava_button" v-if="this.user.userId == this.userStore.user.userId"
+          data-bs-toggle="modal" data-bs-target="#addAvaModal">
           <i class="fas fa-camera"></i>
         </button>
       </div>
@@ -162,22 +158,21 @@ export default {
               <img :src="this.currentAvatar" class="posts_ava" alt="..." />
             </div>
             <div class="crePost_input" data-bs-toggle="modal" data-bs-target="#addPostModal">
-              <input type="text" class="form-control" :placeholder="'Hello ' + this.user.givenName + ', what is on your mind?'" disabled />
+              <input type="text" class="form-control"
+                :placeholder="'Hello ' + this.user.givenName + ', what is on your mind?'" disabled />
             </div>
           </div>
         </div>
         <div class="search_no_res" v-if="this.posts.length == 0 && this.postsLoaded">
-          <span class="no_posts_inform" v-if="this.user.userId == this.userStore.user.userId"> You have no posts yet! </span>
+          <span class="no_posts_inform" v-if="this.user.userId == this.userStore.user.userId"> You have no posts yet!
+          </span>
           <span class="no_posts_inform" v-else> {{ this.user.givenName }} have no posts yet! </span>
         </div>
         <Transition name="fade">
           <div v-if="this.postsLoaded" style="padding-top: 20px">
             <div v-for="(post, index) in this.posts" :key="index">
-              <UserPost
-                :post="post"
-                :allowModify="post.userId == this.userStore.user.userId"
-                @postDeleted="getAllUserPosts"
-                @postEdited="getAllUserPosts"></UserPost>
+              <UserPost :post="post" :allowModify="post.userId == this.userStore.user.userId"
+                @postDeleted="getAllUserPosts" @postEdited="getAllUserPosts"></UserPost>
             </div>
           </div>
         </Transition>
@@ -191,17 +186,21 @@ export default {
   font-size: 30px;
   font-weight: 700;
 }
+
 .info_tile {
   color: white;
   padding-bottom: 20px;
 }
+
 .info_title {
   font-size: 23px;
   font-weight: 600;
 }
+
 .info_student_code {
   font-size: 18px;
 }
+
 .crePost_ctn {
   margin-top: 5px;
   color: white;
@@ -212,11 +211,13 @@ export default {
   padding: 12px;
   gap: 10px;
 }
+
 .crePost_ava {
   display: flex;
   justify-content: center;
   align-items: center;
 }
+
 .posts_ava {
   height: 40px;
   aspect-ratio: 1/1;
@@ -227,6 +228,7 @@ export default {
   flex-shrink: 0;
   flex-grow: 1;
 }
+
 .crePost_input input {
   height: 45px;
   background-color: rgb(255 255 255 /0.15);
@@ -235,10 +237,12 @@ export default {
   font-size: 17px;
   border-radius: 1.5rem;
 }
+
 .crePost_input input::placeholder {
   color: white;
   opacity: 0.7;
 }
+
 .no_posts_inform {
   color: white;
   display: flex;
@@ -250,10 +254,12 @@ export default {
   opacity: 0.6;
   margin-top: 20px;
 }
+
 .no_posts_inform i {
   font-size: 80px;
   font-weight: 800;
 }
+
 .edit_info_btn {
   padding: 5px 10px;
   background-color: #fff;
@@ -266,9 +272,11 @@ export default {
   box-shadow: 2px 2px 6px 0 rgba(0, 0, 0, 0.6);
   font-weight: 600;
 }
+
 .edit_info_btn:hover {
   background-color: rgba(255 255 255 / 0.3);
 }
+
 .edit_ava_button {
   background-color: #fff;
   padding: 5px 10px;
@@ -279,9 +287,11 @@ export default {
   border: 2px solid rgb(0 0 0 / 0.6);
   border-radius: 1rem;
 }
+
 .edit_ava_button:hover {
   background-color: rgb(200 200 200);
 }
+
 .main_avatar {
   height: 150px;
   aspect-ratio: 1/1;
@@ -289,11 +299,13 @@ export default {
   box-shadow: 6px 6px 12px 2px rgb(0 0 0 / 0.5);
   outline: 5px solid #54bab9;
 }
+
 .main_col {
   width: 67%;
   min-height: 100%;
   padding-inline: 3%;
 }
+
 .user_info_cnt {
   background-color: rgb(255 255 255 / 0.1);
   display: flex;
@@ -306,11 +318,13 @@ export default {
   margin-top: 5px;
   height: 100%;
 }
+
 .main_profile {
   width: 95%;
   display: flex;
   gap: 10px;
 }
+
 .ava_col {
   width: 35%;
   display: flex;
@@ -319,20 +333,24 @@ export default {
   align-items: center;
   position: relative;
 }
+
 .user_created_date {
   font-size: 20px;
   font-weight: 600;
   opacity: 0.85;
   padding-left: 7px;
 }
+
 .user_name {
   font-size: 36px;
   font-weight: bold;
   padding-bottom: 5px;
 }
+
 .brief_infos {
   flex: 7;
 }
+
 .brief_info_ctn {
   width: 80%;
   height: 210px;
@@ -344,6 +362,7 @@ export default {
   gap: 30px;
   position: relative;
 }
+
 .container-fluid {
   padding-inline: 10%;
   min-height: 100vh;
@@ -355,6 +374,7 @@ export default {
   gap: 15px;
   padding-top: 69px;
 }
+
 .preloader_ctn {
   display: flex;
   align-items: center;

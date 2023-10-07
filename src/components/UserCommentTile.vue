@@ -15,7 +15,8 @@ export default {
   data() {
     return {
       cmtCreatedAt: '',
-      cmtCreTime: ''
+      cmtCreTime: '',
+      userAvatar:''
     }
   },
   methods: {

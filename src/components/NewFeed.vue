@@ -36,19 +36,12 @@ export default {
       this.pageLoaded = true
     }, 272)
     if (this.userStore.user.avatars) {
-      this.currentAvatar = this.userStore.user.avatars[0].avaUrl
+      this.currentAvatar = await this.userStore.getUserActiveAvatar()
     }
   },
   watch: {
-    user: function (value) {
-      let avatar = value.avatars[0]
-      for (let i = 1; i < value.avatars.length; i++) {
-        const elem = value.avatars[i]
-        if (elem.avaId > avatar.avaId) {
-          avatar = elem
-        }
-      }
-      this.currentAvatar = avatar.avaUrl
+    user: async function () {
+      this.currentAvatar = await this.userStore.getUserActiveAvatar()
     }
   }
 }

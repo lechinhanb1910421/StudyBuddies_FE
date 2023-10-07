@@ -1,0 +1,146 @@
+[
+    {
+        "userId": 1,
+        "loginName": "b1910421",
+        "givenName": "Nhan",
+        "familyName": "Le Nguyen Chi",
+        "fullName": "Nhan Le Nguyen Chi",
+        "email": "nhanb1910421@student.ctu.edu.vn",
+        "createdDate": "2023-02-27T02:27:01Z",
+        "accountStatus": "active",
+        "avatars": [
+            {
+                "avaId": 15,
+                "avaUrl": "https://firebasestorage.googleapis.com/v0/b/study-buddies-8b16e.appspot.com/o/b1910421%2Favatars%2FGanyu_2.jpeg?alt=media&token=df053a2c-1cbd-4013-bbdf-46606bfc4480"
+            }
+        ]
+    },
+    {
+        "userId": 2,
+        "loginName": "b2702201",
+        "givenName": "Special",
+        "familyName": "User",
+        "fullName": "Special User",
+        "email": "special@user.com",
+        "createdDate": "2023-03-16T13:14:02Z",
+        "accountStatus": "active",
+        "avatars": [
+            {
+                "avaId": 37,
+                "avaUrl": "https://firebasestorage.googleapis.com/v0/b/study-buddies-8b16e.appspot.com/o/b2702201%2Favatars%2F1679927730Avatar_4.png?alt=media&token=7a25c6d8-7b83-48bb-b2f6-602acc3f5d59"
+            }
+        ]
+    },
+    {
+        "userId": 3,
+        "loginName": "b1906489",
+        "givenName": "Khang",
+        "familyName": "Huynh Quy",
+        "fullName": "Khang Huynh Quy",
+        "email": "khangb1906489@student.ctu.edu.vn",
+        "createdDate": "2023-03-24T12:50:40Z",
+        "accountStatus": "active",
+        "avatars": [
+            {
+                "avaId": 38,
+                "avaUrl": "https://firebasestorage.googleapis.com/v0/b/study-buddies-8b16e.appspot.com/o/b1906489%2Favatars%2F1679929649khang.jpeg?alt=media&token=f810c9f6-94b0-4285-a147-72d577fcdd65"
+            }
+        ]
+    },
+    {
+        "userId": 8,
+        "loginName": "b1906631",
+        "givenName": "Ca",
+        "familyName": "Luu",
+        "fullName": "Ca Luu",
+        "email": "cab1906631@student.ctu.edu.vn",
+        "createdDate": "2023-03-25T02:59:09Z",
+        "accountStatus": "active",
+        "avatars": [
+            {
+                "avaId": 24,
+                "avaUrl": "https://firebasestorage.googleapis.com/v0/b/study-buddies-8b16e.appspot.com/o/b1906631%2Favatars%2Fluuca.jpg?alt=media&token=ed25f9f1-32ab-4922-8541-99b2c60e46a8"
+            }
+        ]
+    },
+    {
+        "userId": 4,
+        "loginName": "b1910428",
+        "givenName": "Nhut",
+        "familyName": "Nguyen Minh",
+        "fullName": "Nhut Nguyen Minh",
+        "email": "nhutb1910428@student.ctu.edu.vn",
+        "createdDate": "2023-03-24T12:52:10Z",
+        "accountStatus": "active",
+        "avatars": [
+            {
+                "avaId": 39,
+                "avaUrl": "https://firebasestorage.googleapis.com/v0/b/study-buddies-8b16e.appspot.com/o/b1910428%2Favatars%2F1679972277nhut.jpg?alt=media&token=380aa92c-bcfb-4af3-a6cf-3cd23a3e4910"
+            }
+        ]
+    },
+    {
+        "userId": 5,
+        "loginName": "b1910450",
+        "givenName": "Thang",
+        "familyName": "Tran Duc",
+        "fullName": "Thang Tran Duc",
+        "email": "thangb1910450@student.ctu.edu.vn",
+        "createdDate": "2023-03-24T12:53:37Z",
+        "accountStatus": "active",
+        "avatars": [
+            {
+                "avaId": 30,
+                "avaUrl": "https://firebasestorage.googleapis.com/v0/b/study-buddies-8b16e.appspot.com/o/shared%2Fdefault-user-icon.jpg?alt=media&token=f9f7aae4-858b-4c23-ae99-91dd7b67079e"
+            }
+        ]
+    },
+    {
+        "userId": 6,
+        "loginName": "b1910415",
+        "givenName": "Nang",
+        "familyName": "Phan Hoai",
+        "fullName": "Nang Phan Hoai",
+        "email": "nangb1910415@student.ctu.edu.vn",
+        "createdDate": "2023-03-24T12:56:20Z",
+        "accountStatus": "active",
+        "avatars": [
+            {
+                "avaId": 29,
+                "avaUrl": "https://firebasestorage.googleapis.com/v0/b/study-buddies-8b16e.appspot.com/o/shared%2Fdefault-user-icon.jpg?alt=media&token=f9f7aae4-858b-4c23-ae99-91dd7b67079e"
+            }
+        ]
+    },
+    {
+        "userId": 7,
+        "loginName": "b1910413",
+        "givenName": "Nam",
+        "familyName": "Duong Bao",
+        "fullName": "Nam Duong Bao",
+        "email": "namb1910413@student.ctu.edu.vn",
+        "createdDate": "2023-03-24T12:59:03Z",
+        "accountStatus": "active",
+        "avatars": [
+            {
+                "avaId": 28,
+                "avaUrl": "https://firebasestorage.googleapis.com/v0/b/study-buddies-8b16e.appspot.com/o/shared%2Fdefault-user-icon.jpg?alt=media&token=f9f7aae4-858b-4c23-ae99-91dd7b67079e"
+            }
+        ]
+    },
+    {
+        "userId": 9,
+        "loginName": "b1910641",
+        "givenName": "Hien",
+        "familyName": "Vo Phan Minh",
+        "fullName": "Hien Vo Phan Minh",
+        "email": "hienb1910641@student.ctu.edu.vn",
+        "createdDate": "2023-03-25T03:01:06Z",
+        "accountStatus": "active",
+        "avatars": [
+            {
+                "avaId": 26,
+                "avaUrl": "https://firebasestorage.googleapis.com/v0/b/study-buddies-8b16e.appspot.com/o/b1910641%2Favatars%2Fhien_vo.jpg?alt=media&token=f6d84deb-2926-4666-826a-a8a0dccd934f"
+            }
+        ]
+    }
+]

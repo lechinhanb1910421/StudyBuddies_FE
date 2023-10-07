@@ -26,9 +26,16 @@ export default {
     }
   },
   methods: {
+    async getCurrentUser() {
+      let access_token = this.$keycloak.token
+      await this.userStore.getCurrentUser(access_token)
+    },
     goToProfile() {
       const value = this.userStore.user.userId
       router.push({ name: 'userProfile', params: { id: value } })
+    },
+    async getUserAvatar() {
+      this.currentAvatar = await this.userStore.getUserActiveAvatar()
     }
     // toggleActiveMajor(name) {
     //   var majorId = this.majors.indexOf(name) + 1
@@ -38,13 +45,17 @@ export default {
     //   var topicId = this.topics.indexOf(name) + 1
     //   router.push({ name: 'searchResults', query: { t: '' + topicId } })
     // }
-  }
+  },
+  async mounted() {
+    await this.getCurrentUser()
+    await this.getUserAvatar()
+  },
 }
 </script>
 <template>
   <section class="profile" v-if="this.userStore.user.userId">
     <div class="profile_tile" v-if="this.userStore.user.userId" @click="goToProfile">
-      <img :src="this.userStore.user.avatars[0].avaUrl" class="avatar_img" alt="Avatar" />
+      <img :src="this.currentAvatar" class="avatar_img" alt="Avatar" />
       <span class="profile_name">{{ this.userStore.user.fullName }}</span>
     </div>
     <div class="menu_tiles">
@@ -80,14 +91,17 @@ export default {
   overflow-y: scroll;
   margin-bottom: 5px;
 }
+
 .majors_tile_ctn::-webkit-scrollbar,
 .topics_tile_ctn::-webkit-scrollbar {
   display: none;
 }
+
 .tiles {
   padding-inline-start: 10px;
   padding-inline-end: 5px;
 }
+
 .menu_tiles {
   height: 50px;
   background-color: rgb(255 255 255 /0.3);
@@ -103,9 +117,11 @@ export default {
   font-size: 18px;
   font-weight: 600;
 }
+
 .menu_icon {
   font-size: 23px;
 }
+
 hr.profile {
   opacity: 0.5;
   margin: 0;
@@ -115,6 +131,7 @@ hr.profile {
   margin-left: -10px;
   margin-right: -10px;
 }
+
 .profile {
   color: white;
   padding: 10px;
@@ -126,6 +143,7 @@ hr.profile {
   width: 22%;
   background-color: #181a1d;
 }
+
 .profile_tile {
   padding-inline-start: 15px;
   height: 55px;
@@ -140,9 +158,11 @@ hr.profile {
   transition: background-color linear 0.1s;
   cursor: pointer;
 }
+
 .profile_tile:hover {
   background-color: rgb(255 255 255 /0.45);
 }
+
 .profile_name {
   font-size: 17px;
   font-weight: 700;

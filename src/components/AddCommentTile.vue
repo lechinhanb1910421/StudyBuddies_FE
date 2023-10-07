@@ -7,7 +7,8 @@ export default {
   props: ['postId'],
   data() {
     return {
-      cmt_input: ''
+      cmt_input: '',
+      currentAvatar: '',
     }
   },
   setup() {
@@ -16,7 +17,11 @@ export default {
       userStore
     }
   },
+
   methods: {
+    async getUserCurrentAvatar() {
+      this.currentAvatar = await this.userStore.getUserActiveAvatar();
+    },
     async submitComment() {
       var value = this.cmt_input.replace(/\s+/g, ' ').trim()
       if (value != '') {
@@ -25,16 +30,20 @@ export default {
       this.cmt_input = ''
       this.$emit('cmtAdded')
     }
-  }
+  },
+  async mounted() {
+    await this.getUserCurrentAvatar()
+  },
 }
 </script>
 <template>
   <div class="add_cmt_ctn">
     <div class="add_cmt_ava" v-if="this.userStore.user.userId">
-      <img :src="this.userStore.user.avatars[0].avaUrl" class="add_cmt_ava" alt="..." />
+      <img :src="this.currentAvatar" class="add_cmt_ava" alt="..." />
     </div>
     <div class="add_cmt_input">
-      <input type="text" class="form-control" @keyup.enter="submitComment" v-model="this.cmt_input" placeholder="Leave a comment" />
+      <input type="text" class="form-control" @keyup.enter="submitComment" v-model="this.cmt_input"
+        placeholder="Leave a comment" />
     </div>
   </div>
 </template>
@@ -47,14 +56,17 @@ export default {
   margin-bottom: 5px;
   gap: 8px;
 }
+
 .add_cmt_ava {
   height: 35px;
   aspect-ratio: 1/1;
   border-radius: 50%;
 }
+
 .add_cmt_input {
   flex-grow: 1;
 }
+
 .add_cmt_input input {
   background-color: rgb(255 255 255 /0.2);
   border: none;
@@ -63,8 +75,8 @@ export default {
   border-radius: 1rem;
   color: white;
 }
+
 .add_cmt_input input::placeholder {
   color: white;
   opacity: 0.8;
-}
-</style>
+}</style>

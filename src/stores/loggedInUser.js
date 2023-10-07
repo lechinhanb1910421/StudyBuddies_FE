@@ -10,6 +10,8 @@ export const loggedInUserStorage = defineStore('loggedInUser', {
       familyName: '',
       fullName: '',
       createdDate: '',
+      isActive: '',
+      activeAvatar: '',
       avatars: []
     }
   }),
@@ -21,17 +23,18 @@ export const loggedInUserStorage = defineStore('loggedInUser', {
       return await UserService.getUserById(access_token, id)
     },
     async getCurrentUser(access_token) {
-      this.user = await UserService.getCurrentUser(access_token)
+      if (this.user.isActive == '') {
+        this.user = await UserService.getCurrentUser(access_token)
+      }
+    },
+    async getUserActiveAvatar() {
+      for (let i = 0; i < this.user.avatars.length; i++) {
+        const avatar = this.user.avatars[i]
+        if (avatar.isActive == 1) {
+          return avatar.avaUrl
+        }
+      }
+      return '';
     }
-    // async getUserAvatar() {
-    //   let avatar = this.user.avatars[0]
-    //   for (let i = 1; i < this.user.avatars.length; i++) {
-    //     const elem = this.user.avatars[i]
-    //     if (elem.avaId > avatar.avaId) {
-    //       avatar = elem
-    //     }
-    //   }
-    //   return avatar.avaUrl
-    // }
   }
 })
