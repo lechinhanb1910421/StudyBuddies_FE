@@ -1,8 +1,6 @@
 <script>
 import { loggedInUserStorage } from '@/stores/loggedInUser'
-import KeycloakService from '@/services/Keycloak.service'
 import router from '@/routers/index'
-// import { storeToRefs } from 'pinia'
 export default {
   data() {
     return {
