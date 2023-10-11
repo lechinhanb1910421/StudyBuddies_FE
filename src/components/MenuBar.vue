@@ -36,20 +36,21 @@ export default {
     },
     async getUserAvatar() {
       this.currentAvatar = await this.userStore.getUserActiveAvatar()
+    },
+    toggleActiveMajor(name) {
+      var majorId = this.majors.indexOf(name) + 1
+      router.push({ name: 'searchResults', query: { m: '' + majorId } })
+    },
+    toggleActiveTopic(name) {
+      var topicId = this.topics.indexOf(name) + 1
+      router.push({ name: 'searchResults', query: { t: '' + topicId } })
     }
-    // toggleActiveMajor(name) {
-    //   var majorId = this.majors.indexOf(name) + 1
-    //   router.push({ name: 'searchResults', query: { m: '' + majorId } })
-    // },
-    // toggleActiveTopic(name) {
-    //   var topicId = this.topics.indexOf(name) + 1
-    //   router.push({ name: 'searchResults', query: { t: '' + topicId } })
-    // }
   },
   async mounted() {
     await this.getCurrentUser()
     await this.getUserAvatar()
-  },
+  }
+
 }
 </script>
 <template>

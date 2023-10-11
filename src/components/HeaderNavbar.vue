@@ -1,5 +1,6 @@
 <script>
 import { loggedInUserStorage } from '@/stores/loggedInUser'
+import KeycloakService from '@/services/Keycloak.service'
 import router from '@/routers/index'
 // import { storeToRefs } from 'pinia'
 export default {
@@ -181,12 +182,15 @@ export default {
   font-weight: 600;
   border-radius: 0.55rem;
 }
+
 .dropdown_tile:hover {
   background-color: rgb(255 255 255 /0.2);
 }
+
 .dropdown_tile i {
   font-size: 22px;
 }
+
 .dropdown-item {
   color: white;
   cursor: pointer;
@@ -196,19 +200,23 @@ export default {
   background-color: #3a3e45;
   color: white;
 }
+
 .dropdown-menu {
   width: 330px;
   background-color: #3a3e45;
 }
+
 .dropdown_user_name {
   font-size: 18px;
   font-weight: 600;
 }
+
 .dropdown_avatar {
   border-radius: 50%;
   height: 40px;
   aspect-ratio: 1/1;
 }
+
 .profile_tile {
   padding-inline-start: 15px;
   height: 55px;
@@ -222,28 +230,34 @@ export default {
   margin-bottom: 12px;
   transition: background-color linear 0.1s;
 }
+
 .profile_name {
   font-size: 18px;
   font-weight: 700;
 }
+
 .search_icon {
   color: white;
   font-size: 20px;
   opacity: 0.5;
   padding: 12px 0 12px 12px;
 }
+
 .navbar-brand {
   color: white !important;
 }
+
 .bg_dark1 {
   background-color: #2b2e33;
 }
+
 .navbar_search_inp {
   margin-left: 20px;
   background-color: rgb(255 255 255 / 0.1);
   border-radius: 1.5rem;
   min-width: 300px;
 }
+
 .navbar_search_inp input[type='text'] {
   background-color: transparent;
   outline: none;
@@ -251,14 +265,17 @@ export default {
   color: white;
   outline: none;
 }
+
 .navbar_input_search:focus {
   outline: none;
   box-shadow: none;
 }
+
 .navbar_search_inp input[type='text']::placeholder {
   color: white;
   opacity: 50%;
 }
+
 .navbar_icons {
   color: white;
   margin-inline-start: 10px;
@@ -268,12 +285,15 @@ export default {
   background-color: rgb(255 255 255 / 0.1);
   cursor: pointer;
 }
+
 .navbar_icons:hover {
   background-color: rgb(255 255 255 / 0.4);
 }
+
 .navbar {
   border: 1px solid rgb(255 255 255 /0.2);
 }
+
 .avatar_img {
   margin-inline-start: 10px;
   height: 45px;
