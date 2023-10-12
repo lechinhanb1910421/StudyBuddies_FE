@@ -77,7 +77,6 @@ export default {
     },
     async removePreviewImage() {
       this.newImagePreview = ''
-      // this.$refs.add_img_input.value = null
       this.hasImage = false
     },
     async uploadImage() {
