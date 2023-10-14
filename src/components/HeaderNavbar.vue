@@ -1,74 +1,86 @@
 <script>
-import { loggedInUserStorage } from '@/stores/loggedInUser'
-import router from '@/routers/index'
+import { loggedInUserStorage } from "@/stores/loggedInUser";
+import router from "@/routers/index";
+import NotificationGroup from "./NotificationGroup.vue";
 export default {
+  components: { NotificationGroup },
   data() {
     return {
-      input_search: '',
+      input_search: "",
       isMainDropDown: true,
-      currentAvatar: '',
-      userId: ''
-    }
+      currentAvatar: "",
+      userId: "",
+    };
   },
   setup() {
-    const userStore = loggedInUserStorage()
+    const userStore = loggedInUserStorage();
     // const { user } = storeToRefs(userStore)
     return {
-      userStore
+      userStore,
       // user
-    }
+    };
   },
   methods: {
     async getCurrentUser() {
-      let access_token = this.$keycloak.token
-      await this.userStore.getCurrentUser(access_token)
+      let access_token = this.$keycloak.token;
+      await this.userStore.getCurrentUser(access_token);
     },
     submitSeach() {
       if (this.input_search == null) {
-        return
+        return;
       }
-      var search_query = this.input_search.replace(/\s+/g, ' ').trim().toLocaleLowerCase()
-      if (search_query == '') {
-        return
+      var search_query = this.input_search
+        .replace(/\s+/g, " ")
+        .trim()
+        .toLocaleLowerCase();
+      if (search_query == "") {
+        return;
       }
-      router.push({ name: 'searchResults', query: { q: '' + search_query, t: 0, m: 0 } })
+      router.push({
+        name: "searchResults",
+        query: { q: "" + search_query, t: 0, m: 0 },
+      });
     },
     checkInput(e) {
-      if (e.shiftKey && e.key == 'Backspace') {
-        this.input_search = ''
+      if (e.shiftKey && e.key == "Backspace") {
+        this.input_search = "";
       }
     },
     openSettingsDropdown() {
-      this.isMainDropDown = false
+      this.isMainDropDown = false;
     },
     openMainDropdown() {
-      this.isMainDropDown = true
+      this.isMainDropDown = true;
     },
     logMeOut() {
-      this.$keycloak.logout({ redirectUri: 'http://localhost/' })
+      this.$keycloak.logout({ redirectUri: "http://localhost/" });
     },
     goToProfile() {
-      const value = this.userStore.user.userId
-      router.push({ name: 'userProfile', params: { id: value } })
+      const value = this.userStore.user.userId;
+      router.push({ name: "userProfile", params: { id: value } });
     },
     changePassword() {
-      this.$keycloak.login({ action: 'UPDATE_PASSWORD' })
-    }
+      this.$keycloak.login({ action: "UPDATE_PASSWORD" });
+    },
   },
   async mounted() {
-    await this.getCurrentUser()
-    this.currentAvatar = await this.userStore.getUserActiveAvatar()
-    if (this.$route.query.q != null || this.$route.query.q != '') {
-      this.input_search = this.$route.query.q
+    await this.getCurrentUser();
+    this.currentAvatar = await this.userStore.getUserActiveAvatar();
+    if (this.$route.query.q != null || this.$route.query.q != "") {
+      this.input_search = this.$route.query.q;
     }
-  }
-}
+  },
+};
 </script>
 <template lang="">
-  <nav class="navbar navbar-expand-lg bg_dark1 fixed-top" v-if="this.userStore.user.userId">
+  <!-- <nav class="navbar navbar-expand-lg bg_dark1 fixed-top" v-if="this.userStore.user.userId"> -->
+  <nav class="navbar navbar-expand-lg bg_dark1 fixed-top">
     <div class="container-fluid">
       <router-link :to="{ name: 'home' }">
-        <img src="../assets/pics/android-chrome-192x192.png" class="avatar_img" alt="..." />
+        <img
+          src="../assets/pics/android-chrome-192x192.png"
+          class="avatar_img"
+          alt="..." />
       </router-link>
       <button
         class="navbar-toggler"
@@ -95,19 +107,31 @@ export default {
           </div>
         </div>
         <div class="navbar-nav me-auto mb-2 mb-lg-0"></div>
-
         <i class="fas fa-ellipsis-h navbar_icons"></i>
-        <i class="fas fa-bell navbar_icons"></i>
+        <NotificationGroup></NotificationGroup>
         <div class="dropdown" v-if="this.currentAvatar">
-          <img :src="this.currentAvatar" class="avatar_img" alt="Avatar" data-bs-toggle="dropdown" aria-expanded="false" />
+          <img
+            :src="this.currentAvatar"
+            class="avatar_img"
+            alt="Avatar"
+            data-bs-toggle="dropdown"
+            aria-expanded="false" />
           <!-- <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Dropdown button</button> -->
           <ul class="dropdown-menu dropdown-menu-end">
             <div v-if="this.isMainDropDown">
               <li>
                 <div class="dropdown-item">
-                  <div class="profile_tile" v-if="this.currentAvatar" @click="goToProfile">
-                    <img :src="this.currentAvatar" class="avatar_img" alt="Avatar" />
-                    <span class="profile_name">{{ this.userStore.user.fullName }}</span>
+                  <div
+                    class="profile_tile"
+                    v-if="this.currentAvatar"
+                    @click="goToProfile">
+                    <img
+                      :src="this.currentAvatar"
+                      class="avatar_img"
+                      alt="Avatar" />
+                    <span class="profile_name">{{
+                      this.userStore.user.fullName
+                    }}</span>
                   </div>
                 </div>
               </li>
@@ -256,7 +280,7 @@ export default {
   min-width: 300px;
 }
 
-.navbar_search_inp input[type='text'] {
+.navbar_search_inp input[type="text"] {
   background-color: transparent;
   outline: none;
   border: none;
@@ -269,7 +293,7 @@ export default {
   box-shadow: none;
 }
 
-.navbar_search_inp input[type='text']::placeholder {
+.navbar_search_inp input[type="text"]::placeholder {
   color: white;
   opacity: 50%;
 }

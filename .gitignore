@@ -3,7 +3,7 @@ node_modules
 /dist
 run_serve.bat
 /public/firebase-messaging-sw.js
-
+.prettierrc.json
 # local env files
 .env
 .env.local

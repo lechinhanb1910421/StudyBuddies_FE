@@ -47,7 +47,7 @@ export default {
 }
 </script>
 <template>
-  <Transition name="fade">
+  <!-- <Transition name="fade">
     <div v-if="!this.pageLoaded" class="preloader_ctn">
       <div class="loader">
         <div class="one"></div>
@@ -60,7 +60,7 @@ export default {
         <div class="eight"></div>
       </div>
     </div>
-  </Transition>
+  </Transition> -->
   <Transition name="fade">
     <div v-if="this.pageLoaded">
       <AddPostModal @postAdded="getAllPost"></AddPostModal>
