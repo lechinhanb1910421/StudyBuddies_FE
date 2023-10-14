@@ -1,11 +1,11 @@
 <script>
 import MyDateTimeService from "@/services/myDateTime.service";
 export default {
-  props: ["user", "message", "createdAt"],
+  props: ["sourceUser", "message", "createdAt", "referenceLink"],
   data() {
     return {
       createTime: "",
-      userAvaUrl: "",
+      sourceUserAvaUrl: "",
     };
   },
   methods: {
@@ -14,20 +14,23 @@ export default {
         timeString: this.createdAt,
       });
     },
-    getUserAvaUrl() {
-      this.userAvaUrl = this.user.avatars[0].avaUrl;
+    getSourceUserAvaUrl() {
+      this.sourceUserAvaUrl = this.sourceUser.avatars[0].avaUrl;
+    },
+    openNotificationPost() {
+      window.open(this.referenceLink, "_blank").focus();
     },
   },
   created() {
     this.getCreatedTime();
-    this.getUserAvaUrl();
+    this.getSourceUserAvaUrl();
   },
 };
 </script>
 <template>
-  <div class="noti_ctn">
+  <div class="noti_ctn" @click="openNotificationPost()">
     <div class="noti_avatar_ctn">
-      <img class="noti_avatar" :src="this.userAvaUrl" alt="..." />
+      <img class="noti_avatar" :src="this.sourceUserAvaUrl" alt="..." />
     </div>
     <div class="noti_content_ctn">
       <div class="noti_message">
@@ -57,9 +60,10 @@ export default {
 
 .noti_avatar {
   flex: 1;
-  width: 56px;
+  width: 60px;
   aspect-ratio: 1/1;
   border-radius: 50%;
+  outline: 3px solid #54bab9;
 }
 .noti_content_ctn {
   height: 70px;

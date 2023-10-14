@@ -12,10 +12,6 @@ export default {
     async getUserNotifications() {
       let access_token = this.$keycloak.token;
       this.notifications = await UserService.getUserNotification(access_token);
-      // for (let index = 0; index < this.notifications.length; index++) {
-      //   const element = this.notifications[index];
-      //   console.log(element);
-      // }
     },
   },
   created() {
@@ -42,9 +38,10 @@ export default {
         <div v-for="noti in this.notifications" :key="noti">
           <li>
             <NotificationTile
-              :user="noti.receiverUser"
+              :sourceUser="noti.sourceUser"
               :message="noti.content"
-              :createdAt="noti.createdAt"></NotificationTile>
+              :createdAt="noti.createdAt"
+              :referenceLink="noti.referenceLink"></NotificationTile>
           </li>
         </div>
       </div>
