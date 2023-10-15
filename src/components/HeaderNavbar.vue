@@ -60,7 +60,7 @@ export default {
       router.push({ name: "userProfile", params: { id: value } });
     },
     changePassword() {
-      this.$keycloak.login({ action: "UPDATE_PASSWORD" });
+      this.$keycloak.login({ action: "UPDATE_PASSWORD", prompt: "login" });
     },
   },
   async mounted() {
