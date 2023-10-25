@@ -6,16 +6,29 @@ export default {
   data() {
     return {
       notifications: "",
+      notiCount: 0,
     };
   },
   methods: {
     async getUserNotifications() {
       let access_token = this.$keycloak.token;
       this.notifications = await UserService.getUserNotification(access_token);
+      this.getNoticationCount();
+      setTimeout(this.getUserNotifications, 2702);
+    },
+    getNoticationCount() {
+      let count = 0;
+      this.notifications.forEach((entry) => {
+        count += entry.readStatus == "UNREAD";
+      });
+      this.notiCount = count;
+    },
+    removeNotificationCount() {
+      this.notiCount = this.notiCount - 1;
     },
   },
-  created() {
-    this.getUserNotifications();
+  async created() {
+    await this.getUserNotifications();
   },
 };
 </script>
@@ -25,7 +38,11 @@ export default {
       class="fas fa-bell navbar_icons"
       role="button"
       data-bs-toggle="dropdown"
-      aria-expanded="false"></i>
+      aria-expanded="false">
+      <div class="noti-badge" v-if="this.notiCount > 0">
+        {{ this.notiCount }}
+      </div>
+    </i>
     <ul class="dropdown-menu noti_dropdown dropdown-menu-end">
       <li>
         <div class="noti_header_ctn">
@@ -41,7 +58,10 @@ export default {
               :sourceUser="noti.sourceUser"
               :message="noti.content"
               :createdAt="noti.createdAt"
-              :referenceLink="noti.referenceLink"></NotificationTile>
+              :referenceLink="noti.referenceLink"
+              :readStatus="noti.readStatus"
+              :notiId="noti.notiId"
+              @notiRead="removeNotificationCount()"></NotificationTile>
           </li>
         </div>
       </div>
@@ -50,6 +70,20 @@ export default {
 </template>
 
 <style scoped>
+.noti-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  border-radius: 50%;
+  font-size: 10px;
+  font-family: cursive;
+  background-color: red;
+  min-width: 23px;
+  aspect-ratio: 1/1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 .noti_header_ctn {
   padding: 10px;
   padding-left: 20px;
