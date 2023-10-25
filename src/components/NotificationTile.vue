@@ -1,11 +1,21 @@
 <script>
+import UserService from "@/services/User.service";
 import MyDateTimeService from "@/services/myDateTime.service";
 export default {
-  props: ["sourceUser", "message", "createdAt", "referenceLink"],
+  props: [
+    "sourceUser",
+    "message",
+    "createdAt",
+    "referenceLink",
+    "readStatus",
+    "notiId",
+  ],
+  emits: ["notiRead"],
   data() {
     return {
       createTime: "",
       sourceUserAvaUrl: "",
+      isShowUnreadIndicator: false,
     };
   },
   methods: {
@@ -17,13 +27,28 @@ export default {
     getSourceUserAvaUrl() {
       this.sourceUserAvaUrl = this.sourceUser.avatars[0].avaUrl;
     },
-    openNotificationPost() {
+    async openNotificationPost() {
+      await this.setReadState();
+      this.$emit("notiRead");
       window.open(this.referenceLink, "_blank").focus();
+    },
+    async setReadState() {
+      this.isShowUnreadIndicator = false;
+      await UserService.setNotificationReadState(
+        this.$keycloak.token,
+        this.notiId
+      );
+    },
+    isNotificationRead() {
+      if (this.readStatus == "UNREAD") {
+        this.isShowUnreadIndicator = true;
+      }
     },
   },
   created() {
     this.getCreatedTime();
     this.getSourceUserAvaUrl();
+    this.isNotificationRead();
   },
 };
 </script>
@@ -36,11 +61,22 @@ export default {
       <div class="noti_message">
         {{ message }}
       </div>
+      <div class="noti_indicator" v-if="this.isShowUnreadIndicator"></div>
       <div class="noti_time">{{ createTime }}</div>
     </div>
   </div>
 </template>
 <style scoped>
+.noti_indicator {
+  min-height: 10px;
+  background-color: red;
+  position: absolute;
+  top: 7px;
+  right: 0;
+  height: 10px;
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+}
 .noti_ctn {
   margin-inline: 15px;
   padding: 10px;
@@ -66,6 +102,7 @@ export default {
   outline: 3px solid #54bab9;
 }
 .noti_content_ctn {
+  position: relative;
   height: 70px;
   padding-left: 10px;
   flex: 10;

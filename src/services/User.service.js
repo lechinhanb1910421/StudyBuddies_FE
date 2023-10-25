@@ -45,5 +45,11 @@ class UserService {
     };
     return (await this.api.get("/notifications")).data;
   }
+  async setNotificationReadState(access_token, notiId) {
+    this.api.defaults.headers.common = {
+      Authorization: `bearer ${access_token}`,
+    };
+    return (await this.api.patch("/notifications/" + notiId)).data;
+  }
 }
 export default new UserService();
