@@ -102,6 +102,7 @@ export default {
   outline: 3px solid #54bab9;
 }
 .noti_content_ctn {
+  padding-right: 15px;
   position: relative;
   height: 70px;
   padding-left: 10px;
