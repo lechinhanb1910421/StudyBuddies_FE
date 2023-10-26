@@ -14,7 +14,7 @@ export default {
       let access_token = this.$keycloak.token;
       this.notifications = await UserService.getUserNotification(access_token);
       this.getNoticationCount();
-      setTimeout(this.getUserNotifications, 2702);
+      setTimeout(this.getUserNotifications, 2702 + 2702);
     },
     getNoticationCount() {
       let count = 0;
