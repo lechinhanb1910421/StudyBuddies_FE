@@ -19,5 +19,9 @@ class AdminService {
     this.api.defaults.headers.common = { Authorization: `bearer ${access_token}` }
     return (await this.api.delete('/posts/' + postId)).data
   }
+  async submitMacJob(access_token, payload){
+    this.api.defaults.headers.common = { Authorization: `bearer ${access_token}` }
+    return (await this.api.post("/", payload)).data;
+  }
 }
 export default new AdminService()

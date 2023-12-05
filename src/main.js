@@ -31,6 +31,7 @@ let initOptions = {
   flow: "standard",
 };
 const myApp = createApp(App).use(pinia).use(VueTippy, tippyConfig).use(router);
+
 let keycloak = new Keycloak(initOptions);
 keycloak
   .init({ onLoad: initOptions.onLoad, flow: initOptions.flow })

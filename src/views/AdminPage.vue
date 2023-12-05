@@ -1,41 +1,141 @@
 <script>
-import router from '@/routers/index'
-import AdminService from '@/services/Admin.service'
-import AdminUserTile from '@/components/AdminUserTile.vue'
-import AdminPostTile from '@/components/AdminPostTile.vue'
-import PostService from '@/services/Post.service'
+import router from "@/routers/index";
+import AdminService from "@/services/Admin.service";
+import AdminUserTile from "@/components/AdminUserTile.vue";
+import AdminPostTile from "@/components/AdminPostTile.vue";
+import PostService from "@/services/Post.service";
+import MacJobService from "@/services/Macjob.service";
 export default {
   components: { AdminUserTile, AdminPostTile },
   data() {
     return {
       isForbidden: true,
       isLoaded: false,
-      briefStats: '',
-      users: '',
-      posts: ''
-    }
+      briefStats: "",
+      users: "",
+      posts: "",
+      resultStackId: "",
+      macUploadFile: "",
+      macUploadResult: "",
+      macResStackId: "",
+      isMacResultError: false,
+      isMacResultMissingStackId: false,
+      isMacUploadInvalid: false,
+    };
   },
   methods: {
     goToNewfeed() {
-      router.push({ name: 'home' })
+      router.push({ name: "home" });
     },
     async getStats() {
       try {
-        this.briefStats = await AdminService.getBriefStats(this.$keycloak.token)
-        this.users = await AdminService.getAllUsers(this.$keycloak.token)
-        this.posts = await PostService.getAllPosts(this.$keycloak.token)
-        this.isForbidden = false
+        this.briefStats = await AdminService.getBriefStats(
+          this.$keycloak.token
+        );
+        this.users = await AdminService.getAllUsers(this.$keycloak.token);
+        this.posts = await PostService.getAllPosts(this.$keycloak.token);
+        this.isForbidden = false;
       } catch (error) {
-        this.isForbidden = true
+        this.isForbidden = true;
       }
-      this.isLoaded = true
-    }
+      this.isLoaded = true;
+    },
+    previewFiles(event) {
+      this.isMacUploadInvalid = false;
+      try {
+        this.macUploadFile = event.target.files[0];
+        const reader = new FileReader();
+        reader.readAsBinaryString(this.macUploadFile);
+        reader.onload = (e) => {
+          this.macUploadResult = e.target.result;
+        };
+        if (!this.macUploadFile || !this.macUploadFile.name.endsWith(".csv")) {
+          this.isMacUploadInvalid = true;
+          return;
+        }
+      } catch (error) {
+        this.isMacUploadInvalid = true;
+      }
+    },
+    async submitMacJob() {
+      if (!this.macUploadFile || !this.macUploadFile.name.endsWith(".csv")) {
+        this.isMacUploadInvalid = true;
+        return;
+      }
+      this.isMacUploadInvalid = false;
+      const formData = new FormData();
+      formData.append("file", this.macUploadFile);
+      this.resultStackId = await MacJobService.submitMacJob(
+        this.$keycloak.token,
+        formData
+      );
+    },
+    setStackId(event) {
+      this.macResStackId = event.target.value;
+      this.isMacResultError = false;
+      this.isMacResultMissingStackId = false;
+    },
+    async exportFileAsDownload() {
+      if (!this.macResStackId) {
+        return;
+      }
+      try {
+        const response = await MacJobService.getMacJobReport(
+          this.$keycloak.token,
+          this.macResStackId
+        );
+
+        const anchor = document.createElement("a");
+        anchor.href = URL.createObjectURL(response.data);
+        anchor.target = "_blank";
+        anchor.download = this.getFileName(response);
+        anchor.click();
+        this.isMacResultError = false;
+      } catch (error) {
+        this.isMacResultError = true;
+      }
+    },
+    getFileName(response) {
+      let filename = response.headers["content-disposition"]
+        .split("filename=")[1]
+        .split(".")[0];
+      let extension = response.headers["content-disposition"]
+        .split(".")[1]
+        .split(";")[0];
+      return `${filename}.${extension}`;
+    },
   },
   async created() {
-    this.isLoaded = false
-    await this.getStats()
-  }
-}
+    this.isLoaded = false;
+    // await this.getStats();
+    this.briefStats = {
+      numOfUsers: 27,
+      numOfPosts: 27,
+    };
+    this.users = [
+      {
+        userId: 1,
+        loginName: "b1910421",
+        givenName: "Nhan",
+        familyName: "Le Nguyen Chi",
+        fullName: "Nhan Le Nguyen Chi",
+        email: "nhanb1910421@student.ctu.edu.vn",
+        createdDate: "2023-02-27T02:27:01Z",
+        accountStatus: "active",
+        avatars: [
+          {
+            avaId: 15,
+            avaUrl:
+              "https://firebasestorage.googleapis.com/v0/b/study-buddies-8b16e.appspot.com/o/b1910421%2Favatars%2FGanyu_2.jpeg?alt=media&token=df053a2c-1cbd-4013-bbdf-46606bfc4480",
+          },
+        ],
+      },
+    ];
+    this.posts = [];
+    this.isForbidden = false;
+    this.isLoaded = true;
+  },
+};
 </script>
 <template>
   <div class="container-fluid">
@@ -54,8 +154,8 @@ export default {
       </div>
     </Transition>
     <Transition name="fade">
-      <section>
-        <div class="inform_ctn" v-if="this.isForbidden && this.isLoaded">
+      <section style="width: 90%">
+        <!-- <div class="inform_ctn" v-if="this.isForbidden && this.isLoaded">
           <div class="inform_main">
             <i class="fas fa-tools fa-spin"></i>
             <span class="main_title">FORBIDDEN</span>
@@ -66,7 +166,7 @@ export default {
           <div class="redirect_ctn">
             <button type="button" class="redirect_btn btn" @click="goToNewfeed">Back To NewFeed</button>
           </div>
-        </div>
+        </div> -->
 
         <div v-if="!this.isForbidden && this.isLoaded" class="stats_ctn">
           <div class="catalogue_title">Brief Overview</div>
@@ -84,6 +184,75 @@ export default {
               </div>
             </div>
           </div>
+          <div class="catalogue_title">MAC Service</div>
+          <div class="mac_ctn">
+            <div class="mac_create_ctn">
+              <div class="mb-4 mac_input_group">
+                <div style="flex: 1">
+                  <label
+                    for="formFile"
+                    class="form-label"
+                    style="font-size: 19px; font-weight: 600">
+                    Choose a file to import user
+                  </label>
+                  <input
+                    class="form-control"
+                    type="file"
+                    accept=".csv"
+                    id="macFormFile"
+                    @change="previewFiles($event)" />
+                </div>
+                <button class="btn btn-primary" @click="submitMacJob()">
+                  Submit
+                </button>
+              </div>
+              <div
+                class="alert alert-danger"
+                role="alert"
+                v-if="this.isMacUploadInvalid">
+                Invalid or missing file. Please check.
+              </div>
+              <div class="mb-3">
+                <span class="mac_result_text">
+                  StackId: {{ resultStackId }}
+                </span>
+              </div>
+            </div>
+            <div class="mac_result_ctn">
+              <div class="mb-3">
+                <div class="mac_result_text mb-3">Mac Job Result</div>
+                <div class="input-group mb-3">
+                  <input
+                    type="text"
+                    class="form-control"
+                    placeholder="Submit StackId to get Result"
+                    aria-label="Submit StackId to get Result"
+                    aria-describedby="button-addon2"
+                    :value="this.macResStackId"
+                    @change="setStackId($event)" />
+                  <button
+                    class="btn btn-primary"
+                    type="button"
+                    id="button-addon2"
+                    @click="exportFileAsDownload()">
+                    Submit StackId
+                  </button>
+                </div>
+                <div
+                  class="alert alert-danger"
+                  role="alert"
+                  v-if="this.isMacResultError">
+                  Invalid StackId. Please check it.
+                </div>
+                <div
+                  class="alert alert-danger"
+                  role="alert"
+                  v-if="this.isMacResultMissingStackId">
+                  Please input StackId.
+                </div>
+              </div>
+            </div>
+          </div>
           <div class="catalogue_ctn">
             <div class="users_del_ctn">
               <div class="catalogue_title">User Details</div>
@@ -97,7 +266,9 @@ export default {
               <div class="catalogue_title">Post Details</div>
               <div class="cat_posts_ctn" v-if="this.posts.length > 0">
                 <div v-for="(post, index) in this.posts" :key="index">
-                  <AdminPostTile @postDeleted="getStats" :post="post"></AdminPostTile>
+                  <AdminPostTile
+                    @postDeleted="getStats"
+                    :post="post"></AdminPostTile>
                 </div>
               </div>
             </div>
@@ -108,6 +279,42 @@ export default {
   </div>
 </template>
 <style scoped>
+.mac_input_group {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 10px;
+}
+.mac_result_text {
+  font-size: 19px;
+  font-weight: 600;
+}
+.mac_create_ctn {
+  flex: 1;
+  background-color: rgb(255 255 255);
+  min-height: 80px;
+  border-radius: 0.75em;
+  padding-inline: 15px;
+  outline: 4px solid #93c6e7;
+}
+.mac_result_ctn {
+  flex: 1;
+  background-color: rgb(255 255 255);
+  min-height: 145px;
+  border-radius: 0.75em;
+  padding-inline: 15px;
+  outline: 4px solid #54bab9;
+}
+.mac_ctn {
+  min-height: 100px;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}
+
 hr {
   border-bottom: 2px solid white;
   opacity: 0.7;
@@ -200,7 +407,7 @@ hr {
 }
 
 .stats_ctn {
-  width: 90%;
+  width: 100%;
   display: flex;
   gap: 10px;
   flex-direction: column;
@@ -268,4 +475,5 @@ hr {
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
-}</style>
+}
+</style>
