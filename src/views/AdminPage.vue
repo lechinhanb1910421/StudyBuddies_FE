@@ -107,33 +107,7 @@ export default {
   },
   async created() {
     this.isLoaded = false;
-    // await this.getStats();
-    this.briefStats = {
-      numOfUsers: 27,
-      numOfPosts: 27,
-    };
-    this.users = [
-      {
-        userId: 1,
-        loginName: "b1910421",
-        givenName: "Nhan",
-        familyName: "Le Nguyen Chi",
-        fullName: "Nhan Le Nguyen Chi",
-        email: "nhanb1910421@student.ctu.edu.vn",
-        createdDate: "2023-02-27T02:27:01Z",
-        accountStatus: "active",
-        avatars: [
-          {
-            avaId: 15,
-            avaUrl:
-              "https://firebasestorage.googleapis.com/v0/b/study-buddies-8b16e.appspot.com/o/b1910421%2Favatars%2FGanyu_2.jpeg?alt=media&token=df053a2c-1cbd-4013-bbdf-46606bfc4480",
-          },
-        ],
-      },
-    ];
-    this.posts = [];
-    this.isForbidden = false;
-    this.isLoaded = true;
+    await this.getStats();
   },
 };
 </script>
